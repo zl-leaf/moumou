@@ -34,7 +34,7 @@ export const useRouterStore = defineStore('router', () => {
             const subViewRouter:RouteRecordRaw  = {
                 name: menuItem.name,
                 path: menuItem.path,
-                component: import('@/components/TableComponent.vue'),
+                component: () => import('@/components/TableComponent.vue'),
                 meta: {
                     title: menuItem.title,
                     isMenu: menuItem.is_menu,
@@ -63,6 +63,8 @@ export const useRouterStore = defineStore('router', () => {
 
             formatRouter(baseRouter, menuResponse.data.menu_items)
             router.addRoute(baseRouter)
+
+            console.log('router', router.getRoutes())
 
         } catch (err) {
             return Promise.reject("网络错误")
