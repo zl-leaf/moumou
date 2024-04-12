@@ -2,7 +2,7 @@ import axios from "axios";
 import { useUserStore } from "@/pinia/modules/user"
 
 export const http = axios.create({
-    baseURL: 'http://127.0.0.1:8888',
+    baseURL: import.meta.env.VITE_BASE_API,
     timeout: 99999,
 })
 
