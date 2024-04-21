@@ -27,4 +27,5 @@ do
   esac
 done
 
+npm install
 build_server $bin_root
