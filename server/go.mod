@@ -1,4 +1,4 @@
-module moumou/server
+module github.com/moumou/server
 
 go 1.22.0
 

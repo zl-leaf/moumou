@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"moumou/server/biz/handler"
+	"github.com/moumou/server/biz/handler"
 )
 
 func main() {

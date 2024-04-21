@@ -25,7 +25,11 @@ build_bootstrap() {
   echo "nohup $app_path 1>/dev/null &" > $script_path
 }
 
-bin_root=$(PWD)
+
+shell_path=$(realpath $0)
+project_root=$(dirname "$shell_path")
+cd $project_root
+bin_root=$project_root
 while [[ "$1" != "" ]]
 do
   case $1 in
