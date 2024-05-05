@@ -2,3 +2,5 @@
 view/dist
 view/.env.production
 server/bootstrap
+server/config/config_dev.yml
+server/config/config_prod.yml

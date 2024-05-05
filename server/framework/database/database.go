@@ -6,9 +6,13 @@ import (
 )
 
 func NewMysqlGorm() (*gorm.DB, error) {
-	dsn := "devuser:aliyun878220!@tcp(121.89.221.36:6033)/moumou_dev?charset=utf8mb4&parseTime=True&loc=Local"
+	cnf, err := newConfig()
+	if err != nil {
+		return nil, err
+	}
 	db, err := gorm.Open(mysql.New(mysql.Config{
-		DSN:                       dsn,
+		//DSN:                       dsn,
+		DSNConfig:                 cnf,
 		DefaultStringSize:         256,   // string 类型字段的默认长度
 		DisableDatetimePrecision:  true,  // 禁用 datetime 精度，MySQL 5.6 之前的数据库不支持
 		DontSupportRenameIndex:    true,  // 重命名索引时采用删除并新建的方式，MySQL 5.7 之前的数据库和 MariaDB 不支持重命名索引
