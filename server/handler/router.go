@@ -6,11 +6,15 @@ import (
 	"net/http"
 )
 
-func Register(engine *gin.Engine) {
+func Register(engine *gin.Engine) error {
+	var handler, err = InitHandler()
+	if err != nil {
+		return err
+	}
 	engine.GET("/ping", func(c *gin.Context) {
 		ctx := context.TODO()
 		req := &PingRequest{}
-		resp, err := Ping(ctx, req)
+		resp, err := handler.Ping(ctx, req)
 		if err != nil {
 			c.JSON(http.StatusOK, &BaseResponse{Code: -1, Message: err.Error()})
 			return
@@ -23,7 +27,7 @@ func Register(engine *gin.Engine) {
 		ctx := context.TODO()
 		req := &HelloRequest{}
 
-		resp, err := Hello(ctx, req)
+		resp, err := handler.Hello(ctx, req)
 		if err != nil {
 			c.JSON(http.StatusOK, &BaseResponse{Code: -1, Message: err.Error()})
 			return
@@ -41,7 +45,7 @@ func Register(engine *gin.Engine) {
 			return
 		}
 
-		resp, err := Login(ctx, req)
+		resp, err := handler.Login(ctx, req)
 		if err != nil {
 			c.JSON(http.StatusOK, &BaseResponse{Code: -1, Message: err.Error()})
 			return
@@ -59,7 +63,7 @@ func Register(engine *gin.Engine) {
 			return
 		}
 
-		resp, err := Logout(ctx, req)
+		resp, err := handler.Logout(ctx, req)
 		if err != nil {
 			c.JSON(http.StatusOK, &BaseResponse{Code: -1, Message: err.Error()})
 			return
@@ -77,7 +81,7 @@ func Register(engine *gin.Engine) {
 			return
 		}
 
-		resp, err := Self(ctx, req)
+		resp, err := handler.Self(ctx, req)
 		if err != nil {
 			c.JSON(http.StatusOK, &BaseResponse{Code: -1, Message: err.Error()})
 			return
@@ -95,7 +99,7 @@ func Register(engine *gin.Engine) {
 				return
 			}*/
 
-		resp, err := Menu(ctx, req)
+		resp, err := handler.Menu(ctx, req)
 		if err != nil {
 			c.JSON(http.StatusOK, &BaseResponse{Code: -1, Message: err.Error()})
 			return
@@ -103,4 +107,6 @@ func Register(engine *gin.Engine) {
 
 		c.JSON(http.StatusOK, resp)
 	})
+
+	return nil
 }

@@ -1,5 +1,10 @@
 package handler
 
+var errorResponse = &BaseResponse{
+	Code:    -1,
+	Message: "error",
+}
+
 type BaseRequest struct {
 	Token string `header:"x-token"`
 }
