@@ -11,7 +11,6 @@ func NewMysqlGorm() (*gorm.DB, error) {
 		return nil, err
 	}
 	db, err := gorm.Open(mysql.New(mysql.Config{
-		//DSN:                       dsn,
 		DSNConfig:                 cnf,
 		DefaultStringSize:         256,   // string 类型字段的默认长度
 		DisableDatetimePrecision:  true,  // 禁用 datetime 精度，MySQL 5.6 之前的数据库不支持

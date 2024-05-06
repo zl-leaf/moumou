@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 	"github.com/moumou/server/biz/service"
+	"github.com/moumou/server/handler/vo"
 	"github.com/moumou/server/util"
 )
 
@@ -20,14 +21,14 @@ func InitHandler() (*Handler, error) {
 	}, nil
 }
 
-func (handler *Handler) Ping(ctx context.Context, req *PingRequest) (resp *PingResponse, err error) {
-	resp = &PingResponse{}
+func (handler *Handler) Ping(ctx context.Context, req *vo.PingRequest) (resp *vo.PingResponse, err error) {
+	resp = &vo.PingResponse{}
 	return
 }
 
-func (handler *Handler) Hello(ctx context.Context, req *HelloRequest) (resp *HelloResponse, err error) {
-	resp = &HelloResponse{
-		Data: &HelloResponseData{
+func (handler *Handler) Hello(ctx context.Context, req *vo.HelloRequest) (resp *vo.HelloResponse, err error) {
+	resp = &vo.HelloResponse{
+		Data: &vo.HelloResponseData{
 			Key: "1234567890abcdef",
 			IV:  "abcdefghijklmnop",
 		},
@@ -35,15 +36,15 @@ func (handler *Handler) Hello(ctx context.Context, req *HelloRequest) (resp *Hel
 	return
 }
 
-func (handler *Handler) Login(ctx context.Context, req *LoginRequest) (resp *LoginResponse, err error) {
+func (handler *Handler) Login(ctx context.Context, req *vo.LoginRequest) (resp *vo.LoginResponse, err error) {
 	token, user, err := handler.svc.UserService.Login(req.Username, req.Password)
 	if err != nil {
 		return nil, err
 	}
 
-	resp = &LoginResponse{
-		Data: &LoginResponseData{
-			User: &UserData{
+	resp = &vo.LoginResponse{
+		Data: &vo.LoginResponseData{
+			User: &vo.UserData{
 				UserID: util.Unit2String(user.ID),
 			},
 			Token: token,
@@ -52,57 +53,36 @@ func (handler *Handler) Login(ctx context.Context, req *LoginRequest) (resp *Log
 	return
 }
 
-func (handler *Handler) Logout(ctx context.Context, req *LogoutRequest) (resp *LogoutResponse, err error) {
+func (handler *Handler) Logout(ctx context.Context, req *vo.LogoutRequest) (resp *vo.LogoutResponse, err error) {
 	err = handler.svc.UserService.Logout(req.Token)
 	if err != nil {
 		return
 	}
-	resp = &LogoutResponse{}
+	resp = &vo.LogoutResponse{}
 	return
 }
 
-func (handler *Handler) Self(ctx context.Context, req *SelfRequest) (resp *SelfResponse, err error) {
+func (handler *Handler) Self(ctx context.Context, req *vo.SelfRequest) (resp *vo.SelfResponse, err error) {
 	user, err := handler.svc.UserService.Self(req.Token)
 	if err != nil {
 		return nil, err
 	}
 
-	resp = &SelfResponse{
-		Data: &UserData{
+	resp = &vo.SelfResponse{
+		Data: &vo.UserData{
 			UserID: util.Unit2String(user.ID),
 		},
 	}
 	return
 }
 
-func (handler *Handler) Menu(ctx context.Context, request *MenuRequest) (resp *MenuResponse, err error) {
-	resp = &MenuResponse{
-		Data: &MenuResponseData{
-			MenuItems: []MenuItem{
-				{
-					Name:     "home_welcome",
-					Path:     "/welcome",
-					Title:    "你好",
-					IsMenu:   true,
-					Children: []MenuItem{},
-				},
-				{
-					Name:   "home_group",
-					Path:   "welcome",
-					Title:  "菜单",
-					IsMenu: true,
-					Children: []MenuItem{
-						{
-							Name:     "home_demo_list",
-							Path:     "/demo_list",
-							Title:    "列表",
-							IsMenu:   true,
-							Children: []MenuItem{},
-						},
-					},
-				},
-			},
-		},
+func (handler *Handler) RouterTree(ctx context.Context, request *vo.RouterTreeRequest) (resp *vo.RouterTreeResponse, err error) {
+	routerList, err := handler.svc.PageService.GetRouterList()
+	if err != nil {
+		return nil, err
+	}
+	resp = &vo.RouterTreeResponse{
+		Data: vo.ConvRouterList2RouterTreeData(routerList),
 	}
 	return
 }

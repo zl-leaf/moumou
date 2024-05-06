@@ -8,6 +8,7 @@ package service
 
 import (
 	"github.com/google/wire"
+	"github.com/moumou/server/biz/service/page"
 	"github.com/moumou/server/biz/service/user"
 	"github.com/moumou/server/framework/database"
 )
@@ -20,10 +21,13 @@ func InitService() (*Service, error) {
 		return nil, err
 	}
 	service := user.NewUserService(db)
-	serviceService := NewService(service)
+	pageService := page.NewPageService(db)
+	serviceService := NewService(service, pageService)
 	return serviceService, nil
 }
 
 // wire.go:
 
-var serviceSet = wire.NewSet(NewService, user.NewUserService, database.NewMysqlGorm)
+var serviceSet = wire.NewSet(
+	NewService, user.NewUserService, page.NewPageService, database.NewMysqlGorm,
+)

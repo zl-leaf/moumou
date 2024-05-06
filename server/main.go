@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/moumou/server/framework/config"
 	"github.com/moumou/server/handler"
+	"github.com/moumou/server/handler/mw"
 )
 
 type serverConfig struct {
@@ -12,7 +13,7 @@ type serverConfig struct {
 
 func main() {
 	router := gin.Default()
-	router.Use(handler.CorsMW())
+	router.Use(mw.CorsMW())
 
 	var err error
 	err = config.Init("config")

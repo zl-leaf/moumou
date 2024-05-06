@@ -1,4 +1,4 @@
-package handler
+package vo
 
 var errorResponse = &BaseResponse{
 	Code:    -1,
@@ -70,23 +70,23 @@ type SelfResponse struct {
 	Data *UserData `json:"data"`
 }
 
-type MenuRequest struct {
+type RouterTreeRequest struct {
 	BaseRequest
 }
 
-type MenuItem struct {
-	Name     string     `json:"name"`
-	Path     string     `json:"path"`
-	Title    string     `json:"title"`
-	IsMenu   bool       `json:"is_menu"`
-	Children []MenuItem `json:"children"`
+type RouterRecord struct {
+	Name     string          `json:"name"`
+	Path     string          `json:"path"`
+	Title    string          `json:"title"`
+	IsMenu   bool            `json:"is_menu"`
+	Children []*RouterRecord `json:"children"`
 }
 
-type MenuResponseData struct {
-	MenuItems []MenuItem `json:"menu_items"`
+type RouterTreeResponseData struct {
+	Routers []*RouterRecord `json:"routers"`
 }
 
-type MenuResponse struct {
+type RouterTreeResponse struct {
 	BaseResponse
-	Data *MenuResponseData `json:"data"`
+	Data *RouterTreeResponseData `json:"data"`
 }

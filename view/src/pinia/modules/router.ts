@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia'
-import { menuAPI } from '@/api/menu'
+import { routerTreeAPI } from '@/api/router'
 import router from '@/router'
 import { ref } from 'vue'
 import type { RouteRecordRaw } from 'vue-router';
-import type {MenuItem} from '@/api/menu'
+import type {RouterRecord} from '@/api/router'
 
 
 export const useRouterStore = defineStore('router', () => {
@@ -11,9 +11,9 @@ export const useRouterStore = defineStore('router', () => {
     const menData = ref()
     const defaultRouter = ref()
 
-    const setMenuData = (val:MenuItem[]) => {
+    const setRouterData = (val:RouterRecord[]) => {
         menData.value = val
-        val.forEach((item:MenuItem) => {
+        val.forEach((item:RouterRecord) => {
             if (defaultRouter.value === undefined && item.is_menu && item.children?.length == 0) {
                 console.log('default', item)
                 defaultRouter.value = item
@@ -29,29 +29,29 @@ export const useRouterStore = defineStore('router', () => {
         return menData.value?.length > 0
     }
 
-    const formatRouter = (viewRouter:RouteRecordRaw, menuItems:MenuItem[]) => {
-        menuItems.forEach((menuItem: MenuItem) => {
+    const formatRouter = (viewRouter:RouteRecordRaw, routerRecordList:RouterRecord[]) => {
+        routerRecordList.forEach((routerRecord: RouterRecord) => {
             const subViewRouter:RouteRecordRaw  = {
-                name: menuItem.name,
-                path: menuItem.path,
+                name: routerRecord.name,
+                path: routerRecord.path,
                 component: () => import('@/components/TableComponent.vue'),
                 meta: {
-                    title: menuItem.title,
-                    isMenu: menuItem.is_menu,
+                    title: routerRecord.title,
+                    isMenu: routerRecord.is_menu,
                 },
-                children: (menuItem.children.length > 0) ? []: undefined
+                children: (routerRecord.children.length > 0) ? []: undefined
             }
-            formatRouter(subViewRouter, menuItem.children)
+            formatRouter(subViewRouter, routerRecord.children)
             viewRouter.children?.push(subViewRouter)
         });
     }
     const updateRouter = async () => {
         try {
-            const menuResponse = await menuAPI()
-            if (menuResponse.code != '0') {
-                return Promise.reject(menuResponse.message);
+            const routerTreeResponse = await routerTreeAPI()
+            if (routerTreeResponse.code != '0') {
+                return Promise.reject(routerTreeResponse.message);
             }
-            setMenuData(menuResponse.data.menu_items)
+            setRouterData(routerTreeResponse.data.routers)
 
             const baseRouter = {
                 path: '/',
@@ -61,7 +61,7 @@ export const useRouterStore = defineStore('router', () => {
             }
 
 
-            formatRouter(baseRouter, menuResponse.data.menu_items)
+            formatRouter(baseRouter, routerTreeResponse.data.routers)
             router.addRoute(baseRouter)
 
             console.log('router', router.getRoutes())

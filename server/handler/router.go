@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 	"github.com/gin-gonic/gin"
+	"github.com/moumou/server/handler/vo"
 	"net/http"
 )
 
@@ -13,10 +14,10 @@ func Register(engine *gin.Engine) error {
 	}
 	engine.GET("/ping", func(c *gin.Context) {
 		ctx := context.TODO()
-		req := &PingRequest{}
+		req := &vo.PingRequest{}
 		resp, err := handler.Ping(ctx, req)
 		if err != nil {
-			c.JSON(http.StatusOK, &BaseResponse{Code: -1, Message: err.Error()})
+			c.JSON(http.StatusOK, &vo.BaseResponse{Code: -1, Message: err.Error()})
 			return
 		}
 
@@ -25,11 +26,11 @@ func Register(engine *gin.Engine) error {
 
 	engine.POST("/hello", func(c *gin.Context) {
 		ctx := context.TODO()
-		req := &HelloRequest{}
+		req := &vo.HelloRequest{}
 
 		resp, err := handler.Hello(ctx, req)
 		if err != nil {
-			c.JSON(http.StatusOK, &BaseResponse{Code: -1, Message: err.Error()})
+			c.JSON(http.StatusOK, &vo.BaseResponse{Code: -1, Message: err.Error()})
 			return
 		}
 
@@ -38,16 +39,16 @@ func Register(engine *gin.Engine) error {
 
 	engine.POST("/login", func(c *gin.Context) {
 		ctx := context.TODO()
-		req := &LoginRequest{}
+		req := &vo.LoginRequest{}
 		err := c.BindJSON(req)
 		if err != nil {
-			c.JSON(http.StatusOK, &BaseResponse{Code: -1, Message: "参数错误"})
+			c.JSON(http.StatusOK, &vo.BaseResponse{Code: -1, Message: "参数错误"})
 			return
 		}
 
 		resp, err := handler.Login(ctx, req)
 		if err != nil {
-			c.JSON(http.StatusOK, &BaseResponse{Code: -1, Message: err.Error()})
+			c.JSON(http.StatusOK, &vo.BaseResponse{Code: -1, Message: err.Error()})
 			return
 		}
 
@@ -56,16 +57,16 @@ func Register(engine *gin.Engine) error {
 
 	engine.POST("/logout", func(c *gin.Context) {
 		ctx := context.TODO()
-		req := &LogoutRequest{}
+		req := &vo.LogoutRequest{}
 		err := c.BindHeader(req)
 		if err != nil {
-			c.JSON(http.StatusOK, &BaseResponse{Code: -1, Message: "参数错误"})
+			c.JSON(http.StatusOK, &vo.BaseResponse{Code: -1, Message: "参数错误"})
 			return
 		}
 
 		resp, err := handler.Logout(ctx, req)
 		if err != nil {
-			c.JSON(http.StatusOK, &BaseResponse{Code: -1, Message: err.Error()})
+			c.JSON(http.StatusOK, &vo.BaseResponse{Code: -1, Message: err.Error()})
 			return
 		}
 
@@ -74,34 +75,34 @@ func Register(engine *gin.Engine) error {
 
 	engine.POST("/self", func(c *gin.Context) {
 		ctx := context.TODO()
-		req := &SelfRequest{}
+		req := &vo.SelfRequest{}
 		err := c.BindHeader(req)
 		if err != nil {
-			c.JSON(http.StatusOK, &BaseResponse{Code: -1, Message: "参数错误"})
+			c.JSON(http.StatusOK, &vo.BaseResponse{Code: -1, Message: "参数错误"})
 			return
 		}
 
 		resp, err := handler.Self(ctx, req)
 		if err != nil {
-			c.JSON(http.StatusOK, &BaseResponse{Code: -1, Message: err.Error()})
+			c.JSON(http.StatusOK, &vo.BaseResponse{Code: -1, Message: err.Error()})
 			return
 		}
 
 		c.JSON(http.StatusOK, resp)
 	})
 
-	engine.POST("/menu", func(c *gin.Context) {
+	engine.POST("/router_tree", func(c *gin.Context) {
 		ctx := context.TODO()
-		req := &MenuRequest{}
-		/*	err := c.BindJSON(req)
-			if err != nil {
-				c.JSON(http.StatusOK, &BaseResponse{Code: -1, Message: "参数错误"})
-				return
-			}*/
-
-		resp, err := handler.Menu(ctx, req)
+		req := &vo.RouterTreeRequest{}
+		err := c.BindHeader(req)
 		if err != nil {
-			c.JSON(http.StatusOK, &BaseResponse{Code: -1, Message: err.Error()})
+			c.JSON(http.StatusOK, &vo.BaseResponse{Code: -1, Message: "参数错误"})
+			return
+		}
+
+		resp, err := handler.RouterTree(ctx, req)
+		if err != nil {
+			c.JSON(http.StatusOK, &vo.BaseResponse{Code: -1, Message: err.Error()})
 			return
 		}
 
