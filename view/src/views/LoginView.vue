@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import LoginComponent from '../core/auth/src/components/LoginComponent.vue'
+import LoginComponent from '@/core/auth/src/components/LoginComponent.vue'
 import { useUserStore } from '@/pinia/modules/user'
 import { useRouterStore } from '@/pinia/modules/router';
 import router from '@/router/index'

@@ -1,5 +1,7 @@
 package vo
 
+import "github.com/moumou/server/biz/model"
+
 var errorResponse = &BaseResponse{
 	Code:    -1,
 	Message: "error",
@@ -89,4 +91,35 @@ type RouterTreeResponseData struct {
 type RouterTreeResponse struct {
 	BaseResponse
 	Data *RouterTreeResponseData `json:"data"`
+}
+
+type GetPageRequest struct {
+	BaseRequest
+	PageID uint `json:"page_id"`
+}
+
+type GetPageResponseData struct {
+	Page *model.Page `json:"page"`
+}
+
+type GetPageResponse struct {
+	BaseResponse
+	Data *GetPageResponseData `json:"data"`
+}
+
+type GetPageDataListRequest struct {
+	BaseRequest
+	PageID      uint `json:"page_id"`
+	CurrentPage int  `json:"current_page"`
+	PageSize    int  `json:"page_size"`
+}
+
+type GetPageDataListResponseData struct {
+	Total int64            `json:"total"`
+	List  []map[string]any `json:"list"`
+}
+
+type GetPageDataListResponse struct {
+	BaseResponse
+	Data *GetPageDataListResponseData `json:"data"`
 }

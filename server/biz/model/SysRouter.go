@@ -1,6 +1,6 @@
 package model
 
-type Router struct {
+type SysRouter struct {
 	BaseModel
 	Name   string
 	Path   string

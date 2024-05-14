@@ -15,8 +15,8 @@ func NewRouterService(db *gorm.DB) *RouterService {
 	}
 }
 
-func (svc *RouterService) GetRouterList() ([]*model.Router, error) {
-	var routerList []*model.Router
+func (svc *RouterService) GetRouterList() ([]*model.SysRouter, error) {
+	var routerList []*model.SysRouter
 	ret := svc.db.Order("sort ASC").Find(&routerList)
 	if ret.Error != nil {
 		return nil, ret.Error

@@ -16,7 +16,7 @@ func NewUserService(db *gorm.DB) *Service {
 	}
 }
 
-func (svc *Service) Login(userName, password string) (token string, userInfo *model.User, err error) {
+func (svc *Service) Login(userName, password string) (token string, userInfo *model.SysUser, err error) {
 	userInfo, err = svc.loginSvc.FindUserByUserNameAndPassword(userName, password)
 	if err != nil {
 		return
@@ -30,6 +30,6 @@ func (svc *Service) Logout(token string) error {
 	return svc.loginSvc.DeleteToken(token)
 }
 
-func (svc *Service) Self(token string) (*model.User, error) {
+func (svc *Service) Self(token string) (*model.SysUser, error) {
 	return svc.loginSvc.FindUserByToken(token)
 }

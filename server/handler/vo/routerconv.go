@@ -2,14 +2,14 @@ package vo
 
 import "github.com/moumou/server/biz/model"
 
-func ConvRouterList2RouterTreeData(routerList []*model.Router) *RouterTreeResponseData {
+func ConvRouterList2RouterTreeData(routerList []*model.SysRouter) *RouterTreeResponseData {
 	data := &RouterTreeResponseData{
 		Routers: convRouterListByPid(routerList, 0),
 	}
 	return data
 }
 
-func convRouterListByPid(routerList []*model.Router, pid int) []*RouterRecord {
+func convRouterListByPid(routerList []*model.SysRouter, pid int) []*RouterRecord {
 	routerRecordList := make([]*RouterRecord, 0, len(routerList))
 	for _, routerModel := range routerList {
 		if int(routerModel.Pid) != pid {
@@ -23,7 +23,7 @@ func convRouterListByPid(routerList []*model.Router, pid int) []*RouterRecord {
 	return routerRecordList
 }
 
-func convRouter(routerModel *model.Router) *RouterRecord {
+func convRouter(routerModel *model.SysRouter) *RouterRecord {
 	return &RouterRecord{
 		Name:   routerModel.Name,
 		Title:  routerModel.Title,

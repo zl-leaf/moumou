@@ -109,5 +109,47 @@ func Register(engine *gin.Engine) error {
 		c.JSON(http.StatusOK, resp)
 	})
 
+	engine.POST("/page", func(c *gin.Context) {
+		ctx := context.TODO()
+		req := &vo.GetPageRequest{}
+		err := c.BindHeader(req)
+		if err != nil {
+			c.JSON(http.StatusOK, &vo.BaseResponse{Code: -1, Message: "参数错误"})
+			return
+		}
+		err = c.BindJSON(req)
+		if err != nil {
+			c.JSON(http.StatusOK, &vo.BaseResponse{Code: -1, Message: "参数错误"})
+			return
+		}
+		resp, err := handler.GetPage(ctx, req)
+		if err != nil {
+			c.JSON(http.StatusOK, &vo.BaseResponse{Code: -1, Message: err.Error()})
+			return
+		}
+		c.JSON(http.StatusOK, resp)
+	})
+
+	engine.POST("/page_data_list", func(c *gin.Context) {
+		ctx := context.TODO()
+		req := &vo.GetPageDataListRequest{}
+		err := c.BindHeader(req)
+		if err != nil {
+			c.JSON(http.StatusOK, &vo.BaseResponse{Code: -1, Message: "参数错误"})
+			return
+		}
+		err = c.BindJSON(req)
+		if err != nil {
+			c.JSON(http.StatusOK, &vo.BaseResponse{Code: -1, Message: "参数错误"})
+			return
+		}
+		resp, err := handler.GetPageDataList(ctx, req)
+		if err != nil {
+			c.JSON(http.StatusOK, &vo.BaseResponse{Code: -1, Message: err.Error()})
+			return
+		}
+		c.JSON(http.StatusOK, resp)
+	})
+
 	return nil
 }

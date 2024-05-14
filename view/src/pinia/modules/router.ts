@@ -34,7 +34,7 @@ export const useRouterStore = defineStore('router', () => {
             const subViewRouter:RouteRecordRaw  = {
                 name: routerRecord.name,
                 path: routerRecord.path,
-                component: () => import('@/components/TableComponent.vue'),
+                component: () => import('@/core/page/src/components/PageComponent.vue'),
                 meta: {
                     title: routerRecord.title,
                     isMenu: routerRecord.is_menu,

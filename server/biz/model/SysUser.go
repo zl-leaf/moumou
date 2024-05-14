@@ -1,6 +1,6 @@
 package model
 
-type User struct {
+type SysUser struct {
 	BaseModel
 	Username string
 	Password string

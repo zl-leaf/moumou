@@ -86,3 +86,30 @@ func (handler *Handler) RouterTree(ctx context.Context, request *vo.RouterTreeRe
 	}
 	return
 }
+
+func (handler *Handler) GetPage(ctx context.Context, request *vo.GetPageRequest) (resp *vo.GetPageResponse, err error) {
+	page, err := handler.svc.PageService.GetPage(request.PageID)
+	if err != nil {
+		return nil, err
+	}
+	resp = &vo.GetPageResponse{
+		Data: &vo.GetPageResponseData{
+			Page: page,
+		},
+	}
+	return
+}
+
+func (handler *Handler) GetPageDataList(ctx context.Context, request *vo.GetPageDataListRequest) (resp *vo.GetPageDataListResponse, err error) {
+	list, total, err := handler.svc.PageService.GetDataList(request.PageID, request.CurrentPage, request.PageSize)
+	if err != nil {
+		return nil, err
+	}
+	resp = &vo.GetPageDataListResponse{
+		Data: &vo.GetPageDataListResponseData{
+			Total: total,
+			List:  list,
+		},
+	}
+	return
+}
