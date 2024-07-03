@@ -1,11 +1,12 @@
 import axios from "axios";
-import {http} from './request'
+import {http} from '../request'
 
 export type RouterRecord = {
     name: string
     path: string
     title: string
     is_menu: boolean
+    component: string
     children: RouterRecord[]
 }
 

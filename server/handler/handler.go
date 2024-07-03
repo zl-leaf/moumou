@@ -8,6 +8,8 @@ import (
 )
 
 type Handler struct {
+	SysUserManageHandler
+	SysRouterManageHandler
 	svc *service.Service
 }
 
@@ -17,7 +19,9 @@ func InitHandler() (*Handler, error) {
 		return nil, err
 	}
 	return &Handler{
-		svc: svc,
+		SysUserManageHandler:   SysUserManageHandler{svc: svc},
+		SysRouterManageHandler: SysRouterManageHandler{svc: svc},
+		svc:                    svc,
 	}, nil
 }
 
@@ -37,7 +41,7 @@ func (handler *Handler) Hello(ctx context.Context, req *vo.HelloRequest) (resp *
 }
 
 func (handler *Handler) Login(ctx context.Context, req *vo.LoginRequest) (resp *vo.LoginResponse, err error) {
-	token, user, err := handler.svc.UserService.Login(req.Username, req.Password)
+	token, user, err := handler.svc.SysUserService.Login(req.Username, req.Password)
 	if err != nil {
 		return nil, err
 	}
@@ -54,7 +58,7 @@ func (handler *Handler) Login(ctx context.Context, req *vo.LoginRequest) (resp *
 }
 
 func (handler *Handler) Logout(ctx context.Context, req *vo.LogoutRequest) (resp *vo.LogoutResponse, err error) {
-	err = handler.svc.UserService.Logout(req.Token)
+	err = handler.svc.SysUserService.Logout(req.Token)
 	if err != nil {
 		return
 	}
@@ -63,7 +67,7 @@ func (handler *Handler) Logout(ctx context.Context, req *vo.LogoutRequest) (resp
 }
 
 func (handler *Handler) Self(ctx context.Context, req *vo.SelfRequest) (resp *vo.SelfResponse, err error) {
-	user, err := handler.svc.UserService.Self(req.Token)
+	user, err := handler.svc.SysUserService.Self(req.Token)
 	if err != nil {
 		return nil, err
 	}

@@ -151,5 +151,89 @@ func Register(engine *gin.Engine) error {
 		c.JSON(http.StatusOK, resp)
 	})
 
+	engine.POST("/sys_user/list", func(c *gin.Context) {
+		ctx := context.TODO()
+		req := &vo.GetSysUserListRequest{}
+		err := c.BindHeader(req)
+		if err != nil {
+			c.JSON(http.StatusOK, &vo.BaseResponse{Code: -1, Message: "参数错误"})
+			return
+		}
+		err = c.BindJSON(req)
+		if err != nil {
+			c.JSON(http.StatusOK, &vo.BaseResponse{Code: -1, Message: "参数错误"})
+			return
+		}
+		resp, err := handler.GetSysUserList(ctx, req)
+		if err != nil {
+			c.JSON(http.StatusOK, &vo.BaseResponse{Code: -1, Message: err.Error()})
+			return
+		}
+		c.JSON(http.StatusOK, resp)
+	})
+
+	engine.POST("/sys_user/info", func(c *gin.Context) {
+		ctx := context.TODO()
+		req := &vo.GetSysUserInfoRequest{}
+		err := c.BindHeader(req)
+		if err != nil {
+			c.JSON(http.StatusOK, &vo.BaseResponse{Code: -1, Message: "参数错误"})
+			return
+		}
+		err = c.BindJSON(req)
+		if err != nil {
+			c.JSON(http.StatusOK, &vo.BaseResponse{Code: -1, Message: "参数错误"})
+			return
+		}
+		resp, err := handler.getSysUserInfo(ctx, req)
+		if err != nil {
+			c.JSON(http.StatusOK, &vo.BaseResponse{Code: -1, Message: err.Error()})
+			return
+		}
+		c.JSON(http.StatusOK, resp)
+	})
+
+	engine.POST("/sys_router/list", func(c *gin.Context) {
+		ctx := context.TODO()
+		req := &vo.GetSysRouterListRequest{}
+		err := c.BindHeader(req)
+		if err != nil {
+			c.JSON(http.StatusOK, &vo.BaseResponse{Code: -1, Message: "参数错误"})
+			return
+		}
+		err = c.BindJSON(req)
+		if err != nil {
+			c.JSON(http.StatusOK, &vo.BaseResponse{Code: -1, Message: "参数错误"})
+			return
+		}
+		resp, err := handler.GetSysRouterList(ctx, req)
+		if err != nil {
+			c.JSON(http.StatusOK, &vo.BaseResponse{Code: -1, Message: err.Error()})
+			return
+		}
+		c.JSON(http.StatusOK, resp)
+	})
+
+	engine.POST("/sys_router/info", func(c *gin.Context) {
+		ctx := context.TODO()
+		req := &vo.GetSysRouterInfoRequest{}
+		err := c.BindHeader(req)
+		if err != nil {
+			c.JSON(http.StatusOK, &vo.BaseResponse{Code: -1, Message: "参数错误"})
+			return
+		}
+		err = c.BindJSON(req)
+		if err != nil {
+			c.JSON(http.StatusOK, &vo.BaseResponse{Code: -1, Message: "参数错误"})
+			return
+		}
+		resp, err := handler.GetSysRouterInfo(ctx, req)
+		if err != nil {
+			c.JSON(http.StatusOK, &vo.BaseResponse{Code: -1, Message: err.Error()})
+			return
+		}
+		c.JSON(http.StatusOK, resp)
+	})
+
 	return nil
 }

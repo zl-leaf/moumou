@@ -24,7 +24,7 @@ export default defineComponent({
     setup(props) {
         const formatRouter2Menu = (item: RouteRecordRaw): ItemType[] => {
             let menus: ItemType[] = []
-            if (item.children) {
+            if (item.children?.length) {
                 item.children.forEach((childItem: RouteRecordRaw) => {
                     formatRouter2Menu(childItem).forEach((element: any) => {
                         if (element) {

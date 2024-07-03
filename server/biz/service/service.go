@@ -2,20 +2,24 @@ package service
 
 import (
 	"github.com/moumou/server/biz/service/page"
-	"github.com/moumou/server/biz/service/user"
+	"github.com/moumou/server/biz/service/sys_router"
+	"github.com/moumou/server/biz/service/sys_user"
 )
 
 type Service struct {
-	UserService *user.Service
-	PageService *page.Service
+	SysUserService   *sys_user.Service
+	SysRouterService *sys_router.Service
+	PageService      *page.Service
 }
 
 func NewService(
-	userService *user.Service,
+	sysUserService *sys_user.Service,
+	sysRouterService *sys_router.Service,
 	pageService *page.Service,
 ) *Service {
 	return &Service{
-		UserService: userService,
-		PageService: pageService,
+		SysUserService:   sysUserService,
+		SysRouterService: sysRouterService,
+		PageService:      pageService,
 	}
 }

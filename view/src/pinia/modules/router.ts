@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia'
-import { routerTreeAPI } from '@/api/router'
+import { routerTreeAPI } from '@/api/permission/router'
 import router from '@/router'
 import { ref } from 'vue'
 import type { RouteRecordRaw } from 'vue-router';
-import type {RouterRecord} from '@/api/router'
-
+import type {RouterRecord} from '@/api/permission/router'
+const viewModules = import.meta.glob('@/views/**/*.vue')
 
 export const useRouterStore = defineStore('router', () => {
 
@@ -15,7 +15,6 @@ export const useRouterStore = defineStore('router', () => {
         menData.value = val
         val.forEach((item:RouterRecord) => {
             if (defaultRouter.value === undefined && item.is_menu && item.children?.length == 0) {
-                console.log('default', item)
                 defaultRouter.value = item
             }
         })
@@ -28,23 +27,31 @@ export const useRouterStore = defineStore('router', () => {
     const hasUpdated = ():boolean => {
         return menData.value?.length > 0
     }
-
+    // 数据转换为vue路由
     const formatRouter = (viewRouter:RouteRecordRaw, routerRecordList:RouterRecord[]) => {
         routerRecordList.forEach((routerRecord: RouterRecord) => {
-            const subViewRouter:RouteRecordRaw  = {
+            let subViewRouter:RouteRecordRaw = {
                 name: routerRecord.name,
                 path: routerRecord.path,
-                component: () => import('@/core/page/src/components/PageComponent.vue'),
                 meta: {
                     title: routerRecord.title,
                     isMenu: routerRecord.is_menu,
                 },
-                children: (routerRecord.children.length > 0) ? []: undefined
+                children: []
+            }
+            
+
+            if (routerRecord.component != '') {
+                subViewRouter.component = dynamicImport(viewModules, routerRecord.component);
+            } else if (routerRecord.children.length == 0) {
+                subViewRouter.component = () => import('@/core/page/src/components/PageComponent.vue')
+                subViewRouter.path += '?page_id=1' // TODO 看下怎么改这个
             }
             formatRouter(subViewRouter, routerRecord.children)
             viewRouter.children?.push(subViewRouter)
         });
     }
+    // 更新路由
     const updateRouter = async () => {
         try {
             const routerTreeResponse = await routerTreeAPI()
@@ -57,18 +64,31 @@ export const useRouterStore = defineStore('router', () => {
                 path: '/',
                 name: 'layout',
                 component: () => import('@/views/AdminLayout.vue'),
-                children: []
+                children: [],
             }
 
-
             formatRouter(baseRouter, routerTreeResponse.data.routers)
+
             router.addRoute(baseRouter)
-
-            console.log('router', router.getRoutes())
-
         } catch (err) {
             return Promise.reject("网络错误")
         }
+    }
+
+    // 动态加载
+    const dynamicImport = (dynamicViewsModules:any, componentName:string) => {
+        const matchKeys = Object.keys(dynamicViewsModules).filter((key:string) => {
+            const viewPaths = key.split('views/')
+            if (!viewPaths.length) {
+                return false
+            }
+            const viewPathLastName = viewPaths[viewPaths.length - 1]
+            if (viewPathLastName === componentName + '.vue') {
+                return true
+            }
+            return false
+        })
+        return dynamicViewsModules[matchKeys[0]]
     }
 
     return {

@@ -24,7 +24,6 @@
 <script setup lang="ts">
 import SiderComponent from '@/components/SiderComponent.vue'
 import BreadcrumbComponent from '@/components/BreadcrumbComponent.vue'
-import TableComponent from '@/components/TableComponent.vue'
 import UserInfoComponent from '@/components/UserInfoComponent.vue'
 
 import { defineComponent, ref } from 'vue';

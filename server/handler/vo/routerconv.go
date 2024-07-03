@@ -25,9 +25,10 @@ func convRouterListByPid(routerList []*model.SysRouter, pid int) []*RouterRecord
 
 func convRouter(routerModel *model.SysRouter) *RouterRecord {
 	return &RouterRecord{
-		Name:   routerModel.Name,
-		Title:  routerModel.Title,
-		Path:   routerModel.Path,
-		IsMenu: routerModel.IsMenu,
+		Name:      routerModel.Name,
+		Title:     routerModel.Title,
+		Path:      routerModel.Path,
+		IsMenu:    routerModel.IsMenu,
+		Component: routerModel.Component,
 	}
 }

@@ -17,6 +17,7 @@ CREATE TABLE `sys_routers` (
     `is_menu` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否菜单',
     `pid` bigint NOT NULL DEFAULT 0 COMMENT '父节点',
     `sort` int NOT NULL DEFAULT 0 COMMENT '排序',
+    `component` varchar(255) NOT NULL DEFAULT '' COMMENT '自定义页面',
     `created_at` int NOT NULL DEFAULT '0' COMMENT '创建时间',
     `updated_at` int NOT NULL DEFAULT '0' COMMENT '更新时间',
     `deleted_at` int NOT NULL DEFAULT '0' COMMENT '删除时间',

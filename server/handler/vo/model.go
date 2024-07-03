@@ -16,6 +16,16 @@ type BaseResponse struct {
 	Message string `json:"message"`
 }
 
+type BaseRequestPage struct {
+	CurrentPage int `json:"current_page"`
+	PageSize    int `json:"page_size"`
+	// TODO order by
+}
+
+type BaseResponsePageData struct {
+	Total int64 `json:"total"`
+}
+
 type PingRequest struct {
 }
 
@@ -77,11 +87,12 @@ type RouterTreeRequest struct {
 }
 
 type RouterRecord struct {
-	Name     string          `json:"name"`
-	Path     string          `json:"path"`
-	Title    string          `json:"title"`
-	IsMenu   bool            `json:"is_menu"`
-	Children []*RouterRecord `json:"children"`
+	Name      string          `json:"name"`
+	Path      string          `json:"path"`
+	Title     string          `json:"title"`
+	IsMenu    bool            `json:"is_menu"`
+	Component string          `json:"component"`
+	Children  []*RouterRecord `json:"children"`
 }
 
 type RouterTreeResponseData struct {

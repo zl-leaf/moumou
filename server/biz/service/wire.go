@@ -6,13 +6,15 @@ package service
 import (
 	"github.com/google/wire"
 	"github.com/moumou/server/biz/service/page"
-	"github.com/moumou/server/biz/service/user"
+	"github.com/moumou/server/biz/service/sys_router"
+	"github.com/moumou/server/biz/service/sys_user"
 	"github.com/moumou/server/framework/database"
 )
 
 var serviceSet = wire.NewSet(
 	NewService,
-	user.NewUserService,
+	sys_user.NewSysUserService,
+	sys_router.NewRouterService,
 	page.NewPageService,
 	database.NewMysqlGorm,
 )
