@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package moumou.server.api;
+
+import "google/api/annotations.proto";
+
+option go_package = "moumou/server/api;api";
+
+service RouterHandler {
+  rpc CreateRouter(CreateRouterRequest) returns (CreateRouterResponse) {
+    option (google.api.http) = {
+      post: "/demo/create",
+      body: "*",
+    };
+  };
+}
+
+message Router {
+  int64 id = 1;
+  string name = 2;
+  string path = 3;
+  string title = 4;
+  bool is_menu = 5;
+  int64 pid = 6;
+  int32 sort = 7;
+  string component = 8;
+  repeated Router children = 9;
+}
+
+message CreateRouterRequestData {
+  string name = 2;
+  string path = 3;
+  string title = 4;
+  bool is_menu = 5;
+  int64 pid = 6;
+  int32 sort = 7;
+  string component = 8;
+}
+
+message CreateRouterRequest {
+    CreateRouterRequestData router = 1;
+}
+
+message CreateRouterResponseData {
+  int64 id = 1;
+}
+
+message CreateRouterResponse {
+  int32 code = 1;
+  string message = 2;
+  optional CreateRouterResponseData data = 3;
+}
