@@ -15,23 +15,23 @@ func (svc *PageService) GetPage(pageID uint) (*model.Page, error) {
 			ID: pageID,
 		},
 		Title: "测试页面",
-		Schema: &model.SysPageSchema{
+		Schema: &model.PageSchema{
 			PageID: pageID,
-			Attributes: []*model.SysPageSchemaAttribute{
+			Attributes: []*model.PageSchemaAttribute{
 				{
-					FieldAttribute: &model.SysPageSchemaFieldAttribute{
+					FieldAttribute: &model.PageSchemaFieldAttribute{
 						Key:   "name",
 						Label: "名称",
 					},
 				},
 				{
-					FieldAttribute: &model.SysPageSchemaFieldAttribute{
+					FieldAttribute: &model.PageSchemaFieldAttribute{
 						Key:   "age",
 						Label: "年龄",
 					},
 				},
 				{
-					FieldAttribute: &model.SysPageSchemaFieldAttribute{
+					FieldAttribute: &model.PageSchemaFieldAttribute{
 						Key:   "address",
 						Label: "地址",
 					},

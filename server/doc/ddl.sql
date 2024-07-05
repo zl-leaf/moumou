@@ -1,4 +1,4 @@
-CREATE TABLE `sys_users` (
+CREATE TABLE `users` (
     `id` bigint unsigned NOT NULL AUTO_INCREMENT,
     `username` varchar(50) NOT NULL DEFAULT '' COMMENT '用户名',
     `password` varchar(200) NOT NULL DEFAULT '' COMMENT '密码',
@@ -9,7 +9,7 @@ CREATE TABLE `sys_users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT '用户';
 
 
-CREATE TABLE `sys_routers` (
+CREATE TABLE `routers` (
     `id` bigint unsigned NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(50) NOT NULL COMMENT '标识名称',
     `title` VARCHAR(10) NOT NULL COMMENT '菜单名',

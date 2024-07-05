@@ -1,21 +1,27 @@
 package mw
 
 import (
-	"github.com/gin-gonic/gin"
-	"net/http"
+	"context"
+	"github.com/go-kratos/kratos/v2/middleware"
+	"github.com/go-kratos/kratos/v2/transport"
 )
 
-func CorsMW() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		c.Header("Access-Control-Allow-Origin", "*")
-		c.Header("Access-Control-Allow-Method", "*")
-		c.Header("Access-Control-Allow-Headers", "*")
-		c.Header("Access-Control-Allow-Credentials", "true")
+func CorsMW() middleware.Middleware {
+	return func(handler middleware.Handler) middleware.Handler {
+		return func(ctx context.Context, req interface{}) (reply interface{}, err error) {
+			if tr, ok := transport.FromServerContext(ctx); ok {
+				// Do something on entering
+				// TODO 如果是options就返回成功
 
-		if c.Request.Method == "OPTIONS" {
-			c.JSON(http.StatusOK, "OK")
-			return
+				defer func() {
+					// Do something on exiting
+					tr.ReplyHeader().Add("Access-Control-Allow-Origin", "*")
+					tr.ReplyHeader().Add("Access-Control-Allow-Method", "*")
+					tr.ReplyHeader().Add("Access-Control-Allow-Headers", "*")
+					tr.ReplyHeader().Add("Access-Control-Allow-Credentials", "true")
+				}()
+			}
+			return handler(ctx, req)
 		}
-		c.Next()
 	}
 }

@@ -9,8 +9,8 @@ package service
 import (
 	"github.com/google/wire"
 	"github.com/moumou/server/biz/service/page"
-	"github.com/moumou/server/biz/service/sys_router"
-	"github.com/moumou/server/biz/service/sys_user"
+	"github.com/moumou/server/biz/service/router"
+	"github.com/moumou/server/biz/service/user"
 	"github.com/moumou/server/framework/database"
 )
 
@@ -21,15 +21,15 @@ func InitService() (*Service, error) {
 	if err != nil {
 		return nil, err
 	}
-	service := sys_user.NewSysUserService(db)
-	sys_routerService := sys_router.NewRouterService(db)
+	service := user.NewUserService(db)
+	routerService := router.NewRouterService(db)
 	pageService := page.NewPageService(db)
-	serviceService := NewService(service, sys_routerService, pageService)
+	serviceService := NewService(service, routerService, pageService)
 	return serviceService, nil
 }
 
 // wire.go:
 
 var serviceSet = wire.NewSet(
-	NewService, sys_user.NewSysUserService, sys_router.NewRouterService, page.NewPageService, database.NewMysqlGorm,
+	NewService, user.NewUserService, router.NewRouterService, page.NewPageService, database.NewMysqlGorm,
 )

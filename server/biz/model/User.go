@@ -1,6 +1,6 @@
 package model
 
-type SysUser struct {
+type User struct {
 	BaseModel
 	Username string `json:"username"`
 	Password string `json:"-"`

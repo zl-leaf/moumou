@@ -16,8 +16,8 @@ func NewLoginService(db *gorm.DB) *LoginService {
 	}
 }
 
-func (svc *LoginService) FindUserByUserNameAndPassword(userName, password string) (*model.SysUser, error) {
-	var user = &model.SysUser{}
+func (svc *LoginService) FindUserByUserNameAndPassword(userName, password string) (*model.User, error) {
+	var user = &model.User{}
 	var result = svc.db.Where("username = ?", userName).Where("password = ?", password).First(&user)
 	if result.Error != nil {
 		return nil, result.Error
@@ -25,14 +25,14 @@ func (svc *LoginService) FindUserByUserNameAndPassword(userName, password string
 	return user, nil
 }
 
-func (svc *LoginService) FindUserByToken(token string) (*model.SysUser, error) {
+func (svc *LoginService) FindUserByToken(token string) (*model.User, error) {
 	// TODO
 	if token != "token" {
 		return nil, errors.New("token异常")
 	}
 
 	var userID = 1
-	var user = &model.SysUser{}
+	var user = &model.User{}
 	var result = svc.db.First(&user, userID)
 	if result.Error != nil {
 		return nil, result.Error
@@ -40,7 +40,7 @@ func (svc *LoginService) FindUserByToken(token string) (*model.SysUser, error) {
 	return user, nil
 }
 
-func (svc *LoginService) CreateToken(userInfo *model.SysUser) string {
+func (svc *LoginService) CreateToken(userInfo *model.User) string {
 	return "token"
 }
 

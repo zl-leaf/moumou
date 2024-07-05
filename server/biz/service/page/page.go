@@ -20,7 +20,7 @@ func NewPageService(db *gorm.DB) *Service {
 	}
 }
 
-func (svc *Service) GetRouterList() ([]*model.SysRouter, error) {
+func (svc *Service) GetRouterList() ([]*model.Router, error) {
 	return svc.routerService.GetRouterList()
 }
 

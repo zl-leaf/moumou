@@ -1,6 +1,6 @@
 package model
 
-type SysRouter struct {
+type Router struct {
 	BaseModel
 	Name      string `json:"name"`
 	Path      string `json:"path"`

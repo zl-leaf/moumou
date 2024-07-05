@@ -1,9 +1,9 @@
-package sys_router
+package router
 
 import (
 	"context"
 	"github.com/moumou/server/biz/model"
-	"github.com/moumou/server/biz/service/sys_router/internal"
+	"github.com/moumou/server/biz/service/router/internal"
 	"gorm.io/gorm"
 )
 
@@ -17,10 +17,10 @@ func NewRouterService(db *gorm.DB) *Service {
 	}
 }
 
-func (svc *Service) GetSysRouterList(ctx context.Context) ([]*model.SysRouter, error) {
+func (svc *Service) GetRouterList(ctx context.Context) ([]*model.Router, error) {
 	return svc.manageSvc.List(ctx)
 }
 
-func (svc *Service) GetSysRouterInfo(ctx context.Context, id int) (*model.SysRouter, error) {
+func (svc *Service) GetRouterInfo(ctx context.Context, id int) (*model.Router, error) {
 	return svc.manageSvc.GetByID(ctx, id)
 }
