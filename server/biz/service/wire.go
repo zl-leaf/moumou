@@ -8,7 +8,7 @@ import (
 	"github.com/moumou/server/biz/service/page"
 	"github.com/moumou/server/biz/service/router"
 	"github.com/moumou/server/biz/service/user"
-	"github.com/moumou/server/framework/database"
+	"github.com/moumou/server/pkgs/database"
 )
 
 var serviceSet = wire.NewSet(

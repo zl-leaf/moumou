@@ -1,6 +1,6 @@
 package config
 
-import "github.com/moumou/server/framework/config/internal"
+import "github.com/moumou/server/pkgs/config/internal"
 
 func Init(configDir string) error {
 	return internal.InitProvider(configDir)

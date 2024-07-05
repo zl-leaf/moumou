@@ -2,7 +2,7 @@ package database
 
 import (
 	"github.com/go-sql-driver/mysql"
-	"github.com/moumou/server/framework/config"
+	"github.com/moumou/server/pkgs/config"
 	"time"
 )
 

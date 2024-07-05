@@ -8,9 +8,9 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/transport/http"
 	"github.com/moumou/server/biz/service"
-	"github.com/moumou/server/framework/config"
 	"github.com/moumou/server/handler"
 	"github.com/moumou/server/handler/mw"
+	"github.com/moumou/server/pkgs/config"
 	api "github.com/moumou/server/proto_gen"
 	"os"
 )

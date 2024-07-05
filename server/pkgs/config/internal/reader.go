@@ -1,7 +1,7 @@
 package internal
 
 import (
-	"github.com/moumou/server/framework/env"
+	"github.com/moumou/server/pkgs/env"
 	"go.uber.org/config"
 	"sync"
 )
