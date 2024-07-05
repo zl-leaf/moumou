@@ -9,23 +9,26 @@ option go_package = "moumou/server/api;api";
 service RouterHandler {
   rpc CreateRouter(CreateRouterRequest) returns (CreateRouterResponse) {
     option (google.api.http) = {
-      post: "/demo/create",
+      post: "/router/create",
+      body: "*",
+    };
+  };
+
+  rpc GetRouterList(GetRouterListRequest) returns (GetRouterListResponse) {
+    option (google.api.http) = {
+      post: "/router/list",
+      body: "*",
+    };
+  };
+
+  rpc GetRouterInfo(GetRouterInfoRequest) returns (GetRouterInfoResponse) {
+    option (google.api.http) = {
+      post: "/router/info",
       body: "*",
     };
   };
 }
 
-message Router {
-  int64 id = 1;
-  string name = 2;
-  string path = 3;
-  string title = 4;
-  bool is_menu = 5;
-  int64 pid = 6;
-  int32 sort = 7;
-  string component = 8;
-  repeated Router children = 9;
-}
 
 message CreateRouterRequestData {
   string name = 2;
@@ -49,4 +52,39 @@ message CreateRouterResponse {
   int32 code = 1;
   string message = 2;
   optional CreateRouterResponseData data = 3;
+}
+
+message Router {
+  int64 id = 1;
+  string name = 2;
+  string path = 3;
+  string title = 4;
+  bool is_menu = 5 [json_name="is_menu"];
+  int64 pid = 6;
+  int32 sort = 7;
+  string component = 8;
+  repeated Router children = 9;
+}
+
+message GetRouterListRequest {
+}
+
+message GetRouterListResponseData {
+  repeated Router list = 1;
+}
+
+message GetRouterListResponse {
+  int32 code = 1;
+  string message = 2;
+  optional GetRouterListResponseData data = 3;
+}
+
+message GetRouterInfoRequest {
+  int64 id = 1;
+}
+
+message GetRouterInfoResponse {
+  int32 code = 1;
+  string message = 2;
+  optional Router data = 3;
 }

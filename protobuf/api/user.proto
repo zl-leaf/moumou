@@ -1,1 +1,58 @@
-package api
+syntax = "proto3";
+
+package moumou.server.api;
+
+import "google/api/annotations.proto";
+
+option go_package = "moumou/server/api;api";
+
+service UserHandler {
+  rpc GetUserList(GetUserListRequest) returns (GetUserListResponse) {
+    option (google.api.http) = {
+      post: "/user/list",
+      body: "*"
+    };
+  };
+  rpc GetUserInfo(GetUserInfoRequest) returns (GetUserInfoResponse) {
+    option (google.api.http) = {
+      post: "/user/info",
+      body: "*"
+    };
+  };
+}
+
+message User {
+  int64 id = 1;
+  string username = 2;
+}
+
+message GetUserListRequestFilter {
+
+}
+
+message GetUserListRequest {
+  int32 current_page = 1;
+  int32 page_size = 2;
+  optional GetUserListRequestFilter filter = 3;
+}
+
+message GetUserListResponseData {
+  int64 total = 1;
+  repeated User list = 2;
+}
+
+message GetUserListResponse {
+  int32 code = 1;
+  string message = 2;
+  optional GetUserListResponseData data = 3;
+}
+
+message GetUserInfoRequest {
+  int64 id = 1;
+}
+
+message GetUserInfoResponse {
+  int32 code = 1;
+  string message = 2;
+  optional User data = 3;
+}

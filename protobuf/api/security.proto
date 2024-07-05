@@ -1,0 +1,108 @@
+syntax = "proto3";
+
+package moumou.server.api;
+
+import "google/api/annotations.proto";
+import "router.proto";
+import "user.proto";
+
+option go_package = "moumou/server/api;api";
+
+service SecurityHandler {
+  rpc GetPublicKey(GetPublicKeyRequest) returns (GetPublicKeyResponse) {
+    option (google.api.http) = {
+      post: "/security/hello",
+      body: "*",
+    };
+  };
+
+  rpc Login(LoginRequest) returns (LoginResponse) {
+    option (google.api.http) = {
+      post: "/security/login",
+      body: "*",
+    };
+  };
+
+  rpc Logout(LogoutRequest) returns (LogoutResponse) {
+    option (google.api.http) = {
+      post: "/security/logout",
+      body: "*",
+    };
+  };
+
+  rpc Self(SelfRequest) returns (SelfResponse) {
+    option (google.api.http) = {
+      post: "/security/self",
+      body: "*",
+    };
+  };
+
+  rpc GetSecurityRouterTree(GetSecurityRouterTreeRequest) returns (GetSecurityRouterTreeResponse) {
+    option (google.api.http) = {
+      post: "/security/router_tree",
+      body: "*",
+    };
+  };
+}
+
+message GetPublicKeyRequest {
+}
+
+message GetPublicKeyResponseData {
+  string key = 1;
+  string iv = 2;
+}
+
+message GetPublicKeyResponse {
+  int32 code = 1;
+  string message = 2;
+  optional GetPublicKeyResponseData data = 3;
+}
+
+message LoginRequest {
+  string username = 1;
+  string password = 2;
+}
+
+message LoginResponseData {
+  string token = 1;
+  User user = 2;
+}
+
+message LoginResponse {
+  int32 code = 1;
+  string message = 2;
+  optional LoginResponseData data = 3;
+}
+
+message LogoutRequest {
+}
+
+message LogoutResponse {
+  int32 code = 1;
+  string message = 2;
+}
+
+message SelfRequest {
+
+}
+
+message SelfResponse {
+  int32 code = 1;
+  string message = 2;
+  optional User data = 3;
+}
+
+
+message GetSecurityRouterTreeRequest {
+}
+
+message GetSecurityRouterTreeResponseData {
+  repeated Router routers = 1;
+}
+
+message GetSecurityRouterTreeResponse {
+  int32 code = 1;
+  string message = 2;
+  optional GetSecurityRouterTreeResponseData data = 3;
+}
