@@ -47,11 +47,11 @@ func newApp(logger log.Logger, hs *http.Server) *kratos.App {
 
 func NewHTTPServer(cnf serverConfig) *http.Server {
 	var opts = []http.ServerOption{
+		http.Filter(mw.CorsFilter),
 		http.Middleware(
 			recovery.Recovery(),
 			tracing.Server(),
 			//logging.Server(),
-			mw.CorsMW(),
 		),
 	}
 	if cnf.Host != "" || cnf.Port != "" {

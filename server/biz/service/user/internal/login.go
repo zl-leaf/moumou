@@ -19,6 +19,7 @@ func NewLoginService(db *gorm.DB) *LoginService {
 func (svc *LoginService) FindUserByUserNameAndPassword(userName, password string) (*model.User, error) {
 	var user = &model.User{}
 	var result = svc.db.Where("username = ?", userName).Where("password = ?", password).First(&user)
+	// TODO record not found
 	if result.Error != nil {
 		return nil, result.Error
 	}

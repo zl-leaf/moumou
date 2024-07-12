@@ -1,0 +1,434 @@
+# Generated with protoc-gen-openapi
+# https://github.com/google/gnostic/tree/master/cmd/protoc-gen-openapi
+
+openapi: 3.0.3
+info:
+    title: ""
+    version: 0.0.1
+paths:
+    /router/create:
+        post:
+            tags:
+                - RouterHandler
+            operationId: RouterHandler_CreateRouter
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/moumou.server.api.CreateRouterRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/moumou.server.api.CreateRouterResponse'
+    /router/info:
+        post:
+            tags:
+                - RouterHandler
+            operationId: RouterHandler_GetRouterInfo
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/moumou.server.api.GetRouterInfoRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/moumou.server.api.GetRouterInfoResponse'
+    /router/list:
+        post:
+            tags:
+                - RouterHandler
+            operationId: RouterHandler_GetRouterList
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/moumou.server.api.GetRouterListRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/moumou.server.api.GetRouterListResponse'
+    /security/hello:
+        post:
+            tags:
+                - SecurityHandler
+            operationId: SecurityHandler_GetPublicKey
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/moumou.server.api.GetPublicKeyRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/moumou.server.api.GetPublicKeyResponse'
+    /security/login:
+        post:
+            tags:
+                - SecurityHandler
+            operationId: SecurityHandler_Login
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/moumou.server.api.LoginRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/moumou.server.api.LoginResponse'
+    /security/logout:
+        post:
+            tags:
+                - SecurityHandler
+            operationId: SecurityHandler_Logout
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/moumou.server.api.LogoutRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/moumou.server.api.LogoutResponse'
+    /security/router_tree:
+        post:
+            tags:
+                - SecurityHandler
+            operationId: SecurityHandler_GetSecurityRouterTree
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/moumou.server.api.GetSecurityRouterTreeRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/moumou.server.api.GetSecurityRouterTreeResponse'
+    /security/self:
+        post:
+            tags:
+                - SecurityHandler
+            operationId: SecurityHandler_Self
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/moumou.server.api.SelfRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/moumou.server.api.SelfResponse'
+    /user/info:
+        post:
+            tags:
+                - UserHandler
+            operationId: UserHandler_GetUserInfo
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/moumou.server.api.GetUserInfoRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/moumou.server.api.GetUserInfoResponse'
+    /user/list:
+        post:
+            tags:
+                - UserHandler
+            operationId: UserHandler_GetUserList
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/moumou.server.api.GetUserListRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/moumou.server.api.GetUserListResponse'
+components:
+    schemas:
+        moumou.server.api.CreateRouterRequest:
+            type: object
+            properties:
+                router:
+                    $ref: '#/components/schemas/moumou.server.api.CreateRouterRequestData'
+        moumou.server.api.CreateRouterRequestData:
+            type: object
+            properties:
+                name:
+                    type: string
+                path:
+                    type: string
+                title:
+                    type: string
+                isMenu:
+                    type: boolean
+                pid:
+                    type: string
+                sort:
+                    type: integer
+                    format: int32
+                component:
+                    type: string
+        moumou.server.api.CreateRouterResponse:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                message:
+                    type: string
+                data:
+                    $ref: '#/components/schemas/moumou.server.api.CreateRouterResponseData'
+        moumou.server.api.CreateRouterResponseData:
+            type: object
+            properties:
+                id:
+                    type: string
+        moumou.server.api.GetPublicKeyRequest:
+            type: object
+            properties: {}
+        moumou.server.api.GetPublicKeyResponse:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                message:
+                    type: string
+                data:
+                    $ref: '#/components/schemas/moumou.server.api.GetPublicKeyResponseData'
+        moumou.server.api.GetPublicKeyResponseData:
+            type: object
+            properties:
+                key:
+                    type: string
+                iv:
+                    type: string
+        moumou.server.api.GetRouterInfoRequest:
+            type: object
+            properties:
+                id:
+                    type: string
+        moumou.server.api.GetRouterInfoResponse:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                message:
+                    type: string
+                data:
+                    $ref: '#/components/schemas/moumou.server.api.Router'
+        moumou.server.api.GetRouterListRequest:
+            type: object
+            properties: {}
+        moumou.server.api.GetRouterListResponse:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                message:
+                    type: string
+                data:
+                    $ref: '#/components/schemas/moumou.server.api.GetRouterListResponseData'
+        moumou.server.api.GetRouterListResponseData:
+            type: object
+            properties:
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/moumou.server.api.Router'
+        moumou.server.api.GetSecurityRouterTreeRequest:
+            type: object
+            properties: {}
+        moumou.server.api.GetSecurityRouterTreeResponse:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                message:
+                    type: string
+                data:
+                    $ref: '#/components/schemas/moumou.server.api.GetSecurityRouterTreeResponseData'
+        moumou.server.api.GetSecurityRouterTreeResponseData:
+            type: object
+            properties:
+                routers:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/moumou.server.api.Router'
+        moumou.server.api.GetUserInfoRequest:
+            type: object
+            properties:
+                id:
+                    type: string
+        moumou.server.api.GetUserInfoResponse:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                message:
+                    type: string
+                data:
+                    $ref: '#/components/schemas/moumou.server.api.User'
+        moumou.server.api.GetUserListRequest:
+            type: object
+            properties:
+                currentPage:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+                filter:
+                    $ref: '#/components/schemas/moumou.server.api.GetUserListRequestFilter'
+        moumou.server.api.GetUserListRequestFilter:
+            type: object
+            properties: {}
+        moumou.server.api.GetUserListResponse:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                message:
+                    type: string
+                data:
+                    $ref: '#/components/schemas/moumou.server.api.GetUserListResponseData'
+        moumou.server.api.GetUserListResponseData:
+            type: object
+            properties:
+                total:
+                    type: string
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/moumou.server.api.User'
+        moumou.server.api.LoginRequest:
+            type: object
+            properties:
+                username:
+                    type: string
+                password:
+                    type: string
+        moumou.server.api.LoginResponse:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                message:
+                    type: string
+                data:
+                    $ref: '#/components/schemas/moumou.server.api.LoginResponseData'
+        moumou.server.api.LoginResponseData:
+            type: object
+            properties:
+                token:
+                    type: string
+                user:
+                    $ref: '#/components/schemas/moumou.server.api.User'
+        moumou.server.api.LogoutRequest:
+            type: object
+            properties: {}
+        moumou.server.api.LogoutResponse:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                message:
+                    type: string
+        moumou.server.api.Router:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                path:
+                    type: string
+                title:
+                    type: string
+                is_menu:
+                    type: boolean
+                pid:
+                    type: string
+                sort:
+                    type: integer
+                    format: int32
+                component:
+                    type: string
+                children:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/moumou.server.api.Router'
+        moumou.server.api.SelfRequest:
+            type: object
+            properties: {}
+        moumou.server.api.SelfResponse:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                message:
+                    type: string
+                data:
+                    $ref: '#/components/schemas/moumou.server.api.User'
+        moumou.server.api.User:
+            type: object
+            properties:
+                id:
+                    type: string
+                username:
+                    type: string
+tags:
+    - name: RouterHandler
+    - name: SecurityHandler
+    - name: UserHandler

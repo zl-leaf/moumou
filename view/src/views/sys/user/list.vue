@@ -15,7 +15,7 @@
 <script lang="ts">
 import { defineComponent, computed, ref } from 'vue';
 import type { TableColumnType } from 'ant-design-vue';
-import { getSysUserListAPI,type UserModel } from '@/api/manage/user';
+import * as api from '@/api'
 
 export default defineComponent({
     data() {
@@ -30,7 +30,7 @@ export default defineComponent({
                     key: 'action',
                 }
             ],
-            data: Array<UserModel>(),
+            data: Array<api.moumou_server_api_User>(),
             pagination: {
                 total: 0,
                 current: 1,
@@ -47,14 +47,18 @@ export default defineComponent({
             this.pagination.pageSize = pag.pageSize
             console.log('change', pag, filters, sorter)
 
-            getSysUserListAPI({}, pag.current, pag.pageSize).then((response) => {
-                if (response.code != '0') {
+            api.UserHandlerService.userHandlerGetUserList({
+                currentPage: pag.current,
+                pageSize: pag.pageSize,
+                filter: {},
+            }).then((response) => {
+                if (response.code != 0) {
                     return Promise.reject(response.message)
                 }
                 return response.data
             }).then((data) => {
-                this.pagination.total = data.total
-                this.data = data.list
+                this.pagination.total = Number(data?.total ?? 0)
+                this.data = data?.list ?? []
             }).catch(err => {
                 console.log('err:', err)
             })

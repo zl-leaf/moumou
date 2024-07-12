@@ -21,7 +21,7 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { getSysRouterListAPI, type RouterModel, } from '@/api/manage/router';
+import * as api from '@/api'
 
 export default defineComponent({
     data() {
@@ -33,7 +33,7 @@ export default defineComponent({
                 {title: '路径', dataIndex: 'path', key: 'path'},
                 {title: 'Action', key: 'action'}
             ],
-            data: Array<RouterModel>(),
+            data: Array<api.moumou_server_api_Router>(),
         };
     },
     created() {
@@ -41,13 +41,13 @@ export default defineComponent({
     },
     methods: {
         handleTableChange: function () {
-            getSysRouterListAPI().then(response => {
-                if (response.code != '0') {
+            api.RouterHandlerService.routerHandlerGetRouterList({}).then(response => {
+                if (response.code != 0) {
                     return Promise.reject(response.message)
                 }
                 return response.data
             }).then(data => {
-                this.data = data.list
+                this.data = data?.list ?? []
             }).catch(err => {
                 console.log('err:', err)
             })

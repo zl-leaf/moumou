@@ -1,9 +1,8 @@
 import { defineStore } from 'pinia'
-import { routerTreeAPI } from '@/api/permission/router'
+import * as api from '@/api'
 import router from '@/router'
 import { ref } from 'vue'
 import type { RouteRecordRaw } from 'vue-router';
-import type {RouterRecord} from '@/api/permission/router'
 const viewModules = import.meta.glob('@/views/**/*.vue')
 
 export const useRouterStore = defineStore('router', () => {
@@ -11,9 +10,9 @@ export const useRouterStore = defineStore('router', () => {
     const menData = ref()
     const defaultRouter = ref()
 
-    const setRouterData = (val:RouterRecord[]) => {
+    const setRouterData = (val:api.moumou_server_api_Router[]) => {
         menData.value = val
-        val.forEach((item:RouterRecord) => {
+        val.forEach((item:api.moumou_server_api_Router) => {
             if (defaultRouter.value === undefined && item.is_menu && item.children?.length == 0) {
                 defaultRouter.value = item
             }
@@ -28,11 +27,11 @@ export const useRouterStore = defineStore('router', () => {
         return menData.value?.length > 0
     }
     // 数据转换为vue路由
-    const formatRouter = (viewRouter:RouteRecordRaw, routerRecordList:RouterRecord[]) => {
-        routerRecordList.forEach((routerRecord: RouterRecord) => {
+    const formatRouter = (viewRouter:RouteRecordRaw, routerRecordList:api.moumou_server_api_Router[]) => {
+        routerRecordList.forEach((routerRecord: api.moumou_server_api_Router) => {
             let subViewRouter:RouteRecordRaw = {
                 name: routerRecord.name,
-                path: routerRecord.path,
+                path: routerRecord.path ?? '',
                 meta: {
                     title: routerRecord.title,
                     isMenu: routerRecord.is_menu,
@@ -41,24 +40,23 @@ export const useRouterStore = defineStore('router', () => {
             }
             
 
-            if (routerRecord.component != '') {
+            if (routerRecord.component) {
                 subViewRouter.component = dynamicImport(viewModules, routerRecord.component);
-            } else if (routerRecord.children.length == 0) {
-                subViewRouter.component = () => import('@/core/page/src/components/PageComponent.vue')
+            } else if (routerRecord.children?.length == 0) {
+                subViewRouter.component = () => import('@/components/PageComponent.vue')
                 subViewRouter.path += '?page_id=1' // TODO 看下怎么改这个
             }
-            formatRouter(subViewRouter, routerRecord.children)
+            formatRouter(subViewRouter, routerRecord.children ?? [])
             viewRouter.children?.push(subViewRouter)
         });
     }
     // 更新路由
     const updateRouter = async () => {
         try {
-            const routerTreeResponse = await routerTreeAPI()
-            if (routerTreeResponse.code != '0') {
+            const routerTreeResponse = await api.SecurityHandlerService.securityHandlerGetSecurityRouterTree({})
+            if (routerTreeResponse.code != 0) {
                 return Promise.reject(routerTreeResponse.message);
             }
-            setRouterData(routerTreeResponse.data.routers)
 
             const baseRouter = {
                 path: '/',
@@ -67,7 +65,10 @@ export const useRouterStore = defineStore('router', () => {
                 children: [],
             }
 
-            formatRouter(baseRouter, routerTreeResponse.data.routers)
+            if (routerTreeResponse.data?.routers) {
+                setRouterData(routerTreeResponse.data.routers)
+                formatRouter(baseRouter, routerTreeResponse.data.routers)
+            }
 
             router.addRoute(baseRouter)
         } catch (err) {

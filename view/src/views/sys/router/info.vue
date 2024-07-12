@@ -35,39 +35,39 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import { type RouterModel, getSysRouterInfoAPI, getSysRouterListAPI } from '@/api/manage/router';
-
+import * as api from '@/api'
 
 export default defineComponent({
     data() {
         return {
-            formState: ref<RouterModel>({} as RouterModel),
-            routerTreeData: ref<RouterModel[]>()
+            formState: ref<api.moumou_server_api_Router>({}),
+            routerTreeData: ref<api.moumou_server_api_Router[]>()
         }
     },
     created() {
         // 加载数节点数据
-        getSysRouterListAPI().then((response) => {
-            if (response.code != '0') {
+        api.RouterHandlerService.routerHandlerGetRouterList({}).then((response) => {
+            if (response.code != 0) {
                 return Promise.reject(response.message)
             }
             return response.data
         }).then((data) => {
-            this.routerTreeData = data.list
+            this.routerTreeData = data?.list
         }).catch(err => {
             console.log('err:', err)
         })
         
 
         // 加载详情数据
-        const id  = Number(this.$route.query.id)
-        getSysRouterInfoAPI(id).then((response) => {
-            if (response.code != '0') {
+        api.RouterHandlerService.routerHandlerGetRouterInfo({
+            id: String(this.$route.query.id),
+        }).then((response) => {
+            if (response.code != 0) {
                 return Promise.reject(response.message)
             }
             return response.data
-        }).then((data:RouterModel) => {
-             this.formState = data
+        }).then((data) => {
+            this.formState = data ?? {}
         }).catch(err => {
             console.log('err:', err)
         })

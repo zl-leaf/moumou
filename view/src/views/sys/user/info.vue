@@ -12,23 +12,24 @@
 
 <script lang="ts">
 import { defineComponent,ref } from 'vue';
-import { type UserModel, getSysUserInfoAPI } from '@/api/manage/user';
+import * as api from '@/api'
 
 export default defineComponent({
     data() {
         return {
-            formState: ref<UserModel>({} as UserModel),
+            formState: ref<api.moumou_server_api_User>({}),
         }
     },
     created() {
-        const id  = Number(this.$route.query.id)
-        getSysUserInfoAPI(id).then((response) => {
-            if (response.code != '0') {
+        api.UserHandlerService.userHandlerGetUserInfo({
+            id: String(this.$route.query.id)
+        }).then((response) => {
+            if (response.code != 0) {
                 return Promise.reject(response.message)
             }
             return response.data
         }).then((data) => {
-             this.formState = data
+             this.formState = data ?? {}
         }).catch(err => {
             console.log('err:', err)
         })

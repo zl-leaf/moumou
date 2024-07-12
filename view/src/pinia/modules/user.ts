@@ -1,6 +1,6 @@
 import {defineStore} from 'pinia'
 import {ref, watch} from 'vue'
-import {helloAPI, loginAPI, logoutAPI, selfAPI} from '@/core/auth/src/api/user'
+import * as api from '@/api'
 import crypto from 'crypto-js';
 import cookie from 'js-cookie'
 import { useRouterStore } from './router';
@@ -30,8 +30,8 @@ export const useUserStore = defineStore('user', () => {
 
     const Logout = async() => {
         try {
-            const logoutResponse = await logoutAPI(GetToken().value)
-            if (logoutResponse.code != '0') {
+            const logoutResponse = await api.SecurityHandlerService.securityHandlerLogout({})
+            if (logoutResponse.code != 0) {
                 return Promise.reject(logoutResponse.message);
             }
 
@@ -53,12 +53,12 @@ export const useUserStore = defineStore('user', () => {
 
     const Self = async() => {
         try {
-            const selfResponse = await selfAPI(GetToken().value)
-            if (selfResponse.code != '0') {
+            const selfResponse = await api.SecurityHandlerService.securityHandlerSelf({})
+            if (selfResponse.code != 0) {
                 return Promise.reject(selfResponse.message)
             }
             SetUserInfo({
-                userID: selfResponse.data.user_id
+                userID: selfResponse.data?.id
             })
         } catch (err) {
             return Promise.reject('网络错误')

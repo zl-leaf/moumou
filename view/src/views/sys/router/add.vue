@@ -35,25 +35,24 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import { type RouterModel, getSysRouterListAPI } from '@/api/manage/router';
-
+import * as api from '@/api'
 
 export default defineComponent({
     data() {
         return {
-            formState: ref<RouterModel>({} as RouterModel),
-            routerTreeData: ref<RouterModel[]>()
+            formState: ref<api.moumou_server_api_Router>({}),
+            routerTreeData: ref<api.moumou_server_api_Router[]>()
         }
     },
     created() {
         // 加载数节点数据
-        getSysRouterListAPI().then((response) => {
-            if (response.code != '0') {
+        api.RouterHandlerService.routerHandlerGetRouterList({}).then((response) => {
+            if (response.code != 0) {
                 return Promise.reject(response.message)
             }
             return response.data
         }).then((data) => {
-            this.routerTreeData = data.list
+            this.routerTreeData = data?.list
         }).catch(err => {
             console.log('err:', err)
         })
