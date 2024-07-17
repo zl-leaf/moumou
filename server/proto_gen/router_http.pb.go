@@ -19,11 +19,11 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationRouterHandlerCreateRouter = "/moumou.server.api.RouterHandler/CreateRouter"
-const OperationRouterHandlerDeleteRouter = "/moumou.server.api.RouterHandler/DeleteRouter"
-const OperationRouterHandlerGetRouterInfo = "/moumou.server.api.RouterHandler/GetRouterInfo"
-const OperationRouterHandlerGetRouterList = "/moumou.server.api.RouterHandler/GetRouterList"
-const OperationRouterHandlerUpdateRouter = "/moumou.server.api.RouterHandler/UpdateRouter"
+const OperationRouterHandlerCreateRouter = "/server.api.RouterHandler/CreateRouter"
+const OperationRouterHandlerDeleteRouter = "/server.api.RouterHandler/DeleteRouter"
+const OperationRouterHandlerGetRouterInfo = "/server.api.RouterHandler/GetRouterInfo"
+const OperationRouterHandlerGetRouterList = "/server.api.RouterHandler/GetRouterList"
+const OperationRouterHandlerUpdateRouter = "/server.api.RouterHandler/UpdateRouter"
 
 type RouterHandlerHTTPServer interface {
 	CreateRouter(context.Context, *CreateRouterRequest) (*CreateRouterResponse, error)

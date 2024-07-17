@@ -1,12 +1,12 @@
 syntax = "proto3";
 
-package moumou.server.api;
+package server.api;
 
 import "google/api/annotations.proto";
 import "router.proto";
 import "user.proto";
 
-option go_package = "moumou/server/api;api";
+option go_package = "server/api;api";
 
 service SecurityHandler {
   rpc GetPublicKey(GetPublicKeyRequest) returns (GetPublicKeyResponse) {

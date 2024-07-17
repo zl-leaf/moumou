@@ -81,7 +81,7 @@ export default defineComponent({
     methods: {
         onSubmit: function() {
             this.loading = true;
-            let reqData: api.moumou_server_api_UpdateRouterRequestData = {
+            let reqData: api.server_api_UpdateRouterRequestData = {
                 id: this.routerId,
                 name: this.formState.name,
                 path: this.formState.path,

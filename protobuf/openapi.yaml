@@ -15,7 +15,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/moumou.server.api.CreateRouterRequest'
+                            $ref: '#/components/schemas/server.api.CreateRouterRequest'
                 required: true
             responses:
                 "200":
@@ -23,7 +23,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/moumou.server.api.CreateRouterResponse'
+                                $ref: '#/components/schemas/server.api.CreateRouterResponse'
     /router/delete:
         post:
             tags:
@@ -33,7 +33,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/moumou.server.api.DeleteRouterRequest'
+                            $ref: '#/components/schemas/server.api.DeleteRouterRequest'
                 required: true
             responses:
                 "200":
@@ -41,7 +41,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/moumou.server.api.DeleteRouterResponse'
+                                $ref: '#/components/schemas/server.api.DeleteRouterResponse'
     /router/info:
         post:
             tags:
@@ -51,7 +51,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/moumou.server.api.GetRouterInfoRequest'
+                            $ref: '#/components/schemas/server.api.GetRouterInfoRequest'
                 required: true
             responses:
                 "200":
@@ -59,7 +59,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/moumou.server.api.GetRouterInfoResponse'
+                                $ref: '#/components/schemas/server.api.GetRouterInfoResponse'
     /router/list:
         post:
             tags:
@@ -69,7 +69,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/moumou.server.api.GetRouterListRequest'
+                            $ref: '#/components/schemas/server.api.GetRouterListRequest'
                 required: true
             responses:
                 "200":
@@ -77,7 +77,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/moumou.server.api.GetRouterListResponse'
+                                $ref: '#/components/schemas/server.api.GetRouterListResponse'
     /router/update:
         post:
             tags:
@@ -87,7 +87,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/moumou.server.api.UpdateRouterRequest'
+                            $ref: '#/components/schemas/server.api.UpdateRouterRequest'
                 required: true
             responses:
                 "200":
@@ -95,7 +95,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/moumou.server.api.UpdateRouterResponse'
+                                $ref: '#/components/schemas/server.api.UpdateRouterResponse'
     /security/hello:
         post:
             tags:
@@ -105,7 +105,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/moumou.server.api.GetPublicKeyRequest'
+                            $ref: '#/components/schemas/server.api.GetPublicKeyRequest'
                 required: true
             responses:
                 "200":
@@ -113,7 +113,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/moumou.server.api.GetPublicKeyResponse'
+                                $ref: '#/components/schemas/server.api.GetPublicKeyResponse'
     /security/login:
         post:
             tags:
@@ -123,7 +123,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/moumou.server.api.LoginRequest'
+                            $ref: '#/components/schemas/server.api.LoginRequest'
                 required: true
             responses:
                 "200":
@@ -131,7 +131,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/moumou.server.api.LoginResponse'
+                                $ref: '#/components/schemas/server.api.LoginResponse'
     /security/logout:
         post:
             tags:
@@ -141,7 +141,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/moumou.server.api.LogoutRequest'
+                            $ref: '#/components/schemas/server.api.LogoutRequest'
                 required: true
             responses:
                 "200":
@@ -149,7 +149,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/moumou.server.api.LogoutResponse'
+                                $ref: '#/components/schemas/server.api.LogoutResponse'
     /security/router_tree:
         post:
             tags:
@@ -159,7 +159,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/moumou.server.api.GetSecurityRouterTreeRequest'
+                            $ref: '#/components/schemas/server.api.GetSecurityRouterTreeRequest'
                 required: true
             responses:
                 "200":
@@ -167,7 +167,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/moumou.server.api.GetSecurityRouterTreeResponse'
+                                $ref: '#/components/schemas/server.api.GetSecurityRouterTreeResponse'
     /security/self:
         post:
             tags:
@@ -177,7 +177,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/moumou.server.api.SelfRequest'
+                            $ref: '#/components/schemas/server.api.SelfRequest'
                 required: true
             responses:
                 "200":
@@ -185,7 +185,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/moumou.server.api.SelfResponse'
+                                $ref: '#/components/schemas/server.api.SelfResponse'
     /user/info:
         post:
             tags:
@@ -195,7 +195,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/moumou.server.api.GetUserInfoRequest'
+                            $ref: '#/components/schemas/server.api.GetUserInfoRequest'
                 required: true
             responses:
                 "200":
@@ -203,7 +203,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/moumou.server.api.GetUserInfoResponse'
+                                $ref: '#/components/schemas/server.api.GetUserInfoResponse'
     /user/list:
         post:
             tags:
@@ -213,7 +213,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/moumou.server.api.GetUserListRequest'
+                            $ref: '#/components/schemas/server.api.GetUserListRequest'
                 required: true
             responses:
                 "200":
@@ -221,15 +221,15 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/moumou.server.api.GetUserListResponse'
+                                $ref: '#/components/schemas/server.api.GetUserListResponse'
 components:
     schemas:
-        moumou.server.api.CreateRouterRequest:
+        server.api.CreateRouterRequest:
             type: object
             properties:
                 router:
-                    $ref: '#/components/schemas/moumou.server.api.CreateRouterRequestData'
-        moumou.server.api.CreateRouterRequestData:
+                    $ref: '#/components/schemas/server.api.CreateRouterRequestData'
+        server.api.CreateRouterRequestData:
             type: object
             properties:
                 name:
@@ -247,7 +247,7 @@ components:
                     format: int32
                 component:
                     type: string
-        moumou.server.api.CreateRouterResponse:
+        server.api.CreateRouterResponse:
             type: object
             properties:
                 code:
@@ -256,20 +256,20 @@ components:
                 message:
                     type: string
                 data:
-                    $ref: '#/components/schemas/moumou.server.api.CreateRouterResponseData'
-        moumou.server.api.CreateRouterResponseData:
+                    $ref: '#/components/schemas/server.api.CreateRouterResponseData'
+        server.api.CreateRouterResponseData:
             type: object
             properties:
                 id:
                     type: string
-        moumou.server.api.DeleteRouterRequest:
+        server.api.DeleteRouterRequest:
             type: object
             properties:
                 ids:
                     type: array
                     items:
                         type: string
-        moumou.server.api.DeleteRouterResponse:
+        server.api.DeleteRouterResponse:
             type: object
             properties:
                 code:
@@ -277,10 +277,10 @@ components:
                     format: int32
                 message:
                     type: string
-        moumou.server.api.GetPublicKeyRequest:
+        server.api.GetPublicKeyRequest:
             type: object
             properties: {}
-        moumou.server.api.GetPublicKeyResponse:
+        server.api.GetPublicKeyResponse:
             type: object
             properties:
                 code:
@@ -289,20 +289,20 @@ components:
                 message:
                     type: string
                 data:
-                    $ref: '#/components/schemas/moumou.server.api.GetPublicKeyResponseData'
-        moumou.server.api.GetPublicKeyResponseData:
+                    $ref: '#/components/schemas/server.api.GetPublicKeyResponseData'
+        server.api.GetPublicKeyResponseData:
             type: object
             properties:
                 key:
                     type: string
                 iv:
                     type: string
-        moumou.server.api.GetRouterInfoRequest:
+        server.api.GetRouterInfoRequest:
             type: object
             properties:
                 id:
                     type: string
-        moumou.server.api.GetRouterInfoResponse:
+        server.api.GetRouterInfoResponse:
             type: object
             properties:
                 code:
@@ -311,11 +311,11 @@ components:
                 message:
                     type: string
                 data:
-                    $ref: '#/components/schemas/moumou.server.api.Router'
-        moumou.server.api.GetRouterListRequest:
+                    $ref: '#/components/schemas/server.api.Router'
+        server.api.GetRouterListRequest:
             type: object
             properties: {}
-        moumou.server.api.GetRouterListResponse:
+        server.api.GetRouterListResponse:
             type: object
             properties:
                 code:
@@ -324,18 +324,18 @@ components:
                 message:
                     type: string
                 data:
-                    $ref: '#/components/schemas/moumou.server.api.GetRouterListResponseData'
-        moumou.server.api.GetRouterListResponseData:
+                    $ref: '#/components/schemas/server.api.GetRouterListResponseData'
+        server.api.GetRouterListResponseData:
             type: object
             properties:
                 list:
                     type: array
                     items:
-                        $ref: '#/components/schemas/moumou.server.api.Router'
-        moumou.server.api.GetSecurityRouterTreeRequest:
+                        $ref: '#/components/schemas/server.api.Router'
+        server.api.GetSecurityRouterTreeRequest:
             type: object
             properties: {}
-        moumou.server.api.GetSecurityRouterTreeResponse:
+        server.api.GetSecurityRouterTreeResponse:
             type: object
             properties:
                 code:
@@ -344,20 +344,20 @@ components:
                 message:
                     type: string
                 data:
-                    $ref: '#/components/schemas/moumou.server.api.GetSecurityRouterTreeResponseData'
-        moumou.server.api.GetSecurityRouterTreeResponseData:
+                    $ref: '#/components/schemas/server.api.GetSecurityRouterTreeResponseData'
+        server.api.GetSecurityRouterTreeResponseData:
             type: object
             properties:
                 routers:
                     type: array
                     items:
-                        $ref: '#/components/schemas/moumou.server.api.Router'
-        moumou.server.api.GetUserInfoRequest:
+                        $ref: '#/components/schemas/server.api.Router'
+        server.api.GetUserInfoRequest:
             type: object
             properties:
                 id:
                     type: string
-        moumou.server.api.GetUserInfoResponse:
+        server.api.GetUserInfoResponse:
             type: object
             properties:
                 code:
@@ -366,8 +366,8 @@ components:
                 message:
                     type: string
                 data:
-                    $ref: '#/components/schemas/moumou.server.api.User'
-        moumou.server.api.GetUserListRequest:
+                    $ref: '#/components/schemas/server.api.User'
+        server.api.GetUserListRequest:
             type: object
             properties:
                 currentPage:
@@ -377,11 +377,11 @@ components:
                     type: integer
                     format: int32
                 filter:
-                    $ref: '#/components/schemas/moumou.server.api.GetUserListRequestFilter'
-        moumou.server.api.GetUserListRequestFilter:
+                    $ref: '#/components/schemas/server.api.GetUserListRequestFilter'
+        server.api.GetUserListRequestFilter:
             type: object
             properties: {}
-        moumou.server.api.GetUserListResponse:
+        server.api.GetUserListResponse:
             type: object
             properties:
                 code:
@@ -390,8 +390,8 @@ components:
                 message:
                     type: string
                 data:
-                    $ref: '#/components/schemas/moumou.server.api.GetUserListResponseData'
-        moumou.server.api.GetUserListResponseData:
+                    $ref: '#/components/schemas/server.api.GetUserListResponseData'
+        server.api.GetUserListResponseData:
             type: object
             properties:
                 total:
@@ -399,15 +399,15 @@ components:
                 list:
                     type: array
                     items:
-                        $ref: '#/components/schemas/moumou.server.api.User'
-        moumou.server.api.LoginRequest:
+                        $ref: '#/components/schemas/server.api.User'
+        server.api.LoginRequest:
             type: object
             properties:
                 username:
                     type: string
                 password:
                     type: string
-        moumou.server.api.LoginResponse:
+        server.api.LoginResponse:
             type: object
             properties:
                 code:
@@ -416,18 +416,18 @@ components:
                 message:
                     type: string
                 data:
-                    $ref: '#/components/schemas/moumou.server.api.LoginResponseData'
-        moumou.server.api.LoginResponseData:
+                    $ref: '#/components/schemas/server.api.LoginResponseData'
+        server.api.LoginResponseData:
             type: object
             properties:
                 token:
                     type: string
                 user:
-                    $ref: '#/components/schemas/moumou.server.api.User'
-        moumou.server.api.LogoutRequest:
+                    $ref: '#/components/schemas/server.api.User'
+        server.api.LogoutRequest:
             type: object
             properties: {}
-        moumou.server.api.LogoutResponse:
+        server.api.LogoutResponse:
             type: object
             properties:
                 code:
@@ -435,7 +435,7 @@ components:
                     format: int32
                 message:
                     type: string
-        moumou.server.api.Router:
+        server.api.Router:
             type: object
             properties:
                 id:
@@ -458,11 +458,11 @@ components:
                 children:
                     type: array
                     items:
-                        $ref: '#/components/schemas/moumou.server.api.Router'
-        moumou.server.api.SelfRequest:
+                        $ref: '#/components/schemas/server.api.Router'
+        server.api.SelfRequest:
             type: object
             properties: {}
-        moumou.server.api.SelfResponse:
+        server.api.SelfResponse:
             type: object
             properties:
                 code:
@@ -471,13 +471,13 @@ components:
                 message:
                     type: string
                 data:
-                    $ref: '#/components/schemas/moumou.server.api.User'
-        moumou.server.api.UpdateRouterRequest:
+                    $ref: '#/components/schemas/server.api.User'
+        server.api.UpdateRouterRequest:
             type: object
             properties:
                 router:
-                    $ref: '#/components/schemas/moumou.server.api.UpdateRouterRequestData'
-        moumou.server.api.UpdateRouterRequestData:
+                    $ref: '#/components/schemas/server.api.UpdateRouterRequestData'
+        server.api.UpdateRouterRequestData:
             type: object
             properties:
                 id:
@@ -497,7 +497,7 @@ components:
                     format: int32
                 component:
                     type: string
-        moumou.server.api.UpdateRouterResponse:
+        server.api.UpdateRouterResponse:
             type: object
             properties:
                 code:
@@ -505,7 +505,7 @@ components:
                     format: int32
                 message:
                     type: string
-        moumou.server.api.User:
+        server.api.User:
             type: object
             properties:
                 id:

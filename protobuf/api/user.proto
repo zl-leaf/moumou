@@ -1,10 +1,10 @@
 syntax = "proto3";
 
-package moumou.server.api;
+package server.api;
 
 import "google/api/annotations.proto";
 
-option go_package = "moumou/server/api;api";
+option go_package = "server/api;api";
 
 service UserHandler {
   rpc GetUserList(GetUserListRequest) returns (GetUserListResponse) {

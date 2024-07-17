@@ -19,11 +19,11 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationSecurityHandlerGetPublicKey = "/moumou.server.api.SecurityHandler/GetPublicKey"
-const OperationSecurityHandlerGetSecurityRouterTree = "/moumou.server.api.SecurityHandler/GetSecurityRouterTree"
-const OperationSecurityHandlerLogin = "/moumou.server.api.SecurityHandler/Login"
-const OperationSecurityHandlerLogout = "/moumou.server.api.SecurityHandler/Logout"
-const OperationSecurityHandlerSelf = "/moumou.server.api.SecurityHandler/Self"
+const OperationSecurityHandlerGetPublicKey = "/server.api.SecurityHandler/GetPublicKey"
+const OperationSecurityHandlerGetSecurityRouterTree = "/server.api.SecurityHandler/GetSecurityRouterTree"
+const OperationSecurityHandlerLogin = "/server.api.SecurityHandler/Login"
+const OperationSecurityHandlerLogout = "/server.api.SecurityHandler/Logout"
+const OperationSecurityHandlerSelf = "/server.api.SecurityHandler/Self"
 
 type SecurityHandlerHTTPServer interface {
 	GetPublicKey(context.Context, *GetPublicKeyRequest) (*GetPublicKeyResponse, error)

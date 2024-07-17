@@ -19,8 +19,8 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationUserHandlerGetUserInfo = "/moumou.server.api.UserHandler/GetUserInfo"
-const OperationUserHandlerGetUserList = "/moumou.server.api.UserHandler/GetUserList"
+const OperationUserHandlerGetUserInfo = "/server.api.UserHandler/GetUserInfo"
+const OperationUserHandlerGetUserList = "/server.api.UserHandler/GetUserList"
 
 type UserHandlerHTTPServer interface {
 	GetUserInfo(context.Context, *GetUserInfoRequest) (*GetUserInfoResponse, error)
