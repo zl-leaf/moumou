@@ -24,6 +24,24 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/moumou.server.api.CreateRouterResponse'
+    /router/delete:
+        post:
+            tags:
+                - RouterHandler
+            operationId: RouterHandler_DeleteRouter
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/moumou.server.api.DeleteRouterRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/moumou.server.api.DeleteRouterResponse'
     /router/info:
         post:
             tags:
@@ -60,6 +78,24 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/moumou.server.api.GetRouterListResponse'
+    /router/update:
+        post:
+            tags:
+                - RouterHandler
+            operationId: RouterHandler_UpdateRouter
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/moumou.server.api.UpdateRouterRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/moumou.server.api.UpdateRouterResponse'
     /security/hello:
         post:
             tags:
@@ -202,7 +238,7 @@ components:
                     type: string
                 title:
                     type: string
-                isMenu:
+                is_menu:
                     type: boolean
                 pid:
                     type: string
@@ -225,6 +261,21 @@ components:
             type: object
             properties:
                 id:
+                    type: string
+        moumou.server.api.DeleteRouterRequest:
+            type: object
+            properties:
+                ids:
+                    type: array
+                    items:
+                        type: string
+        moumou.server.api.DeleteRouterResponse:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                message:
                     type: string
         moumou.server.api.GetPublicKeyRequest:
             type: object
@@ -421,6 +472,39 @@ components:
                     type: string
                 data:
                     $ref: '#/components/schemas/moumou.server.api.User'
+        moumou.server.api.UpdateRouterRequest:
+            type: object
+            properties:
+                router:
+                    $ref: '#/components/schemas/moumou.server.api.UpdateRouterRequestData'
+        moumou.server.api.UpdateRouterRequestData:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                path:
+                    type: string
+                title:
+                    type: string
+                is_menu:
+                    type: boolean
+                pid:
+                    type: string
+                sort:
+                    type: integer
+                    format: int32
+                component:
+                    type: string
+        moumou.server.api.UpdateRouterResponse:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                message:
+                    type: string
         moumou.server.api.User:
             type: object
             properties:

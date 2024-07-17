@@ -8,7 +8,8 @@
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "vite build",
-    "type-check": "vue-tsc --build --force"
+    "type-check": "vue-tsc --build --force",
+    "api": "openapi --input ../protobuf/openapi.yaml --output ./src/api/codegen --client axios"
   },
   "dependencies": {
     "ant-design-vue": "^4.0.0-rc.6",

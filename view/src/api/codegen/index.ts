@@ -11,6 +11,8 @@ export type { moumou_server_api_CreateRouterRequest } from './models/moumou_serv
 export type { moumou_server_api_CreateRouterRequestData } from './models/moumou_server_api_CreateRouterRequestData';
 export type { moumou_server_api_CreateRouterResponse } from './models/moumou_server_api_CreateRouterResponse';
 export type { moumou_server_api_CreateRouterResponseData } from './models/moumou_server_api_CreateRouterResponseData';
+export type { moumou_server_api_DeleteRouterRequest } from './models/moumou_server_api_DeleteRouterRequest';
+export type { moumou_server_api_DeleteRouterResponse } from './models/moumou_server_api_DeleteRouterResponse';
 export type { moumou_server_api_GetPublicKeyRequest } from './models/moumou_server_api_GetPublicKeyRequest';
 export type { moumou_server_api_GetPublicKeyResponse } from './models/moumou_server_api_GetPublicKeyResponse';
 export type { moumou_server_api_GetPublicKeyResponseData } from './models/moumou_server_api_GetPublicKeyResponseData';
@@ -36,6 +38,9 @@ export type { moumou_server_api_LogoutResponse } from './models/moumou_server_ap
 export type { moumou_server_api_Router } from './models/moumou_server_api_Router';
 export type { moumou_server_api_SelfRequest } from './models/moumou_server_api_SelfRequest';
 export type { moumou_server_api_SelfResponse } from './models/moumou_server_api_SelfResponse';
+export type { moumou_server_api_UpdateRouterRequest } from './models/moumou_server_api_UpdateRouterRequest';
+export type { moumou_server_api_UpdateRouterRequestData } from './models/moumou_server_api_UpdateRouterRequestData';
+export type { moumou_server_api_UpdateRouterResponse } from './models/moumou_server_api_UpdateRouterResponse';
 export type { moumou_server_api_User } from './models/moumou_server_api_User';
 
 export { RouterHandlerService } from './services/RouterHandlerService';

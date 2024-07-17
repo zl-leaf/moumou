@@ -26,12 +26,28 @@ func (h *RouterHandler) GetRouterList(ctx context.Context, request *api.GetRoute
 	}, nil
 }
 
-func (h *RouterHandler) CreateRouter(context.Context, *api.CreateRouterRequest) (*api.CreateRouterResponse, error) {
-	return &api.CreateRouterResponse{}, nil
+func (h *RouterHandler) CreateRouter(ctx context.Context, request *api.CreateRouterRequest) (*api.CreateRouterResponse, error) {
+	routerID, err := h.svc.SysRouterService.CreateRouter(ctx, ConvCreateRequestData2FormData(request.Router))
+	if err != nil {
+		return nil, err
+	}
+	return &api.CreateRouterResponse{
+		Data: &api.CreateRouterResponseData{
+			Id: routerID,
+		},
+	}, nil
+}
+
+func (h *RouterHandler) UpdateRouter(ctx context.Context, request *api.UpdateRouterRequest) (*api.UpdateRouterResponse, error) {
+	err := h.svc.SysRouterService.UpdateRouter(ctx, ConvUpdateRequestData2FormData(request.Router))
+	if err != nil {
+		return nil, err
+	}
+	return &api.UpdateRouterResponse{}, nil
 }
 
 func (h *RouterHandler) GetRouterInfo(ctx context.Context, request *api.GetRouterInfoRequest) (*api.GetRouterInfoResponse, error) {
-	router, err := h.svc.SysRouterService.GetRouterInfo(ctx, int(request.GetId()))
+	router, err := h.svc.SysRouterService.GetRouterInfo(ctx, request.GetId())
 	if err != nil {
 		return nil, err
 	}
@@ -39,4 +55,12 @@ func (h *RouterHandler) GetRouterInfo(ctx context.Context, request *api.GetRoute
 	return &api.GetRouterInfoResponse{
 		Data: ConvRouter2VO(router),
 	}, nil
+}
+
+func (h *RouterHandler) DeleteRouter(ctx context.Context, request *api.DeleteRouterRequest) (*api.DeleteRouterResponse, error) {
+	err := h.svc.SysRouterService.DeleteRouter(ctx, request.GetIds())
+	if err != nil {
+		return nil, err
+	}
+	return &api.DeleteRouterResponse{}, nil
 }

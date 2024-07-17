@@ -20,20 +20,26 @@ var _ = binding.EncodeURL
 const _ = http.SupportPackageIsVersion1
 
 const OperationRouterHandlerCreateRouter = "/moumou.server.api.RouterHandler/CreateRouter"
+const OperationRouterHandlerDeleteRouter = "/moumou.server.api.RouterHandler/DeleteRouter"
 const OperationRouterHandlerGetRouterInfo = "/moumou.server.api.RouterHandler/GetRouterInfo"
 const OperationRouterHandlerGetRouterList = "/moumou.server.api.RouterHandler/GetRouterList"
+const OperationRouterHandlerUpdateRouter = "/moumou.server.api.RouterHandler/UpdateRouter"
 
 type RouterHandlerHTTPServer interface {
 	CreateRouter(context.Context, *CreateRouterRequest) (*CreateRouterResponse, error)
+	DeleteRouter(context.Context, *DeleteRouterRequest) (*DeleteRouterResponse, error)
 	GetRouterInfo(context.Context, *GetRouterInfoRequest) (*GetRouterInfoResponse, error)
 	GetRouterList(context.Context, *GetRouterListRequest) (*GetRouterListResponse, error)
+	UpdateRouter(context.Context, *UpdateRouterRequest) (*UpdateRouterResponse, error)
 }
 
 func RegisterRouterHandlerHTTPServer(s *http.Server, srv RouterHandlerHTTPServer) {
 	r := s.Route("/")
 	r.POST("/router/create", _RouterHandler_CreateRouter0_HTTP_Handler(srv))
+	r.POST("/router/update", _RouterHandler_UpdateRouter0_HTTP_Handler(srv))
 	r.POST("/router/list", _RouterHandler_GetRouterList0_HTTP_Handler(srv))
 	r.POST("/router/info", _RouterHandler_GetRouterInfo0_HTTP_Handler(srv))
+	r.POST("/router/delete", _RouterHandler_DeleteRouter0_HTTP_Handler(srv))
 }
 
 func _RouterHandler_CreateRouter0_HTTP_Handler(srv RouterHandlerHTTPServer) func(ctx http.Context) error {
@@ -54,6 +60,28 @@ func _RouterHandler_CreateRouter0_HTTP_Handler(srv RouterHandlerHTTPServer) func
 			return err
 		}
 		reply := out.(*CreateRouterResponse)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _RouterHandler_UpdateRouter0_HTTP_Handler(srv RouterHandlerHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in UpdateRouterRequest
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationRouterHandlerUpdateRouter)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.UpdateRouter(ctx, req.(*UpdateRouterRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*UpdateRouterResponse)
 		return ctx.Result(200, reply)
 	}
 }
@@ -102,10 +130,34 @@ func _RouterHandler_GetRouterInfo0_HTTP_Handler(srv RouterHandlerHTTPServer) fun
 	}
 }
 
+func _RouterHandler_DeleteRouter0_HTTP_Handler(srv RouterHandlerHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in DeleteRouterRequest
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationRouterHandlerDeleteRouter)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.DeleteRouter(ctx, req.(*DeleteRouterRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*DeleteRouterResponse)
+		return ctx.Result(200, reply)
+	}
+}
+
 type RouterHandlerHTTPClient interface {
 	CreateRouter(ctx context.Context, req *CreateRouterRequest, opts ...http.CallOption) (rsp *CreateRouterResponse, err error)
+	DeleteRouter(ctx context.Context, req *DeleteRouterRequest, opts ...http.CallOption) (rsp *DeleteRouterResponse, err error)
 	GetRouterInfo(ctx context.Context, req *GetRouterInfoRequest, opts ...http.CallOption) (rsp *GetRouterInfoResponse, err error)
 	GetRouterList(ctx context.Context, req *GetRouterListRequest, opts ...http.CallOption) (rsp *GetRouterListResponse, err error)
+	UpdateRouter(ctx context.Context, req *UpdateRouterRequest, opts ...http.CallOption) (rsp *UpdateRouterResponse, err error)
 }
 
 type RouterHandlerHTTPClientImpl struct {
@@ -121,6 +173,19 @@ func (c *RouterHandlerHTTPClientImpl) CreateRouter(ctx context.Context, in *Crea
 	pattern := "/router/create"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationRouterHandlerCreateRouter))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, nil
+}
+
+func (c *RouterHandlerHTTPClientImpl) DeleteRouter(ctx context.Context, in *DeleteRouterRequest, opts ...http.CallOption) (*DeleteRouterResponse, error) {
+	var out DeleteRouterResponse
+	pattern := "/router/delete"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationRouterHandlerDeleteRouter))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {
@@ -147,6 +212,19 @@ func (c *RouterHandlerHTTPClientImpl) GetRouterList(ctx context.Context, in *Get
 	pattern := "/router/list"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationRouterHandlerGetRouterList))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, nil
+}
+
+func (c *RouterHandlerHTTPClientImpl) UpdateRouter(ctx context.Context, in *UpdateRouterRequest, opts ...http.CallOption) (*UpdateRouterResponse, error) {
+	var out UpdateRouterResponse
+	pattern := "/router/update"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationRouterHandlerUpdateRouter))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {

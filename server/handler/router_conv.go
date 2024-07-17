@@ -2,6 +2,7 @@ package handler
 
 import (
 	"github.com/moumou/server/biz/model"
+	"github.com/moumou/server/biz/service/router/param"
 	api "github.com/moumou/server/proto_gen"
 )
 
@@ -38,5 +39,34 @@ func ConvRouter2VO(routerInfo *model.Router) *api.Router {
 		Pid:       int64(routerInfo.Pid),
 		Sort:      int32(routerInfo.Sort),
 		Component: routerInfo.Component,
+	}
+}
+
+func ConvCreateRequestData2FormData(vo *api.CreateRouterRequestData) *param.RouterFormData {
+	return &param.RouterFormData{
+		Router: model.Router{
+			Name:      vo.Name,
+			Path:      vo.Path,
+			Title:     vo.Title,
+			IsMenu:    vo.IsMenu,
+			Pid:       uint(vo.Pid),
+			Sort:      int(vo.Sort),
+			Component: vo.Component,
+		},
+	}
+}
+
+func ConvUpdateRequestData2FormData(vo *api.UpdateRouterRequestData) *param.RouterFormData {
+	return &param.RouterFormData{
+		Router: model.Router{
+			BaseModel: model.BaseModel{ID: uint(vo.Id)},
+			Name:      vo.Name,
+			Path:      vo.Path,
+			Title:     vo.Title,
+			IsMenu:    vo.IsMenu,
+			Pid:       uint(vo.Pid),
+			Sort:      int(vo.Sort),
+			Component: vo.Component,
+		},
 	}
 }

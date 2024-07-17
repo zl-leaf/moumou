@@ -13,7 +13,9 @@
             <template v-if="column.key === 'action'">
                 <span>
                     <a-button type="primary" size="small" :href="`info?id=${record.id}`" style="margin-right:5px;">详情</a-button>
-                    <a-button danger size="small">删除</a-button>
+                    <a-popconfirm title="确认删除？" ok-text="确认" ok-type="danger" cancel-text="取消" @confirm="onDelete(record.id)">
+                        <a-button danger size="small">删除</a-button>
+                    </a-popconfirm>
                 </span>
             </template>
         </template>
@@ -31,7 +33,7 @@ export default defineComponent({
                 {title: '标题', dataIndex: 'title', key: 'title'},
                 {title: '菜单', dataIndex: 'is_menu', key: 'is_menu'},
                 {title: '路径', dataIndex: 'path', key: 'path'},
-                {title: 'Action', key: 'action'}
+                {title: '操作', key: 'action'}
             ],
             data: Array<api.moumou_server_api_Router>(),
         };
@@ -47,9 +49,36 @@ export default defineComponent({
                 }
                 return response.data
             }).then(data => {
-                this.data = data?.list ?? []
+                if (data?.list) {
+                    this.data = this.formatData(data.list)
+                }
             }).catch(err => {
                 console.log('err:', err)
+            })
+        },
+        formatData: function(list:api.moumou_server_api_Router[]) {
+            // 格式化，如果children为空，就设置为undefined
+            list.forEach(item => {
+                if (item.children?.length) {
+                    item.children = this.formatData(item.children)
+                } else {
+                    item.children = undefined
+                }
+            })
+            return list
+        },
+        onDelete: function(id: string) {
+            api.RouterHandlerService.routerHandlerDeleteRouter({
+                ids: [id]
+            }).then(response => {
+                if (response.code != 0) {
+                    return Promise.reject(response.message)
+                }
+
+                // 删除完成，刷新列表
+                this.handleTableChange()
+            }).catch(err => {
+                console.log('err:',err)
             })
         }
     }

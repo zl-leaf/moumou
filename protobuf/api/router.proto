@@ -14,6 +14,13 @@ service RouterHandler {
     };
   };
 
+  rpc UpdateRouter(UpdateRouterRequest) returns (UpdateRouterResponse) {
+    option (google.api.http) = {
+      post: "/router/update",
+      body: "*",
+    };
+  };
+
   rpc GetRouterList(GetRouterListRequest) returns (GetRouterListResponse) {
     option (google.api.http) = {
       post: "/router/list",
@@ -27,6 +34,13 @@ service RouterHandler {
       body: "*",
     };
   };
+
+  rpc DeleteRouter(DeleteRouterRequest) returns (DeleteRouterResponse) {
+    option (google.api.http) = {
+      post: "/router/delete",
+      body: "*",
+    };
+  };
 }
 
 
@@ -34,7 +48,7 @@ message CreateRouterRequestData {
   string name = 2;
   string path = 3;
   string title = 4;
-  bool is_menu = 5;
+  bool is_menu = 5 [json_name="is_menu"];
   int64 pid = 6;
   int32 sort = 7;
   string component = 8;
@@ -53,6 +67,37 @@ message CreateRouterResponse {
   string message = 2;
   optional CreateRouterResponseData data = 3;
 }
+
+message UpdateRouterRequestData {
+  int64 id = 1;
+  string name = 2;
+  string path = 3;
+  string title = 4;
+  bool is_menu = 5 [json_name="is_menu"];
+  int64 pid = 6;
+  int32 sort = 7;
+  string component = 8;
+}
+
+message UpdateRouterRequest {
+  UpdateRouterRequestData router = 1;
+}
+
+message UpdateRouterResponse {
+  int32 code = 1;
+  string message = 2;
+}
+
+message DeleteRouterRequest {
+  repeated int64 ids = 1;
+}
+
+message DeleteRouterResponse {
+  int32 code = 1;
+  string message = 2;
+}
+
+
 
 message Router {
   int64 id = 1;

@@ -2,7 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type moumou_server_api_CreateRouterRequestData = {
+export type moumou_server_api_UpdateRouterRequestData = {
+    id?: string;
     name?: string;
     path?: string;
     title?: string;

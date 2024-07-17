@@ -27,7 +27,7 @@
             <a-input v-model:value="formState.component" />
         </a-form-item>
         <a-form-item :wrapper-col="{ span: 8, offset: 6 }">
-            <a-button type="primary" @click="onSubmit">提交</a-button>
+            <a-button type="primary" @click="onSubmit" :loading="loading">提交</a-button>
             <a-button style="margin-left: 10px">返回</a-button>
         </a-form-item>
     </a-form>
@@ -36,15 +36,21 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import * as api from '@/api'
+import router from '@/router';
+import { message } from 'ant-design-vue';
 
 export default defineComponent({
     data() {
         return {
+            routerId: "",
             formState: ref<api.moumou_server_api_Router>({}),
-            routerTreeData: ref<api.moumou_server_api_Router[]>()
+            routerTreeData: ref<api.moumou_server_api_Router[]>(),
+            loading: ref<boolean>(false),
         }
     },
     created() {
+        this.routerId = String(this.$route.query.id)
+
         // 加载数节点数据
         api.RouterHandlerService.routerHandlerGetRouterList({}).then((response) => {
             if (response.code != 0) {
@@ -60,7 +66,7 @@ export default defineComponent({
 
         // 加载详情数据
         api.RouterHandlerService.routerHandlerGetRouterInfo({
-            id: String(this.$route.query.id),
+            id: this.routerId
         }).then((response) => {
             if (response.code != 0) {
                 return Promise.reject(response.message)
@@ -74,6 +80,30 @@ export default defineComponent({
     },
     methods: {
         onSubmit: function() {
+            this.loading = true;
+            let reqData: api.moumou_server_api_UpdateRouterRequestData = {
+                id: this.routerId,
+                name: this.formState.name,
+                path: this.formState.path,
+                title: this.formState.title,
+                is_menu: this.formState.is_menu,
+                pid: this.formState.pid,
+                sort: this.formState.sort,
+                component: this.formState.component
+            }
+
+            api.RouterHandlerService.routerHandlerUpdateRouter({
+                router: reqData,
+            }).then((response) => {
+                this.loading = false;
+                if(response.code != 0) {
+                    return Promise.reject(response.message)
+                }
+                message.success('操作完成')
+            }).catch((err) => {
+                this.loading = false;
+                message.error('网络错误')
+            })
         }
     }
 })
