@@ -43,8 +43,8 @@ export default defineComponent({
     data() {
         return {
             routerId: "",
-            formState: ref<api.moumou_server_api_Router>({}),
-            routerTreeData: ref<api.moumou_server_api_Router[]>(),
+            formState: ref<api.server_api_Router>({}),
+            routerTreeData: ref<api.server_api_Router[]>(),
             loading: ref<boolean>(false),
         }
     },

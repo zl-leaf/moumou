@@ -2,8 +2,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { server_api_GetPublicKeyRequest } from '../models/server_api_GetPublicKeyRequest';
-import type { server_api_GetPublicKeyResponse } from '../models/server_api_GetPublicKeyResponse';
 import type { server_api_GetSecurityRouterTreeRequest } from '../models/server_api_GetSecurityRouterTreeRequest';
 import type { server_api_GetSecurityRouterTreeResponse } from '../models/server_api_GetSecurityRouterTreeResponse';
 import type { server_api_LoginRequest } from '../models/server_api_LoginRequest';
@@ -16,21 +14,6 @@ import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 export class SecurityHandlerService {
-    /**
-     * @param requestBody
-     * @returns server_api_GetPublicKeyResponse OK
-     * @throws ApiError
-     */
-    public static securityHandlerGetPublicKey(
-        requestBody: server_api_GetPublicKeyRequest,
-    ): CancelablePromise<server_api_GetPublicKeyResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/security/hello',
-            body: requestBody,
-            mediaType: 'application/json',
-        });
-    }
     /**
      * @param requestBody
      * @returns server_api_LoginResponse OK

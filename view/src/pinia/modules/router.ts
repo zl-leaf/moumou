@@ -10,9 +10,9 @@ export const useRouterStore = defineStore('router', () => {
     const menData = ref()
     const defaultRouter = ref()
 
-    const setRouterData = (val:api.moumou_server_api_Router[]) => {
+    const setRouterData = (val:api.server_api_Router[]) => {
         menData.value = val
-        val.forEach((item:api.moumou_server_api_Router) => {
+        val.forEach((item:api.server_api_Router) => {
             if (defaultRouter.value === undefined && item.is_menu && item.children?.length == 0) {
                 defaultRouter.value = item
             }
@@ -27,8 +27,8 @@ export const useRouterStore = defineStore('router', () => {
         return menData.value?.length > 0
     }
     // 数据转换为vue路由
-    const formatRouter = (viewRouter:RouteRecordRaw, routerRecordList:api.moumou_server_api_Router[]) => {
-        routerRecordList.forEach((routerRecord: api.moumou_server_api_Router) => {
+    const formatRouter = (viewRouter:RouteRecordRaw, routerRecordList:api.server_api_Router[]) => {
+        routerRecordList.forEach((routerRecord: api.server_api_Router) => {
             let subViewRouter:RouteRecordRaw = {
                 name: routerRecord.name,
                 path: routerRecord.path ?? '',

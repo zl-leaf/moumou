@@ -3,12 +3,9 @@ import {OpenAPI} from "./codegen";
 import type { ApiRequestOptions } from "./codegen/core/ApiRequestOptions";
 
 OpenAPI.BASE = import.meta.env.VITE_BASE_API
-OpenAPI.HEADERS = async (options: ApiRequestOptions):Promise<Record<string, string>> => {
+OpenAPI.TOKEN = async (options: ApiRequestOptions):Promise<string> => {
     const userStore = useUserStore()
-    let tokenHeader: Record<string, string> = {
-        'x-token': userStore.GetToken().value
-    }
-    return tokenHeader
+    return userStore.GetToken().value
 }
 
 

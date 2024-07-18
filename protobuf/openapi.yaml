@@ -96,24 +96,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/server.api.UpdateRouterResponse'
-    /security/hello:
-        post:
-            tags:
-                - SecurityHandler
-            operationId: SecurityHandler_GetPublicKey
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/server.api.GetPublicKeyRequest'
-                required: true
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/server.api.GetPublicKeyResponse'
     /security/login:
         post:
             tags:
@@ -276,26 +258,6 @@ components:
                     type: integer
                     format: int32
                 message:
-                    type: string
-        server.api.GetPublicKeyRequest:
-            type: object
-            properties: {}
-        server.api.GetPublicKeyResponse:
-            type: object
-            properties:
-                code:
-                    type: integer
-                    format: int32
-                message:
-                    type: string
-                data:
-                    $ref: '#/components/schemas/server.api.GetPublicKeyResponseData'
-        server.api.GetPublicKeyResponseData:
-            type: object
-            properties:
-                key:
-                    type: string
-                iv:
                     type: string
         server.api.GetRouterInfoRequest:
             type: object

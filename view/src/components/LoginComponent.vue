@@ -20,7 +20,6 @@
 import { defineComponent, reactive, ref } from 'vue';
 import { message } from 'ant-design-vue';
 import * as api from '@/api'
-import crypto from 'crypto-js';
 
 interface FormState {
     username: string;
@@ -57,27 +56,12 @@ export default defineComponent({
         onFinishFailed: function (errorInfo: any) {
             console.log('Failed:', errorInfo);
         },
-        // 加密
-        encryptPwd: function (pwd: string, cnf: any) {
-            let key = crypto.enc.Utf8.parse(cnf.key);
-            let iv = crypto.enc.Utf8.parse(cnf.iv);
-            let encryptedData = crypto["AES"].encrypt(pwd, key, {
-                iv: iv,
-                mode: crypto.mode.CBC,
-                padding: crypto.pad.Pkcs7
-            });
-            return encryptedData + ""
-        },
         // 登录
         login: async function () {
             try {
-                const helloResponse = await api.SecurityHandlerService.securityHandlerGetPublicKey({})
-                if (helloResponse.code != 0) {
-                    return Promise.reject(helloResponse.message);
-                }
                 const loginResponse = await api.SecurityHandlerService.securityHandlerLogin({
                     username: this.formState.username,
-                    password: this.encryptPwd(this.formState.password, helloResponse.data),
+                    password: this.formState.password,
                 })
                 if (loginResponse.code != 0) {
                     return Promise.reject(loginResponse.message);

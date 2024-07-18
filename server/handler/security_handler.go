@@ -14,17 +14,8 @@ func NewSecurityHandler(svc *service.Service) api.SecurityHandlerHTTPServer {
 	return &SecurityHandler{svc}
 }
 
-func (h *SecurityHandler) GetPublicKey(ctx context.Context, request *api.GetPublicKeyRequest) (*api.GetPublicKeyResponse, error) {
-	return &api.GetPublicKeyResponse{
-		Data: &api.GetPublicKeyResponseData{
-			Key: "1234567890abcdef",
-			Iv:  "abcdefghijklmnop",
-		},
-	}, nil
-}
-
 func (h *SecurityHandler) Login(ctx context.Context, request *api.LoginRequest) (*api.LoginResponse, error) {
-	token, user, err := h.svc.SysUserService.Login(request.GetUsername(), request.GetPassword())
+	token, user, err := h.svc.SysUserService.Login(ctx, request.GetUsername(), request.GetPassword())
 	if err != nil {
 		return nil, err
 	}
@@ -37,7 +28,7 @@ func (h *SecurityHandler) Login(ctx context.Context, request *api.LoginRequest) 
 }
 
 func (h *SecurityHandler) Logout(ctx context.Context, request *api.LogoutRequest) (*api.LogoutResponse, error) {
-	err := h.svc.SysUserService.Logout("token")
+	err := h.svc.SysUserService.Logout(ctx, "token")
 	if err != nil {
 		return nil, err
 	}
@@ -45,7 +36,7 @@ func (h *SecurityHandler) Logout(ctx context.Context, request *api.LogoutRequest
 }
 
 func (h *SecurityHandler) Self(ctx context.Context, request *api.SelfRequest) (*api.SelfResponse, error) {
-	user, err := h.svc.SysUserService.Self("token")
+	user, err := h.svc.SysUserService.Self(ctx)
 	if err != nil {
 		return nil, err
 	}

@@ -1,5 +1,9 @@
 server:
+  host: 127.0.0.1
   port: 8888
+
+security:
+  jwt_key: "demo"
 
 database:
   user: dev

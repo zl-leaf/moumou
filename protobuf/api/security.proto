@@ -9,13 +9,6 @@ import "user.proto";
 option go_package = "server/api;api";
 
 service SecurityHandler {
-  rpc GetPublicKey(GetPublicKeyRequest) returns (GetPublicKeyResponse) {
-    option (google.api.http) = {
-      post: "/security/hello",
-      body: "*",
-    };
-  };
-
   rpc Login(LoginRequest) returns (LoginResponse) {
     option (google.api.http) = {
       post: "/security/login",
@@ -43,20 +36,6 @@ service SecurityHandler {
       body: "*",
     };
   };
-}
-
-message GetPublicKeyRequest {
-}
-
-message GetPublicKeyResponseData {
-  string key = 1;
-  string iv = 2;
-}
-
-message GetPublicKeyResponse {
-  int32 code = 1;
-  string message = 2;
-  optional GetPublicKeyResponseData data = 3;
 }
 
 message LoginRequest {

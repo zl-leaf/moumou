@@ -42,8 +42,8 @@ import { message } from 'ant-design-vue';
 export default defineComponent({
     data() {
         return {
-            formState: ref<api.moumou_server_api_Router>({}),
-            routerTreeData: ref<api.moumou_server_api_Router[]>(),
+            formState: ref<api.server_api_Router>({}),
+            routerTreeData: ref<api.server_api_Router[]>(),
             loading: ref<boolean>(false),
         }
     },
@@ -64,7 +64,7 @@ export default defineComponent({
     methods: {
         onSubmit: function() {
             this.loading = true;
-            let reqData: api.moumou_server_api_CreateRouterRequestData = {
+            let reqData: api.server_api_CreateRouterRequestData = {
                 name: this.formState.name,
                 path: this.formState.path,
                 title: this.formState.title,

@@ -17,7 +17,7 @@ import * as api from '@/api'
 export default defineComponent({
     data() {
         return {
-            formState: ref<api.moumou_server_api_User>({}),
+            formState: ref<api.server_api_User>({}),
         }
     },
     created() {

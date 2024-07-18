@@ -5,6 +5,7 @@ go 1.22.0
 require (
 	github.com/go-kratos/kratos/v2 v2.7.3
 	github.com/go-sql-driver/mysql v1.8.1
+	github.com/golang-jwt/jwt/v5 v5.1.0
 	github.com/google/wire v0.6.0
 	go.uber.org/config v1.4.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20230629202037-9506855d4529

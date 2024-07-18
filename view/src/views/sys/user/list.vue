@@ -30,7 +30,7 @@ export default defineComponent({
                     key: 'action',
                 }
             ],
-            data: Array<api.moumou_server_api_User>(),
+            data: Array<api.server_api_User>(),
             pagination: {
                 total: 0,
                 current: 1,

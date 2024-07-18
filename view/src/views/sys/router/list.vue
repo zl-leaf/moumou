@@ -35,7 +35,7 @@ export default defineComponent({
                 {title: '路径', dataIndex: 'path', key: 'path'},
                 {title: '操作', key: 'action'}
             ],
-            data: Array<api.moumou_server_api_Router>(),
+            data: Array<api.server_api_Router>(),
         };
     },
     created() {
@@ -56,7 +56,7 @@ export default defineComponent({
                 console.log('err:', err)
             })
         },
-        formatData: function(list:api.moumou_server_api_Router[]) {
+        formatData: function(list:api.server_api_Router[]) {
             // 格式化，如果children为空，就设置为undefined
             list.forEach(item => {
                 if (item.children?.length) {

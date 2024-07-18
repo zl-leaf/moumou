@@ -13,9 +13,6 @@ export type { server_api_CreateRouterResponse } from './models/server_api_Create
 export type { server_api_CreateRouterResponseData } from './models/server_api_CreateRouterResponseData';
 export type { server_api_DeleteRouterRequest } from './models/server_api_DeleteRouterRequest';
 export type { server_api_DeleteRouterResponse } from './models/server_api_DeleteRouterResponse';
-export type { server_api_GetPublicKeyRequest } from './models/server_api_GetPublicKeyRequest';
-export type { server_api_GetPublicKeyResponse } from './models/server_api_GetPublicKeyResponse';
-export type { server_api_GetPublicKeyResponseData } from './models/server_api_GetPublicKeyResponseData';
 export type { server_api_GetRouterInfoRequest } from './models/server_api_GetRouterInfoRequest';
 export type { server_api_GetRouterInfoResponse } from './models/server_api_GetRouterInfoResponse';
 export type { server_api_GetRouterListRequest } from './models/server_api_GetRouterListRequest';

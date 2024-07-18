@@ -19,14 +19,12 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationSecurityHandlerGetPublicKey = "/server.api.SecurityHandler/GetPublicKey"
 const OperationSecurityHandlerGetSecurityRouterTree = "/server.api.SecurityHandler/GetSecurityRouterTree"
 const OperationSecurityHandlerLogin = "/server.api.SecurityHandler/Login"
 const OperationSecurityHandlerLogout = "/server.api.SecurityHandler/Logout"
 const OperationSecurityHandlerSelf = "/server.api.SecurityHandler/Self"
 
 type SecurityHandlerHTTPServer interface {
-	GetPublicKey(context.Context, *GetPublicKeyRequest) (*GetPublicKeyResponse, error)
 	GetSecurityRouterTree(context.Context, *GetSecurityRouterTreeRequest) (*GetSecurityRouterTreeResponse, error)
 	Login(context.Context, *LoginRequest) (*LoginResponse, error)
 	Logout(context.Context, *LogoutRequest) (*LogoutResponse, error)
@@ -35,33 +33,10 @@ type SecurityHandlerHTTPServer interface {
 
 func RegisterSecurityHandlerHTTPServer(s *http.Server, srv SecurityHandlerHTTPServer) {
 	r := s.Route("/")
-	r.POST("/security/hello", _SecurityHandler_GetPublicKey0_HTTP_Handler(srv))
 	r.POST("/security/login", _SecurityHandler_Login0_HTTP_Handler(srv))
 	r.POST("/security/logout", _SecurityHandler_Logout0_HTTP_Handler(srv))
 	r.POST("/security/self", _SecurityHandler_Self0_HTTP_Handler(srv))
 	r.POST("/security/router_tree", _SecurityHandler_GetSecurityRouterTree0_HTTP_Handler(srv))
-}
-
-func _SecurityHandler_GetPublicKey0_HTTP_Handler(srv SecurityHandlerHTTPServer) func(ctx http.Context) error {
-	return func(ctx http.Context) error {
-		var in GetPublicKeyRequest
-		if err := ctx.Bind(&in); err != nil {
-			return err
-		}
-		if err := ctx.BindQuery(&in); err != nil {
-			return err
-		}
-		http.SetOperation(ctx, OperationSecurityHandlerGetPublicKey)
-		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.GetPublicKey(ctx, req.(*GetPublicKeyRequest))
-		})
-		out, err := h(ctx, &in)
-		if err != nil {
-			return err
-		}
-		reply := out.(*GetPublicKeyResponse)
-		return ctx.Result(200, reply)
-	}
 }
 
 func _SecurityHandler_Login0_HTTP_Handler(srv SecurityHandlerHTTPServer) func(ctx http.Context) error {
@@ -153,7 +128,6 @@ func _SecurityHandler_GetSecurityRouterTree0_HTTP_Handler(srv SecurityHandlerHTT
 }
 
 type SecurityHandlerHTTPClient interface {
-	GetPublicKey(ctx context.Context, req *GetPublicKeyRequest, opts ...http.CallOption) (rsp *GetPublicKeyResponse, err error)
 	GetSecurityRouterTree(ctx context.Context, req *GetSecurityRouterTreeRequest, opts ...http.CallOption) (rsp *GetSecurityRouterTreeResponse, err error)
 	Login(ctx context.Context, req *LoginRequest, opts ...http.CallOption) (rsp *LoginResponse, err error)
 	Logout(ctx context.Context, req *LogoutRequest, opts ...http.CallOption) (rsp *LogoutResponse, err error)
@@ -166,19 +140,6 @@ type SecurityHandlerHTTPClientImpl struct {
 
 func NewSecurityHandlerHTTPClient(client *http.Client) SecurityHandlerHTTPClient {
 	return &SecurityHandlerHTTPClientImpl{client}
-}
-
-func (c *SecurityHandlerHTTPClientImpl) GetPublicKey(ctx context.Context, in *GetPublicKeyRequest, opts ...http.CallOption) (*GetPublicKeyResponse, error) {
-	var out GetPublicKeyResponse
-	pattern := "/security/hello"
-	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationSecurityHandlerGetPublicKey))
-	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return &out, nil
 }
 
 func (c *SecurityHandlerHTTPClientImpl) GetSecurityRouterTree(ctx context.Context, in *GetSecurityRouterTreeRequest, opts ...http.CallOption) (*GetSecurityRouterTreeResponse, error) {
