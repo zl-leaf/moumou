@@ -18,6 +18,7 @@ import (
 	"github.com/moumou/server/handler/mw"
 	"github.com/moumou/server/pkgs/config"
 	api "github.com/moumou/server/proto_gen"
+	"go.opentelemetry.io/otel/sdk/trace"
 	"os"
 )
 
@@ -56,7 +57,8 @@ func NewHTTPServer(logger log.Logger, cnf serverConfig, securityCnf param.Securi
 		http.Filter(mw.CorsFilter),
 		http.Middleware(
 			recovery.Recovery(),
-			tracing.Server(),
+			tracing.Server(tracing.WithTracerProvider(trace.NewTracerProvider())),
+			mw.HttpTrace(),
 			selector.Server(jwt.Server(func(token *jwtv5.Token) (interface{}, error) {
 				return []byte(securityCnf.JWTKey), nil
 			})).Match(func(ctx context.Context, operation string) bool {
