@@ -9,9 +9,18 @@ export const useRouterStore = defineStore('router', () => {
 
     const menData = ref()
     const defaultRouter = ref()
+    const updateRouterFlag = ref(0) // 记录更新菜单次数，出发监听
 
     const setRouterData = (val:api.server_api_Router[]) => {
         menData.value = val
+        val.forEach((item:api.server_api_Router) => {
+            if (defaultRouter.value === undefined && item.is_menu && item.children?.length == 0) {
+                defaultRouter.value = item
+            }
+        })
+    }
+
+    const updateDefaultRouter = (val:api.server_api_Router[]) => {
         val.forEach((item:api.server_api_Router) => {
             if (defaultRouter.value === undefined && item.is_menu && item.children?.length == 0) {
                 defaultRouter.value = item
@@ -24,8 +33,9 @@ export const useRouterStore = defineStore('router', () => {
     }
 
     const hasUpdated = ():boolean => {
-        return menData.value?.length > 0
+        return true
     }
+
     // 数据转换为vue路由
     const formatRouter = (viewRouter:RouteRecordRaw, routerRecordList:api.server_api_Router[]) => {
         routerRecordList.forEach((routerRecord: api.server_api_Router) => {
@@ -65,8 +75,10 @@ export const useRouterStore = defineStore('router', () => {
                 children: [],
             }
 
+            updateRouterFlag.value = (updateRouterFlag.value + 1) % 10
+
             if (routerTreeResponse.data?.routers) {
-                setRouterData(routerTreeResponse.data.routers)
+                updateDefaultRouter(routerTreeResponse.data.routers)
                 formatRouter(baseRouter, routerTreeResponse.data.routers)
             }
 
@@ -96,5 +108,6 @@ export const useRouterStore = defineStore('router', () => {
         updateRouter,
         getDefaultRouter,
         hasUpdated,
+        updateRouterFlag,
     }
 })

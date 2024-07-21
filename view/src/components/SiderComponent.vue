@@ -7,71 +7,33 @@
 </template>
 
 <script lang="ts">
-import { ref, defineComponent, reactive, h } from 'vue';
-import type { MenuProps } from 'ant-design-vue';
+import { ref, defineComponent, reactive, h, watch } from 'vue';
 import type { ItemType } from 'ant-design-vue';
 import router from '@/router';
 import type { RouteRecord, RouteRecordRaw } from 'vue-router';
+import { useRouterStore } from '@/pinia/modules/router';
 
-interface MenuData {
-    key: string
-    title: string
-    label: string
-    children: Array<MenuData> | undefined
-}
+const routerStore = useRouterStore()
 
 export default defineComponent({
-    setup(props) {
-        const formatRouter2Menu = (item: RouteRecordRaw): ItemType[] => {
-            let menus: ItemType[] = []
-            if (item.children?.length) {
-                item.children.forEach((childItem: RouteRecordRaw) => {
-                    formatRouter2Menu(childItem).forEach((element: any) => {
-                        if (element) {
-                            menus.push(element)
-                        }
-                    });
-                })
-            }
-            if (item.meta?.isMenu) {
-                // 菜单
-                let menuData: ItemType = {
-                    key: String(item.name),
-                    title: String(item.meta?.title),
-                    label: String(item.meta?.title),
-                    children: menus.length > 0 ? menus : undefined,
-                }
-                menus = [menuData]
-            }
-            return menus;
-        }
-
-        const items: ItemType[] = reactive([])
-        router.getRoutes().forEach((item: RouteRecordRaw) => {
-            if (item.name != 'layout') {
-                // 只需要处理动态获取的menu
-                return
-            }
-            formatRouter2Menu(item).forEach((item: ItemType) => {
-                items.push(item)
-            })
-        })
-
-        const state = reactive({
-            collapsed: false,
-            selectedKeys: Array<string>(),
-            openKeys: Array<string>(),
-        });
-        const collapsed = ref<boolean>(false);
-
+    data() {
         return {
-            state,
-            items,
-            collapsed,
+            state: reactive({
+                collapsed: false,
+                selectedKeys: Array<string>(),
+                openKeys: Array<string>(),
+            }),
+            items: ref<ItemType[]>(),
+            collapsed: ref<boolean>(false),
         }
     },
     created() {
         this.updateSide()
+        this.updateSeletedMenu()
+        watch(() => routerStore.updateRouterFlag, (to, from) => {
+            // 路由变更
+            this.updateSide()
+        }, {deep: true})
     },
     methods: {
         onClick(e: any) {
@@ -79,7 +41,7 @@ export default defineComponent({
                 this.$emit('openMenu', e)
             }
         },
-        updateSide() {
+        updateSeletedMenu() {
             let currentRoute = router.currentRoute
             if (currentRoute.value.name) {
                 this.state.selectedKeys = [String(currentRoute.value.name)]
@@ -92,12 +54,50 @@ export default defineComponent({
                     this.state.openKeys = [String(element.name)]
                 }
             })
+        },
+        updateSide() {
+            const formatRouter2Menu = (item: RouteRecordRaw): ItemType[] => {
+                let menus: ItemType[] = []
+                if (item.children?.length) {
+                    item.children.forEach((childItem: RouteRecordRaw) => {
+                        formatRouter2Menu(childItem).forEach((element: any) => {
+                            if (element) {
+                                menus.push(element)
+                            }
+                        });
+                    })
+                }
+                if (item.meta?.isMenu) {
+                    // 菜单
+                    let menuData: ItemType = {
+                        key: String(item.name),
+                        title: String(item.meta?.title),
+                        label: String(item.meta?.title),
+                        children: menus.length > 0 ? menus : undefined,
+                    }
+                    menus = [menuData]
+                }
+                return menus;
+            }
+
+            let items:ItemType[] = []
+            router.getRoutes().forEach((item: RouteRecordRaw) => {
+                if (item.name != 'layout') {
+                    // 只需要处理动态获取的menu
+                    return
+                }
+                formatRouter2Menu(item).forEach((item: ItemType) => {
+                    items.push(item)
+                })
+            })
+            this.items = items
+
         }
     },
     watch: {
         $route(to, from) {
-            this.updateSide()
-        }
+            this.updateSeletedMenu()
+        },
     },
     emits: {
         openMenu: (e: any) => { }

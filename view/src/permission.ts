@@ -10,7 +10,7 @@ router.beforeEach(async(to, from) => {
 
     const userStore = useUserStore()
     const token = userStore.GetToken().value
-    if (token == '') {
+    if (!token) {
         // 没有登录状态
         if (whiteList.indexOf(String(to.name)) > -1) {
             // 打开登录页面
@@ -28,14 +28,25 @@ router.beforeEach(async(to, from) => {
         const routerStore = useRouterStore()
         if (whiteList.indexOf(String(to.name)) > -1) {
             // 登录过后不允许再打开登录页面
-            if (!routerStore.hasUpdated()) {
+            if (!routerStore.updateRouterFlag) {
                 // 没有更新路由
-                await routerStore.updateRouter()
+                try {
+                    await routerStore.updateRouter()
+                } catch (err) {
+                    // 更新路由失败，重新登陆
+                    userStore.SetToken("")
+                    return {
+                        name: 'login',
+                        query: {
+                            redirect: document.location.hash
+                        }
+                    }
+                }
             }
             return { name: routerStore.getDefaultRouter().value.name, replace: true }
         } else {
             // 正常访问
-            if (!routerStore.hasUpdated()) {
+            if (!routerStore.updateRouterFlag) {
                 // 没有更新路由
                 await routerStore.updateRouter()
                 return { ...to, replace: true }

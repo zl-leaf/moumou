@@ -38,48 +38,51 @@ import { defineComponent, ref } from 'vue';
 import * as api from '@/api'
 import router from '@/router';
 import { message } from 'ant-design-vue';
+import { useRouterStore } from '@/pinia/modules/router';
 
+const routerStore = useRouterStore()
 export default defineComponent({
     data() {
         return {
             routerId: "",
             formState: ref<api.server_api_Router>({}),
-            routerTreeData: ref<api.server_api_Router[]>(),
+            routerTreeData: ref<api.server_api_Router[]>([
+                {
+                    id: "0",
+                    title: "根目录"
+                }
+            ]),
             loading: ref<boolean>(false),
         }
     },
     created() {
         this.routerId = String(this.$route.query.id)
-
-        // 加载数节点数据
-        api.RouterHandlerService.routerHandlerGetRouterList({}).then((response) => {
-            if (response.code != 0) {
-                return Promise.reject(response.message)
-            }
-            return response.data
-        }).then((data) => {
-            this.routerTreeData = data?.list
-        }).catch(err => {
-            console.log('err:', err)
-        })
-        
-
-        // 加载详情数据
-        api.RouterHandlerService.routerHandlerGetRouterInfo({
-            id: this.routerId
-        }).then((response) => {
-            if (response.code != 0) {
-                return Promise.reject(response.message)
-            }
-            return response.data
-        }).then((data) => {
-            this.formState = data ?? {}
-        }).catch(err => {
-            console.log('err:', err)
-        })
+        this.initData(this.routerId)
     },
     methods: {
-        onSubmit: function() {
+        initData: async function(routerId: string) {
+            this.loading = true
+            try {
+                // 加载数节点数据
+                let routerTreeResponse = await api.RouterHandlerService.routerHandlerGetRouterList({})
+                if (routerTreeResponse.code != 0) {
+                    throw new Error(routerTreeResponse.message)
+                }
+                this.routerTreeData[0].children = routerTreeResponse.data?.list ?? []
+
+                // 加载详情数据
+                let infoResponse = await api.RouterHandlerService.routerHandlerGetRouterInfo({id: this.routerId})
+                if (infoResponse.code != 0) {
+                    throw new Error(infoResponse.message)
+                }
+                this.formState = infoResponse.data ?? {}
+                this.loading = false
+
+            } catch (err) {
+                message.error('网络错误')
+            }
+        },
+        onSubmit: async function() {
             this.loading = true;
             let reqData: api.server_api_UpdateRouterRequestData = {
                 id: this.routerId,
@@ -92,18 +95,18 @@ export default defineComponent({
                 component: this.formState.component
             }
 
-            api.RouterHandlerService.routerHandlerUpdateRouter({
-                router: reqData,
-            }).then((response) => {
-                this.loading = false;
+            try {
+                let response = await api.RouterHandlerService.routerHandlerUpdateRouter({router: reqData})
                 if(response.code != 0) {
-                    return Promise.reject(response.message)
+                    throw new Error(response.message)
                 }
+
+                await routerStore.updateRouter()
                 message.success('操作完成')
-            }).catch((err) => {
-                this.loading = false;
+            } catch (err) {
                 message.error('网络错误')
-            })
+            }
+            this.loading = false;
         }
     }
 })

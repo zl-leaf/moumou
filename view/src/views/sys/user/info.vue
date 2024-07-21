@@ -4,7 +4,7 @@
             <a-input v-model:value="formState.username" />
         </a-form-item>
         <a-form-item :wrapper-col="{ span: 8, offset: 6 }">
-            <a-button type="primary" @click="onSubmit">提交</a-button>
+            <a-button type="primary" @click="onSubmit" :loading="loading">提交</a-button>
             <a-button style="margin-left: 10px">返回</a-button>
         </a-form-item>
     </a-form>
@@ -12,29 +12,33 @@
 
 <script lang="ts">
 import { defineComponent,ref } from 'vue';
+import { message } from 'ant-design-vue';
 import * as api from '@/api'
 
 export default defineComponent({
     data() {
         return {
             formState: ref<api.server_api_User>({}),
+            loading: ref(false),
         }
     },
     created() {
-        api.UserHandlerService.userHandlerGetUserInfo({
-            id: String(this.$route.query.id)
-        }).then((response) => {
-            if (response.code != 0) {
-                return Promise.reject(response.message)
-            }
-            return response.data
-        }).then((data) => {
-             this.formState = data ?? {}
-        }).catch(err => {
-            console.log('err:', err)
-        })
+        this.initData(String(this.$route.query.id))
     },
     methods: {
+        initData: async function(userId:string) {
+            this.loading = true
+            try {
+                let infoResponse = await api.UserHandlerService.userHandlerGetUserInfo({id: userId})
+                if (infoResponse.code != 0) {
+                    throw new Error(infoResponse.message)
+                }
+                this.formState = infoResponse.data ?? {}
+                this.loading = false
+            } catch(err) {
+                message.error('网络错误')
+            }
+        },
         onSubmit: function() {
         }
     }

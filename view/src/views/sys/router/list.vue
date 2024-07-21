@@ -24,6 +24,10 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import * as api from '@/api'
+import { useRouterStore } from '@/pinia/modules/router';
+
+const routerStore = useRouterStore()
+
 
 export default defineComponent({
     data() {
@@ -77,6 +81,8 @@ export default defineComponent({
 
                 // 删除完成，刷新列表
                 this.handleTableChange()
+                routerStore.updateRouter()
+
             }).catch(err => {
                 console.log('err:',err)
             })
