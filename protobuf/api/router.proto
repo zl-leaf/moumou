@@ -109,6 +109,7 @@ message Router {
   int32 sort = 7;
   string component = 8;
   repeated Router children = 9;
+  bool is_system = 10 [json_name="is_system"];
 }
 
 message GetRouterListRequest {

@@ -12,5 +12,6 @@ export type server_api_Router = {
     sort?: number;
     component?: string;
     children?: Array<server_api_Router>;
+    is_system?: boolean;
 };
 

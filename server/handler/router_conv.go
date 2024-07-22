@@ -36,6 +36,7 @@ func ConvRouter2VO(routerInfo *model.Router) *api.Router {
 		Path:      routerInfo.Path,
 		Title:     routerInfo.Title,
 		IsMenu:    routerInfo.IsMenu,
+		IsSystem:  routerInfo.IsSystem,
 		Pid:       int64(routerInfo.Pid),
 		Sort:      int32(routerInfo.Sort),
 		Component: routerInfo.Component,

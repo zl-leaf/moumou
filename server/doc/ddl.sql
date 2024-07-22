@@ -15,6 +15,7 @@ CREATE TABLE `routers` (
     `title` VARCHAR(10) NOT NULL COMMENT '菜单名',
     `path` VARCHAR(50) NOT NULL COMMENT '路径',
     `is_menu` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否菜单',
+    `is_system` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否系统菜单',
     `pid` bigint NOT NULL DEFAULT 0 COMMENT '父节点',
     `sort` int NOT NULL DEFAULT 0 COMMENT '排序',
     `component` varchar(255) NOT NULL DEFAULT '' COMMENT '自定义页面',

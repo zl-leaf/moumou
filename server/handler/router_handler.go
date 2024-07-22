@@ -20,7 +20,6 @@ func (h *RouterHandler) GetRouterList(ctx context.Context, request *api.GetRoute
 		return nil, err
 	}
 
-	//token := ctx.(http.Context).Header().Get("x-token")
 	return &api.GetRouterListResponse{
 		Data: ConvRouterList2ResponseData(routerList),
 	}, nil

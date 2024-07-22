@@ -84,9 +84,11 @@ func NewHTTPServer(logger log.Logger, cnf serverConfig, securityCnf param.Securi
 	}
 	routerHandler := handler.NewRouterHandler(svc)
 	userHandler := handler.NewUserHandler(svc)
+	roleHandler := handler.NewRoleHandler(svc)
 	securityHandler := handler.NewSecurityHandler(svc)
 	api.RegisterRouterHandlerHTTPServer(srv, routerHandler)
 	api.RegisterUserHandlerHTTPServer(srv, userHandler)
+	api.RegisterRoleHandlerHTTPServer(srv, roleHandler)
 	api.RegisterSecurityHandlerHTTPServer(srv, securityHandler)
 
 	return srv

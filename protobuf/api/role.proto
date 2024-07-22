@@ -1,0 +1,103 @@
+syntax = "proto3";
+
+package server.api;
+
+import "google/api/annotations.proto";
+
+option go_package = "server/api;api";
+
+service RoleHandler {
+  rpc GetRoleList(GetRoleListRequest) returns (GetRoleListResponse){
+    option (google.api.http) = {
+      post: "/role/list",
+      body: "*"
+    };
+  };
+
+  rpc CreateRole(CreateRoleRequest) returns (CreateRoleResponse){
+    option (google.api.http) = {
+      post: "/role/create",
+      body: "*"
+    };
+  };
+
+  rpc UpdateRole(UpdateRoleRequest) returns (UpdateRoleResponse){
+    option (google.api.http) = {
+      post: "/role/update",
+      body: "*"
+    };
+  };
+
+  rpc DeleteRole(DeleteRoleRequest) returns (DeleteRoleResponse){
+    option (google.api.http) = {
+      post: "/role/delete",
+      body: "*"
+    };
+  }
+}
+
+message Role {
+  int64 id = 1;
+  string name = 2;
+}
+
+message GetRoleListRequestFilter {
+}
+
+message GetRoleListRequest {
+  int32 current_page = 1;
+  int32 page_size = 2;
+  optional GetRoleListRequestFilter filter = 3;
+}
+
+message GetRoleListResponseData {
+  int64 total = 1;
+  repeated Role list = 2;
+}
+
+message GetRoleListResponse {
+  int32 code = 1;
+  string message = 2;
+  optional GetRoleListResponseData data = 3;
+}
+
+message CreateRoleRequestData {
+  string name = 2;
+}
+
+message CreateRoleRequest {
+  CreateRoleRequestData role = 1;
+}
+
+message CreateRoleResponseData {
+  int64 id = 1;
+}
+
+message CreateRoleResponse {
+  int32 code = 1;
+  string message = 2;
+  CreateRoleRequestData data = 3;
+}
+
+message UpdateRoleRequestData {
+  int64 id = 1;
+  string name = 2;
+}
+
+message UpdateRoleRequest {
+  UpdateRoleRequestData role = 1;
+}
+
+message UpdateRoleResponse {
+  int32 code = 1;
+  string message = 2;
+}
+
+message DeleteRoleRequest {
+  repeated int64 ids = 1;
+}
+
+message DeleteRoleResponse {
+  int32 code = 1;
+  string message = 2;
+}

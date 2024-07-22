@@ -6,6 +6,78 @@ info:
     title: ""
     version: 0.0.1
 paths:
+    /role/create:
+        post:
+            tags:
+                - RoleHandler
+            operationId: RoleHandler_CreateRole
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/server.api.CreateRoleRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/server.api.CreateRoleResponse'
+    /role/delete:
+        post:
+            tags:
+                - RoleHandler
+            operationId: RoleHandler_DeleteRole
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/server.api.DeleteRoleRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/server.api.DeleteRoleResponse'
+    /role/list:
+        post:
+            tags:
+                - RoleHandler
+            operationId: RoleHandler_GetRoleList
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/server.api.GetRoleListRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/server.api.GetRoleListResponse'
+    /role/update:
+        post:
+            tags:
+                - RoleHandler
+            operationId: RoleHandler_UpdateRole
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/server.api.UpdateRoleRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/server.api.UpdateRoleResponse'
     /router/create:
         post:
             tags:
@@ -206,6 +278,26 @@ paths:
                                 $ref: '#/components/schemas/server.api.GetUserListResponse'
 components:
     schemas:
+        server.api.CreateRoleRequest:
+            type: object
+            properties:
+                role:
+                    $ref: '#/components/schemas/server.api.CreateRoleRequestData'
+        server.api.CreateRoleRequestData:
+            type: object
+            properties:
+                name:
+                    type: string
+        server.api.CreateRoleResponse:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                message:
+                    type: string
+                data:
+                    $ref: '#/components/schemas/server.api.CreateRoleRequestData'
         server.api.CreateRouterRequest:
             type: object
             properties:
@@ -244,6 +336,21 @@ components:
             properties:
                 id:
                     type: string
+        server.api.DeleteRoleRequest:
+            type: object
+            properties:
+                ids:
+                    type: array
+                    items:
+                        type: string
+        server.api.DeleteRoleResponse:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                message:
+                    type: string
         server.api.DeleteRouterRequest:
             type: object
             properties:
@@ -259,6 +366,39 @@ components:
                     format: int32
                 message:
                     type: string
+        server.api.GetRoleListRequest:
+            type: object
+            properties:
+                currentPage:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+                filter:
+                    $ref: '#/components/schemas/server.api.GetRoleListRequestFilter'
+        server.api.GetRoleListRequestFilter:
+            type: object
+            properties: {}
+        server.api.GetRoleListResponse:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                message:
+                    type: string
+                data:
+                    $ref: '#/components/schemas/server.api.GetRoleListResponseData'
+        server.api.GetRoleListResponseData:
+            type: object
+            properties:
+                total:
+                    type: string
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/server.api.Role'
         server.api.GetRouterInfoRequest:
             type: object
             properties:
@@ -397,6 +537,13 @@ components:
                     format: int32
                 message:
                     type: string
+        server.api.Role:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
         server.api.Router:
             type: object
             properties:
@@ -421,6 +568,8 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/server.api.Router'
+                is_system:
+                    type: boolean
         server.api.SelfRequest:
             type: object
             properties: {}
@@ -434,6 +583,26 @@ components:
                     type: string
                 data:
                     $ref: '#/components/schemas/server.api.User'
+        server.api.UpdateRoleRequest:
+            type: object
+            properties:
+                role:
+                    $ref: '#/components/schemas/server.api.UpdateRoleRequestData'
+        server.api.UpdateRoleRequestData:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+        server.api.UpdateRoleResponse:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                message:
+                    type: string
         server.api.UpdateRouterRequest:
             type: object
             properties:
@@ -475,6 +644,7 @@ components:
                 username:
                     type: string
 tags:
+    - name: RoleHandler
     - name: RouterHandler
     - name: SecurityHandler
     - name: UserHandler

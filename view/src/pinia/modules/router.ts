@@ -3,34 +3,11 @@ import * as api from '@/api'
 import router from '@/router'
 import { ref } from 'vue'
 import type { RouteRecordRaw } from 'vue-router';
+import { Components } from 'ant-design-vue/es/date-picker/generatePicker';
 const viewModules = import.meta.glob('@/views/**/*.vue')
 
 export const useRouterStore = defineStore('router', () => {
-
-    const menData = ref()
-    const defaultRouter = ref()
     const updateRouterFlag = ref(0) // 记录更新菜单次数，出发监听
-
-    const setRouterData = (val:api.server_api_Router[]) => {
-        menData.value = val
-        val.forEach((item:api.server_api_Router) => {
-            if (defaultRouter.value === undefined && item.is_menu && item.children?.length == 0) {
-                defaultRouter.value = item
-            }
-        })
-    }
-
-    const updateDefaultRouter = (val:api.server_api_Router[]) => {
-        val.forEach((item:api.server_api_Router) => {
-            if (defaultRouter.value === undefined && item.is_menu && item.children?.length == 0) {
-                defaultRouter.value = item
-            }
-        })
-    }
-
-    const getDefaultRouter = () => {
-        return defaultRouter
-    }
 
     const hasUpdated = ():boolean => {
         return true
@@ -52,9 +29,6 @@ export const useRouterStore = defineStore('router', () => {
 
             if (routerRecord.component) {
                 subViewRouter.component = dynamicImport(viewModules, routerRecord.component);
-            } else if (routerRecord.children?.length == 0) {
-                subViewRouter.component = () => import('@/components/PageComponent.vue')
-                subViewRouter.path += '?page_id=1' // TODO 看下怎么改这个
             }
             formatRouter(subViewRouter, routerRecord.children ?? [])
             viewRouter.children?.push(subViewRouter)
@@ -68,17 +42,23 @@ export const useRouterStore = defineStore('router', () => {
                 return Promise.reject(routerTreeResponse.message);
             }
 
-            const baseRouter = {
-                path: '/',
+            const baseRouter: RouteRecordRaw = {
+                path: '/layout',
                 name: 'layout',
-                component: () => import('@/views/AdminLayout.vue'),
-                children: [],
+                component: () => import('@/views/layout/AdminLayout.vue'),
+                children: [
+                    {
+                        path: '/',
+                        name: 'home',
+                        component: () => import('@/views/AboutView.vue'),
+                        children: undefined,
+                    }
+                ],
             }
 
             updateRouterFlag.value = (updateRouterFlag.value + 1) % 10
 
             if (routerTreeResponse.data?.routers) {
-                updateDefaultRouter(routerTreeResponse.data.routers)
                 formatRouter(baseRouter, routerTreeResponse.data.routers)
             }
 
@@ -106,7 +86,6 @@ export const useRouterStore = defineStore('router', () => {
 
     return {
         updateRouter,
-        getDefaultRouter,
         hasUpdated,
         updateRouterFlag,
     }

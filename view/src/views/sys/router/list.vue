@@ -4,7 +4,7 @@
             <a-button type="primary" href="add">添加</a-button>
         </a-col>
     </a-row>
-    <a-table :columns="columns" :data-source="data" rowKey="id">
+    <a-table :columns="columns" :data-source="data" rowKey="id" :pagination="false">
         <template #bodyCell="{ column, record }">
             <template v-if="column.key == 'is_menu'">
                 {{ record.is_menu ? "是":"否" }}
@@ -14,7 +14,7 @@
                 <span>
                     <a-button type="primary" size="small" :href="`info?id=${record.id}`" style="margin-right:5px;">详情</a-button>
                     <a-popconfirm title="确认删除？" ok-text="确认" ok-type="danger" cancel-text="取消" @confirm="onDelete(record.id)">
-                        <a-button danger size="small">删除</a-button>
+                        <a-button v-if="!record.is_system" danger size="small">删除</a-button>
                     </a-popconfirm>
                 </span>
             </template>
