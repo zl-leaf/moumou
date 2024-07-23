@@ -64,7 +64,7 @@ func (svc *LoginService) CreateToken(userInfo *model.User) (string, error) {
 		ExpiresAt: jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
 		IssuedAt:  jwt.NewNumericDate(time.Now()),
 		NotBefore: jwt.NewNumericDate(time.Now()),
-		ID:        strconv.FormatUint(uint64(userInfo.ID), 10),
+		ID:        strconv.FormatInt(userInfo.ID, 10),
 	}
 
 	var cnf param.SecurityConfig

@@ -24,7 +24,7 @@ func ConvUserList2RespData(userList []*model.User, total int64) *api.GetUserList
 
 func ConvUser2VO(userInfo *model.User) *api.User {
 	return &api.User{
-		Id:       int64(userInfo.ID),
+		Id:       userInfo.ID,
 		Username: userInfo.Username,
 	}
 }

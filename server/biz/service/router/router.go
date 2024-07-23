@@ -51,8 +51,8 @@ func (svc *Service) DeleteRouter(ctx context.Context, ids []int64) error {
 		newParentIdMap := make(map[int64]bool, len(parentIdMap))
 		for _, router := range allRouter {
 			if parentIdMap[int64(router.Pid)] {
-				needDeleteIds = append(needDeleteIds, int64(router.ID))
-				newParentIdMap[int64(router.ID)] = true
+				needDeleteIds = append(needDeleteIds, router.ID)
+				newParentIdMap[router.ID] = true
 			}
 		}
 		parentIdMap = newParentIdMap

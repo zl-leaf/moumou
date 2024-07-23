@@ -31,7 +31,7 @@ func convRouterListByPid(routerList []*model.Router, pid int) []*api.Router {
 
 func ConvRouter2VO(routerInfo *model.Router) *api.Router {
 	return &api.Router{
-		Id:        int64(routerInfo.ID),
+		Id:        routerInfo.ID,
 		Name:      routerInfo.Name,
 		Path:      routerInfo.Path,
 		Title:     routerInfo.Title,
@@ -60,7 +60,7 @@ func ConvCreateRequestData2FormData(vo *api.CreateRouterRequestData) *param.Rout
 func ConvUpdateRequestData2FormData(vo *api.UpdateRouterRequestData) *param.RouterFormData {
 	return &param.RouterFormData{
 		Router: model.Router{
-			BaseModel: model.BaseModel{ID: uint(vo.Id)},
+			BaseModel: model.BaseModel{ID: vo.Id},
 			Name:      vo.Name,
 			Path:      vo.Path,
 			Title:     vo.Title,

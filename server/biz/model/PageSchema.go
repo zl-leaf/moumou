@@ -2,7 +2,7 @@ package model
 
 type PageSchema struct {
 	BaseModel
-	PageID     uint                   `json:"page_id"`
+	PageID     int64                  `json:"page_id"`
 	Attributes []*PageSchemaAttribute `json:"attributes"`
 }
 

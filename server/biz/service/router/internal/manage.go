@@ -41,7 +41,7 @@ func (svc *ManageService) Create(ctx context.Context, data *param.RouterFormData
 	if result.Error != nil {
 		return 0, result.Error
 	}
-	return int64(router.ID), nil
+	return router.ID, nil
 }
 
 func (svc *ManageService) Update(ctx context.Context, data *param.RouterFormData) error {

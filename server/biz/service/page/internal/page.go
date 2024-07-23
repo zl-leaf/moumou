@@ -9,7 +9,7 @@ func NewPageService() *PageService {
 	return &PageService{}
 }
 
-func (svc *PageService) GetPage(pageID uint) (*model.Page, error) {
+func (svc *PageService) GetPage(pageID int64) (*model.Page, error) {
 	page := &model.Page{
 		BaseModel: model.BaseModel{
 			ID: pageID,
