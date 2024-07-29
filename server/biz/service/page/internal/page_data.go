@@ -7,7 +7,7 @@ func NewPageDataService() *PageDataService {
 	return &PageDataService{}
 }
 
-func (svc *PageDataService) GetList(pageID uint, currentPage, pageSize int) ([]map[string]any, int64, error) {
+func (svc *PageDataService) GetList(pageID int64, currentPage, pageSize int) ([]map[string]any, int64, error) {
 	dataList := make([]map[string]any, 0, pageSize)
 	total := int64(200)
 

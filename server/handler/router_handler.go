@@ -15,7 +15,7 @@ func NewRouterHandler(svc *service.Service) api.RouterHandlerHTTPServer {
 }
 
 func (h *RouterHandler) GetRouterList(ctx context.Context, request *api.GetRouterListRequest) (*api.GetRouterListResponse, error) {
-	routerList, err := h.svc.SysRouterService.GetRouterList(ctx)
+	routerList, _, err := h.svc.Dao.RouterDao.WithContext(ctx).OrderBySort().Find()
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func (h *RouterHandler) UpdateRouter(ctx context.Context, request *api.UpdateRou
 }
 
 func (h *RouterHandler) GetRouterInfo(ctx context.Context, request *api.GetRouterInfoRequest) (*api.GetRouterInfoResponse, error) {
-	router, err := h.svc.SysRouterService.GetRouterInfo(ctx, request.GetId())
+	router, err := h.svc.Dao.RouterDao.WithContext(ctx).GetByID(request.GetId())
 	if err != nil {
 		return nil, err
 	}

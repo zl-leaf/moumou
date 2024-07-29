@@ -2,58 +2,56 @@ package internal
 
 import (
 	"context"
-	"github.com/moumou/server/biz/model"
-	"github.com/moumou/server/biz/service/router/param"
-	"gorm.io/gorm"
+	"errors"
+	"github.com/moumou/server/biz/dao"
 )
 
 type ManageService struct {
-	db *gorm.DB
+	db *dao.Dao
 }
 
-func NewManageService(db *gorm.DB) *ManageService {
+func NewManageService(db *dao.Dao) *ManageService {
 	return &ManageService{db: db}
 }
 
-func (svc *ManageService) List(ctx context.Context) ([]*model.Router, error) {
-	var routerList []*model.Router
-
-	ret := svc.db.Order("sort ASC").Find(&routerList)
-	if ret.Error != nil {
-		return nil, ret.Error
+func (svc *ManageService) DeleteWithChildren(ctx context.Context, ids []int64) error {
+	// 删除节点与其下子节点
+	allRouter, _, err := svc.db.RouterDao.WithContext(ctx).Find()
+	if err != nil {
+		return err
 	}
-	return routerList, nil
-}
 
-func (svc *ManageService) GetByID(ctx context.Context, id int64) (*model.Router, error) {
-	var routerInfo *model.Router
+	return svc.db.Transaction(func(tx *dao.Dao) error {
+		var routerDB = tx.RouterDao.WithContext(ctx)
+		// 删除其下所有子节点
+		var parentIdMap = make(map[int64]bool, 2*len(ids))
+		for _, id := range ids {
+			parentIdMap[id] = true
+		}
+		needDeleteIds := make([]int64, 0, len(allRouter))
+		needDeleteIds = append(needDeleteIds, ids...)
 
-	var query = svc.db.First(&routerInfo, id)
-	if err := query.Error; err != nil {
-		return nil, err
-	}
-	return routerInfo, nil
-}
+		for len(parentIdMap) != 0 {
+			newParentIdMap := make(map[int64]bool, len(parentIdMap))
+			for _, router := range allRouter {
+				if parentIdMap[int64(router.Pid)] {
+					if router.IsSystem {
+						return errors.New("系统路由禁止删除")
+					}
 
-func (svc *ManageService) Create(ctx context.Context, data *param.RouterFormData) (int64, error) {
-	router := data.Router
-	result := svc.db.Create(&router)
-	if result.Error != nil {
-		return 0, result.Error
-	}
-	return router.ID, nil
-}
+					needDeleteIds = append(needDeleteIds, router.ID)
+					newParentIdMap[router.ID] = true
+				}
+			}
+			parentIdMap = newParentIdMap
 
-func (svc *ManageService) Update(ctx context.Context, data *param.RouterFormData) error {
-	router := data.Router
-	result := svc.db.Save(&router)
-	return result.Error
-}
-
-func (svc *ManageService) Delete(ctx context.Context, ids []int64) error {
-	result := svc.db.Delete(&model.Router{}, ids)
-	if result.Error != nil {
-		return result.Error
-	}
-	return nil
+		}
+		if len(needDeleteIds) > 0 {
+			err := routerDB.Delete(needDeleteIds)
+			if err != nil {
+				return err
+			}
+		}
+		return nil
+	})
 }

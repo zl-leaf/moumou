@@ -26,7 +26,7 @@ func (h *UserHandler) GetUserList(ctx context.Context, request *api.GetUserListR
 }
 
 func (h *UserHandler) GetUserInfo(ctx context.Context, request *api.GetUserInfoRequest) (*api.GetUserInfoResponse, error) {
-	userInfo, err := h.svc.SysUserService.GetUserInfo(ctx, int(request.GetId()))
+	userInfo, err := h.svc.Dao.UserDao.WithContext(ctx).GetByID(request.GetId())
 	if err != nil {
 		return nil, err
 	}

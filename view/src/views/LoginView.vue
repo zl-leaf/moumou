@@ -22,7 +22,7 @@ const routerStore = useRouterStore()
 const redirectToDefaultPage = async () => {
     try {
         await routerStore.updateRouter()
-        router.replace({ name: '/' })
+        router.replace({ name: 'home' })
     } catch (err) {
         console.log('error', err)
     }

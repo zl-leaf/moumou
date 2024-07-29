@@ -1,35 +1,34 @@
 package internal
 
 import (
+	"context"
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/hex"
 	"errors"
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/moumou/server/biz/dao"
 	"github.com/moumou/server/biz/model"
 	"github.com/moumou/server/biz/service/user/param"
 	"github.com/moumou/server/pkgs/config"
-	"gorm.io/gorm"
 	"strconv"
 	"time"
 )
 
 type LoginService struct {
-	db *gorm.DB
+	db *dao.Dao
 }
 
-func NewLoginService(db *gorm.DB) *LoginService {
+func NewLoginService(db *dao.Dao) *LoginService {
 	return &LoginService{
 		db: db,
 	}
 }
 
-func (svc *LoginService) FindUserByUserNameAndPassword(userName, password string) (*model.User, error) {
-	var user = &model.User{}
-	var result = svc.db.Where("username = ?", userName).First(&user)
-	if result.Error != nil {
-		// TODO record not found
-		return nil, result.Error
+func (svc *LoginService) FindUserByUserNameAndPassword(ctx context.Context, userName, password string) (*model.User, error) {
+	user, err := svc.db.UserDao.WithContext(ctx).WhereUsernameEq(userName).First()
+	if err != nil {
+		return nil, err
 	}
 	createdAtStr := strconv.FormatInt(user.CreatedAt, 10)
 	h := hmac.New(sha256.New, []byte(createdAtStr))
@@ -50,13 +49,8 @@ func (svc *LoginService) FindUserByToken(token string) (*model.User, error) {
 		return nil, errors.New("token异常")
 	}
 
-	var userID = 1
-	var user = &model.User{}
-	var result = svc.db.First(&user, userID)
-	if result.Error != nil {
-		return nil, result.Error
-	}
-	return user, nil
+	var userID = int64(1)
+	return svc.db.UserDao.GetByID(userID)
 }
 
 func (svc *LoginService) CreateToken(userInfo *model.User) (string, error) {

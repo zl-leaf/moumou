@@ -24,10 +24,10 @@ func (svc *Service) GetRouterList() ([]*model.Router, error) {
 	return svc.routerService.GetRouterList()
 }
 
-func (svc *Service) GetPage(pageID uint) (*model.Page, error) {
+func (svc *Service) GetPage(pageID int64) (*model.Page, error) {
 	return svc.pageService.GetPage(pageID)
 }
 
-func (svc *Service) GetDataList(pageID uint, currentPage, pageSize int) ([]map[string]any, int64, error) {
+func (svc *Service) GetDataList(pageID int64, currentPage, pageSize int) ([]map[string]any, int64, error) {
 	return svc.pageDataService.GetList(pageID, currentPage, pageSize)
 }

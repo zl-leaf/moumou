@@ -2,26 +2,25 @@ package user
 
 import (
 	"context"
+	"github.com/moumou/server/biz/dao"
 	"github.com/moumou/server/biz/model"
 	"github.com/moumou/server/biz/service/user/internal"
 	"github.com/moumou/server/biz/service/user/param"
-	"gorm.io/gorm"
 )
 
 type Service struct {
-	loginSvc  *internal.LoginService
-	manageSvc *internal.ManageService
+	loginSvc *internal.LoginService
+	db       *dao.Dao
 }
 
-func NewUserService(db *gorm.DB) *Service {
+func NewUserService(db *dao.Dao) *Service {
 	return &Service{
-		loginSvc:  internal.NewLoginService(db),
-		manageSvc: internal.NewManageService(db),
+		loginSvc: internal.NewLoginService(db),
 	}
 }
 
 func (svc *Service) Login(ctx context.Context, userName, password string) (token string, userInfo *model.User, err error) {
-	userInfo, err = svc.loginSvc.FindUserByUserNameAndPassword(userName, password)
+	userInfo, err = svc.loginSvc.FindUserByUserNameAndPassword(ctx, userName, password)
 	if err != nil {
 		return
 	}
@@ -42,9 +41,8 @@ func (svc *Service) Self(ctx context.Context) (*model.User, error) {
 }
 
 func (svc *Service) GetUserList(ctx context.Context, filter *param.ListUserFilter, currentPage, pageSize int) ([]*model.User, int64, error) {
-	return svc.manageSvc.List(ctx, filter, currentPage, pageSize)
-}
-
-func (svc *Service) GetUserInfo(ctx context.Context, id int) (*model.User, error) {
-	return svc.manageSvc.GetByID(ctx, id)
+	// TODO filter
+	return svc.db.UserDao.WithContext(ctx).
+		Limit(pageSize).Offset((currentPage - 1) * pageSize).
+		Find()
 }
