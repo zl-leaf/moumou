@@ -2,9 +2,9 @@ package router
 
 import (
 	"context"
-	"github.com/moumou/server/biz/dao"
 	"github.com/moumou/server/biz/service/router/internal"
 	"github.com/moumou/server/biz/service/router/param"
+	"github.com/moumou/server/gen/dao"
 )
 
 type Service struct {

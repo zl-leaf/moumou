@@ -2,10 +2,10 @@ package user
 
 import (
 	"context"
-	"github.com/moumou/server/biz/dao"
 	"github.com/moumou/server/biz/model"
 	"github.com/moumou/server/biz/service/user/internal"
 	"github.com/moumou/server/biz/service/user/param"
+	"github.com/moumou/server/gen/dao"
 )
 
 type Service struct {

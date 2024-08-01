@@ -18,8 +18,8 @@ wire:
 api:
 	protoc --proto_path=../protobuf/api \
     		--proto_path=../protobuf/third_party \
-    		--go_out=paths=source_relative:./proto_gen \
-    		--go-http_out=paths=source_relative:./proto_gen \
+    		--go_out=paths=source_relative:./gen/proto \
+    		--go-http_out=paths=source_relative:./gen/proto \
     		--openapi_out=fq_schema_naming=true,default_response=false:../protobuf/ \
     		 $(API_PROTO_FILES)
 

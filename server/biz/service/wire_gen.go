@@ -8,10 +8,10 @@ package service
 
 import (
 	"github.com/google/wire"
-	"github.com/moumou/server/biz/dao"
 	"github.com/moumou/server/biz/service/page"
 	"github.com/moumou/server/biz/service/router"
 	"github.com/moumou/server/biz/service/user"
+	"github.com/moumou/server/gen/dao"
 	"github.com/moumou/server/pkgs/database"
 )
 

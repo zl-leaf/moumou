@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	g := gorm_dao.NewGenerator("./biz/dao")
+	g := gorm_dao.NewGenerator("./gen/dao")
 	g.Apply(model.User{}, model.Router{})
 	err := g.Generate()
 	if err != nil {

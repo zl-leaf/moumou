@@ -3,7 +3,7 @@ package handler
 import (
 	"github.com/moumou/server/biz/model"
 	"github.com/moumou/server/biz/service/user/param"
-	api "github.com/moumou/server/proto_gen"
+	api "github.com/moumou/server/gen/proto"
 )
 
 func ConvVO2UserListFilter(filterVO *api.GetUserListRequestFilter) *param.ListUserFilter {

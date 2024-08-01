@@ -3,7 +3,7 @@ package handler
 import (
 	"github.com/moumou/server/biz/model"
 	"github.com/moumou/server/biz/service/router/param"
-	api "github.com/moumou/server/proto_gen"
+	api "github.com/moumou/server/gen/proto"
 )
 
 func ConvRouterList2ResponseData(routerList []*model.Router) *api.GetRouterListResponseData {

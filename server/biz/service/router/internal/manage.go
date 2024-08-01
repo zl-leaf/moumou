@@ -3,7 +3,7 @@ package internal
 import (
 	"context"
 	"errors"
-	"github.com/moumou/server/biz/dao"
+	"github.com/moumou/server/gen/dao"
 )
 
 type ManageService struct {

@@ -14,10 +14,10 @@ import (
 	jwtv5 "github.com/golang-jwt/jwt/v5"
 	"github.com/moumou/server/biz/service"
 	"github.com/moumou/server/biz/service/user/param"
+	api "github.com/moumou/server/gen/proto"
 	"github.com/moumou/server/handler"
 	"github.com/moumou/server/handler/mw"
 	"github.com/moumou/server/pkgs/config"
-	api "github.com/moumou/server/proto_gen"
 	"go.opentelemetry.io/otel/sdk/trace"
 	"os"
 )

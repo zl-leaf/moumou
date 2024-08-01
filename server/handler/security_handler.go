@@ -3,7 +3,7 @@ package handler
 import (
 	"context"
 	"github.com/moumou/server/biz/service"
-	api "github.com/moumou/server/proto_gen"
+	api "github.com/moumou/server/gen/proto"
 )
 
 type SecurityHandler struct {
