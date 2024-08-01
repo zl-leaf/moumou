@@ -2,6 +2,7 @@ package dao
 
 import (
 	"context"
+
 	"github.com/moumou/server/biz/model"
 	"gorm.io/gorm"
 )
@@ -20,18 +21,22 @@ func (d *routerDao) WithContext(ctx context.Context) *routerDao {
 }
 
 func (d *routerDao) OrderBySort() *routerDao {
-	d.DB = d.DB.Order("sort asc")
+	d.DB = d.DB.Order("sort ASC")
+	return d
+}
+
+func (d *routerDao) Limit(limit int) *routerDao {
+	d.DB = d.DB.Limit(limit)
+	return d
+}
+
+func (d *routerDao) Offset(offset int) *routerDao {
+	d.DB = d.DB.Offset(offset)
 	return d
 }
 
 func (d *routerDao) GetByID(id int64) (*model.Router, error) {
-	var record *model.Router
-
-	var query = d.First(&record, id)
-	if err := query.Error; err != nil {
-		return nil, err
-	}
-	return record, nil
+	return d.First(id)
 }
 
 func (d *routerDao) Find() ([]*model.Router, int64, error) {
@@ -48,6 +53,15 @@ func (d *routerDao) Find() ([]*model.Router, int64, error) {
 	}
 
 	return list, total, nil
+}
+
+func (d *routerDao) First(conds ...interface{}) (*model.Router, error) {
+	var record = &model.Router{}
+	result := d.DB.First(record, conds...)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return record, nil
 }
 
 func (d *routerDao) Create(record *model.Router) error {

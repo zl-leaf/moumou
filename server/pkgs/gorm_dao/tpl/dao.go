@@ -1,23 +1,23 @@
-package dao
+package tpl
 
-import (
-	"database/sql"
-
-	"gorm.io/gorm"
-)
+const (
+	DaoStructTpl = `
+package {{.QueryPkgName}}
 
 type Dao struct {
-	db *gorm.DB
+	db        *gorm.DB
 
-	UserDao   *userDao
-	RouterDao *routerDao
+	{{range .QueryStructList -}}
+		{{.Name}}Dao *{{.StructName}}Dao
+	{{end}}
 }
 
 func NewDao(db *gorm.DB) *Dao {
 	return &Dao{
 		db:        db,
-		UserDao:   newUserDao(db),
-		RouterDao: newRouterDao(db),
+		{{range .QueryStructList -}}
+			{{.Name}}Dao: new{{.Name}}Dao(db),
+		{{end}}
 	}
 }
 
@@ -27,3 +27,5 @@ func (d *Dao) Transaction(fc func(tx *Dao) error, opts ...*sql.TxOptions) (err e
 		return fc(newDao)
 	}, opts...)
 }
+`
+)

@@ -22,3 +22,7 @@ api:
     		--go-http_out=paths=source_relative:./proto_gen \
     		--openapi_out=fq_schema_naming=true,default_response=false:../protobuf/ \
     		 $(API_PROTO_FILES)
+
+.PHONY: dao
+dao:
+	go run pkgs/gorm_dao/cmd/main.go

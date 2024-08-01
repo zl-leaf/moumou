@@ -2,6 +2,7 @@ package dao
 
 import (
 	"context"
+
 	"github.com/moumou/server/biz/model"
 	"gorm.io/gorm"
 )
@@ -61,4 +62,16 @@ func (d *userDao) First(conds ...interface{}) (*model.User, error) {
 		return nil, result.Error
 	}
 	return record, nil
+}
+
+func (d *userDao) Create(record *model.User) error {
+	return d.DB.Create(record).Error
+}
+
+func (d *userDao) Save(record *model.User) error {
+	return d.DB.Save(record).Error
+}
+
+func (d *userDao) Delete(conds ...interface{}) error {
+	return d.DB.Delete(&model.User{}, conds...).Error
 }
