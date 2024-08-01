@@ -25,4 +25,4 @@ api:
 
 .PHONY: dao
 dao:
-	go run pkgs/gorm_dao/cmd/main.go
+	go run cmd/init_dao/main.go
