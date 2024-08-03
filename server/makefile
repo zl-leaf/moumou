@@ -26,3 +26,7 @@ api:
 .PHONY: dao
 dao:
 	go run cmd/init_dao/main.go
+
+.PHONY: table
+table:
+	go run cmd/init_table/*
