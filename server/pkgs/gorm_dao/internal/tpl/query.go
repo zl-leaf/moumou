@@ -21,8 +21,8 @@ func (d *{{.StructName}}Dao) WithContext(ctx context.Context) *{{.StructName}}Da
 
 	QueryMethodTpl = `
 {{range .WhereFns -}}
-func (d *{{$.StructName}}Dao) {{.MethodName}}({{.Params.Body}}) *{{$.StructName}}Dao {
-	d.DB = d.DB.Where("{{.Query}}", {{.Params.Args}})
+func (d *{{$.StructName}}Dao) {{.MethodName}}({{.Params.InputArgs}}) *{{$.StructName}}Dao {
+	d.DB = d.DB.Where({{.Query}})
 	return d
 }
 {{end}}

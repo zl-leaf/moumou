@@ -3,16 +3,17 @@ package gorm_dao
 import (
 	"bytes"
 	"fmt"
-	"github.com/moumou/server/pkgs/gorm_dao/meta"
-	"github.com/moumou/server/pkgs/gorm_dao/tpl"
-	"golang.org/x/tools/imports"
-	"gorm.io/gorm/schema"
 	"os"
 	"path/filepath"
 	"strconv"
 	"strings"
 	"sync"
 	"text/template"
+
+	"github.com/moumou/server/pkgs/gorm_dao/internal/meta"
+	"github.com/moumou/server/pkgs/gorm_dao/internal/tpl"
+	"golang.org/x/tools/imports"
+	"gorm.io/gorm/schema"
 )
 
 type Generator struct {
