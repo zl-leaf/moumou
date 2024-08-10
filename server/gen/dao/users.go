@@ -17,20 +17,19 @@ func newUserDao(db *gorm.DB) *userDao {
 }
 
 func (d *userDao) WithContext(ctx context.Context) *userDao {
-	d.DB = d.DB.WithContext(ctx)
-	return d
+	return &userDao{d.DB.WithContext(ctx)}
 }
 
-func (d *userDao) WhereIDEq(ID int) *userDao {
+func (d *userDao) WhereIDEq(ID int64) *userDao {
 	d.DB = d.DB.Where(clause.Eq{Column: "id", Value: ID})
 	return d
 }
-func (d *userDao) WhereIDNeq(ID int) *userDao {
+func (d *userDao) WhereIDNeq(ID int64) *userDao {
 	d.DB = d.DB.Where(clause.Neq{Column: "id", Value: ID})
 	return d
 }
-func (d *userDao) WhereIDIn(ID []int) *userDao {
-	d.DB = d.DB.Where(clause.IN{Column: "id", Values: func(v []int) []interface{} {
+func (d *userDao) WhereIDIn(ID []int64) *userDao {
+	d.DB = d.DB.Where(clause.IN{Column: "id", Values: func(v []int64) []interface{} {
 		ret := make([]interface{}, len(v))
 		for i, item := range v {
 			ret[i] = item
@@ -39,8 +38,8 @@ func (d *userDao) WhereIDIn(ID []int) *userDao {
 	}(ID)})
 	return d
 }
-func (d *userDao) WhereIDNotIn(ID []int) *userDao {
-	d.DB = d.DB.Where(clause.Not((clause.IN{Column: "id", Values: func(v []int) []interface{} {
+func (d *userDao) WhereIDNotIn(ID []int64) *userDao {
+	d.DB = d.DB.Where(clause.Not((clause.IN{Column: "id", Values: func(v []int64) []interface{} {
 		ret := make([]interface{}, len(v))
 		for i, item := range v {
 			ret[i] = item
@@ -49,36 +48,36 @@ func (d *userDao) WhereIDNotIn(ID []int) *userDao {
 	}(ID)})))
 	return d
 }
-func (d *userDao) WhereIDLt(ID int) *userDao {
+func (d *userDao) WhereIDLt(ID int64) *userDao {
 	d.DB = d.DB.Where(clause.Lt{Column: "id", Value: ID})
 	return d
 }
-func (d *userDao) WhereIDLte(ID int) *userDao {
+func (d *userDao) WhereIDLte(ID int64) *userDao {
 	d.DB = d.DB.Where(clause.Lte{Column: "id", Value: ID})
 	return d
 }
-func (d *userDao) WhereIDGt(ID int) *userDao {
+func (d *userDao) WhereIDGt(ID int64) *userDao {
 	d.DB = d.DB.Where(clause.Gt{Column: "id", Value: ID})
 	return d
 }
-func (d *userDao) WhereIDGte(ID int) *userDao {
+func (d *userDao) WhereIDGte(ID int64) *userDao {
 	d.DB = d.DB.Where(clause.Gte{Column: "id", Value: ID})
 	return d
 }
-func (d *userDao) WhereIDBetween(left int, right int) *userDao {
+func (d *userDao) WhereIDBetween(left int64, right int64) *userDao {
 	d.DB = d.DB.Where(clause.Expr{SQL: "id Between ? AND ?", Vars: []interface{}{left, right}})
 	return d
 }
-func (d *userDao) WhereCreatedAtEq(createdAt int) *userDao {
+func (d *userDao) WhereCreatedAtEq(createdAt int64) *userDao {
 	d.DB = d.DB.Where(clause.Eq{Column: "created_at", Value: createdAt})
 	return d
 }
-func (d *userDao) WhereCreatedAtNeq(createdAt int) *userDao {
+func (d *userDao) WhereCreatedAtNeq(createdAt int64) *userDao {
 	d.DB = d.DB.Where(clause.Neq{Column: "created_at", Value: createdAt})
 	return d
 }
-func (d *userDao) WhereCreatedAtIn(createdAt []int) *userDao {
-	d.DB = d.DB.Where(clause.IN{Column: "created_at", Values: func(v []int) []interface{} {
+func (d *userDao) WhereCreatedAtIn(createdAt []int64) *userDao {
+	d.DB = d.DB.Where(clause.IN{Column: "created_at", Values: func(v []int64) []interface{} {
 		ret := make([]interface{}, len(v))
 		for i, item := range v {
 			ret[i] = item
@@ -87,8 +86,8 @@ func (d *userDao) WhereCreatedAtIn(createdAt []int) *userDao {
 	}(createdAt)})
 	return d
 }
-func (d *userDao) WhereCreatedAtNotIn(createdAt []int) *userDao {
-	d.DB = d.DB.Where(clause.Not((clause.IN{Column: "created_at", Values: func(v []int) []interface{} {
+func (d *userDao) WhereCreatedAtNotIn(createdAt []int64) *userDao {
+	d.DB = d.DB.Where(clause.Not((clause.IN{Column: "created_at", Values: func(v []int64) []interface{} {
 		ret := make([]interface{}, len(v))
 		for i, item := range v {
 			ret[i] = item
@@ -97,36 +96,36 @@ func (d *userDao) WhereCreatedAtNotIn(createdAt []int) *userDao {
 	}(createdAt)})))
 	return d
 }
-func (d *userDao) WhereCreatedAtLt(createdAt int) *userDao {
+func (d *userDao) WhereCreatedAtLt(createdAt int64) *userDao {
 	d.DB = d.DB.Where(clause.Lt{Column: "created_at", Value: createdAt})
 	return d
 }
-func (d *userDao) WhereCreatedAtLte(createdAt int) *userDao {
+func (d *userDao) WhereCreatedAtLte(createdAt int64) *userDao {
 	d.DB = d.DB.Where(clause.Lte{Column: "created_at", Value: createdAt})
 	return d
 }
-func (d *userDao) WhereCreatedAtGt(createdAt int) *userDao {
+func (d *userDao) WhereCreatedAtGt(createdAt int64) *userDao {
 	d.DB = d.DB.Where(clause.Gt{Column: "created_at", Value: createdAt})
 	return d
 }
-func (d *userDao) WhereCreatedAtGte(createdAt int) *userDao {
+func (d *userDao) WhereCreatedAtGte(createdAt int64) *userDao {
 	d.DB = d.DB.Where(clause.Gte{Column: "created_at", Value: createdAt})
 	return d
 }
-func (d *userDao) WhereCreatedAtBetween(left int, right int) *userDao {
+func (d *userDao) WhereCreatedAtBetween(left int64, right int64) *userDao {
 	d.DB = d.DB.Where(clause.Expr{SQL: "created_at Between ? AND ?", Vars: []interface{}{left, right}})
 	return d
 }
-func (d *userDao) WhereUpdatedAtEq(updatedAt int) *userDao {
+func (d *userDao) WhereUpdatedAtEq(updatedAt int64) *userDao {
 	d.DB = d.DB.Where(clause.Eq{Column: "updated_at", Value: updatedAt})
 	return d
 }
-func (d *userDao) WhereUpdatedAtNeq(updatedAt int) *userDao {
+func (d *userDao) WhereUpdatedAtNeq(updatedAt int64) *userDao {
 	d.DB = d.DB.Where(clause.Neq{Column: "updated_at", Value: updatedAt})
 	return d
 }
-func (d *userDao) WhereUpdatedAtIn(updatedAt []int) *userDao {
-	d.DB = d.DB.Where(clause.IN{Column: "updated_at", Values: func(v []int) []interface{} {
+func (d *userDao) WhereUpdatedAtIn(updatedAt []int64) *userDao {
+	d.DB = d.DB.Where(clause.IN{Column: "updated_at", Values: func(v []int64) []interface{} {
 		ret := make([]interface{}, len(v))
 		for i, item := range v {
 			ret[i] = item
@@ -135,8 +134,8 @@ func (d *userDao) WhereUpdatedAtIn(updatedAt []int) *userDao {
 	}(updatedAt)})
 	return d
 }
-func (d *userDao) WhereUpdatedAtNotIn(updatedAt []int) *userDao {
-	d.DB = d.DB.Where(clause.Not((clause.IN{Column: "updated_at", Values: func(v []int) []interface{} {
+func (d *userDao) WhereUpdatedAtNotIn(updatedAt []int64) *userDao {
+	d.DB = d.DB.Where(clause.Not((clause.IN{Column: "updated_at", Values: func(v []int64) []interface{} {
 		ret := make([]interface{}, len(v))
 		for i, item := range v {
 			ret[i] = item
@@ -145,72 +144,24 @@ func (d *userDao) WhereUpdatedAtNotIn(updatedAt []int) *userDao {
 	}(updatedAt)})))
 	return d
 }
-func (d *userDao) WhereUpdatedAtLt(updatedAt int) *userDao {
+func (d *userDao) WhereUpdatedAtLt(updatedAt int64) *userDao {
 	d.DB = d.DB.Where(clause.Lt{Column: "updated_at", Value: updatedAt})
 	return d
 }
-func (d *userDao) WhereUpdatedAtLte(updatedAt int) *userDao {
+func (d *userDao) WhereUpdatedAtLte(updatedAt int64) *userDao {
 	d.DB = d.DB.Where(clause.Lte{Column: "updated_at", Value: updatedAt})
 	return d
 }
-func (d *userDao) WhereUpdatedAtGt(updatedAt int) *userDao {
+func (d *userDao) WhereUpdatedAtGt(updatedAt int64) *userDao {
 	d.DB = d.DB.Where(clause.Gt{Column: "updated_at", Value: updatedAt})
 	return d
 }
-func (d *userDao) WhereUpdatedAtGte(updatedAt int) *userDao {
+func (d *userDao) WhereUpdatedAtGte(updatedAt int64) *userDao {
 	d.DB = d.DB.Where(clause.Gte{Column: "updated_at", Value: updatedAt})
 	return d
 }
-func (d *userDao) WhereUpdatedAtBetween(left int, right int) *userDao {
+func (d *userDao) WhereUpdatedAtBetween(left int64, right int64) *userDao {
 	d.DB = d.DB.Where(clause.Expr{SQL: "updated_at Between ? AND ?", Vars: []interface{}{left, right}})
-	return d
-}
-func (d *userDao) WhereDeletedAtEq(deletedAt uint) *userDao {
-	d.DB = d.DB.Where(clause.Eq{Column: "deleted_at", Value: deletedAt})
-	return d
-}
-func (d *userDao) WhereDeletedAtNeq(deletedAt uint) *userDao {
-	d.DB = d.DB.Where(clause.Neq{Column: "deleted_at", Value: deletedAt})
-	return d
-}
-func (d *userDao) WhereDeletedAtIn(deletedAt []uint) *userDao {
-	d.DB = d.DB.Where(clause.IN{Column: "deleted_at", Values: func(v []uint) []interface{} {
-		ret := make([]interface{}, len(v))
-		for i, item := range v {
-			ret[i] = item
-		}
-		return ret
-	}(deletedAt)})
-	return d
-}
-func (d *userDao) WhereDeletedAtNotIn(deletedAt []uint) *userDao {
-	d.DB = d.DB.Where(clause.Not((clause.IN{Column: "deleted_at", Values: func(v []uint) []interface{} {
-		ret := make([]interface{}, len(v))
-		for i, item := range v {
-			ret[i] = item
-		}
-		return ret
-	}(deletedAt)})))
-	return d
-}
-func (d *userDao) WhereDeletedAtLt(deletedAt uint) *userDao {
-	d.DB = d.DB.Where(clause.Lt{Column: "deleted_at", Value: deletedAt})
-	return d
-}
-func (d *userDao) WhereDeletedAtLte(deletedAt uint) *userDao {
-	d.DB = d.DB.Where(clause.Lte{Column: "deleted_at", Value: deletedAt})
-	return d
-}
-func (d *userDao) WhereDeletedAtGt(deletedAt uint) *userDao {
-	d.DB = d.DB.Where(clause.Gt{Column: "deleted_at", Value: deletedAt})
-	return d
-}
-func (d *userDao) WhereDeletedAtGte(deletedAt uint) *userDao {
-	d.DB = d.DB.Where(clause.Gte{Column: "deleted_at", Value: deletedAt})
-	return d
-}
-func (d *userDao) WhereDeletedAtBetween(left uint, right uint) *userDao {
-	d.DB = d.DB.Where(clause.Expr{SQL: "deleted_at Between ? AND ?", Vars: []interface{}{left, right}})
 	return d
 }
 func (d *userDao) WhereUsernameEq(username string) *userDao {
@@ -301,6 +252,18 @@ func (d *userDao) Limit(limit int) *userDao {
 
 func (d *userDao) Offset(offset int) *userDao {
 	d.DB = d.DB.Offset(offset)
+	return d
+}
+
+func (d *userDao) Page(page, pageSize int) *userDao {
+	if page <= 0 {
+		page = 1
+	}
+	if pageSize <= 0 {
+		pageSize = 10
+	}
+	d.DB = d.DB.Offset((page - 1) * pageSize)
+	d.DB = d.DB.Limit(pageSize)
 	return d
 }
 

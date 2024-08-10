@@ -2,12 +2,12 @@ package handler
 
 import (
 	"github.com/moumou/server/biz/model"
-	"github.com/moumou/server/biz/service/user/param"
+	"github.com/moumou/server/biz/service/user/data"
 	api "github.com/moumou/server/gen/proto"
 )
 
-func ConvVO2UserListFilter(filterVO *api.GetUserListRequestFilter) *param.ListUserFilter {
-	return &param.ListUserFilter{}
+func ConvVO2UserListFilter(filterVO *api.GetUserListRequestFilter) *data.ListUserFilter {
+	return &data.ListUserFilter{}
 }
 
 func ConvUserList2RespData(userList []*model.User, total int64) *api.GetUserListResponseData {

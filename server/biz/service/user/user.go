@@ -2,9 +2,10 @@ package user
 
 import (
 	"context"
+
 	"github.com/moumou/server/biz/model"
+	"github.com/moumou/server/biz/service/user/data"
 	"github.com/moumou/server/biz/service/user/internal"
-	"github.com/moumou/server/biz/service/user/param"
 	"github.com/moumou/server/gen/dao"
 )
 
@@ -16,6 +17,7 @@ type Service struct {
 func NewUserService(db *dao.Dao) *Service {
 	return &Service{
 		loginSvc: internal.NewLoginService(db),
+		db:       db,
 	}
 }
 
@@ -37,10 +39,10 @@ func (svc *Service) Logout(ctx context.Context, token string) error {
 }
 
 func (svc *Service) Self(ctx context.Context) (*model.User, error) {
-	return svc.loginSvc.FindUserByToken("")
+	return svc.loginSvc.FindUserByToken(ctx)
 }
 
-func (svc *Service) GetUserList(ctx context.Context, filter *param.ListUserFilter, currentPage, pageSize int) ([]*model.User, int64, error) {
+func (svc *Service) GetUserList(ctx context.Context, filter *data.ListUserFilter, currentPage, pageSize int) ([]*model.User, int64, error) {
 	// TODO filter
 	return svc.db.UserDao.WithContext(ctx).
 		Limit(pageSize).Offset((currentPage - 1) * pageSize).

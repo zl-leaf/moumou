@@ -12,7 +12,7 @@ type IConditionField interface {
 }
 
 func GetConditionFieldBySchemaField(field *schema.Field) (IConditionField, error) {
-	switch string(field.DataType) {
+	switch field.FieldType.Name() {
 	case "string":
 		return NewStringField(field), nil
 	case "int", "int32", "int64", "float", "float32", "float64", "uint", "uint32", "uint64":

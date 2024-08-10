@@ -13,8 +13,7 @@ func new{{.Name}}Dao(db *gorm.DB) *{{.StructName}}Dao {
 }
 
 func (d *{{.StructName}}Dao) WithContext(ctx context.Context) *{{.StructName}}Dao {
-	d.DB = d.DB.WithContext(ctx)
-	return d
+	return &{{.StructName}}Dao{d.DB.WithContext(ctx)}
 }
 
 ` + QueryMethodTpl + CRUDTpl
@@ -42,6 +41,18 @@ func(d *{{.StructName}}Dao) Limit(limit int) *{{.StructName}}Dao {
 
 func (d *{{.StructName}}Dao) Offset(offset int) *{{.StructName}}Dao {
 	d.DB = d.DB.Offset(offset)
+	return d
+}
+
+func(d *{{.StructName}}Dao) Page(page, pageSize int) *{{.StructName}}Dao {
+	if page <= 0 {
+		page = 1
+	}
+	if pageSize <=0 {
+		pageSize = 10
+	}
+	d.DB = d.DB.Offset((page-1) * pageSize)
+	d.DB = d.DB.Limit(pageSize)
 	return d
 }
 `

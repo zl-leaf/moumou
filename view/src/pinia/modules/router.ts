@@ -36,7 +36,9 @@ export const useRouterStore = defineStore('router', () => {
     }
     // 更新路由
     const updateRouter = async () => {
-        try {
+        updateRouterFlag.value = (updateRouterFlag.value + 1) % 10
+        return
+        /*try {
             const routerTreeResponse = await api.SecurityHandlerService.securityHandlerGetSecurityRouterTree({})
             if (routerTreeResponse.code != 0) {
                 return Promise.reject(routerTreeResponse.message);
@@ -56,7 +58,6 @@ export const useRouterStore = defineStore('router', () => {
                 ],
             }
 
-            updateRouterFlag.value = (updateRouterFlag.value + 1) % 10
 
             if (routerTreeResponse.data?.routers) {
                 formatRouter(baseRouter, routerTreeResponse.data.routers)
@@ -65,7 +66,7 @@ export const useRouterStore = defineStore('router', () => {
             router.addRoute(baseRouter)
         } catch (err) {
             return Promise.reject("网络错误")
-        }
+        }*/
     }
 
     // 动态加载

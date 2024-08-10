@@ -2,8 +2,9 @@ package router
 
 import (
 	"context"
+
+	"github.com/moumou/server/biz/service/router/data"
 	"github.com/moumou/server/biz/service/router/internal"
-	"github.com/moumou/server/biz/service/router/param"
 	"github.com/moumou/server/gen/dao"
 )
 
@@ -19,13 +20,13 @@ func NewRouterService(db *dao.Dao) *Service {
 	}
 }
 
-func (svc *Service) CreateRouter(ctx context.Context, data *param.RouterFormData) (int64, error) {
+func (svc *Service) CreateRouter(ctx context.Context, data *data.RouterFormData) (int64, error) {
 	router := data.Router
 	err := svc.db.RouterDao.WithContext(ctx).Create(&router)
 	return router.ID, err
 }
 
-func (svc *Service) UpdateRouter(ctx context.Context, data *param.RouterFormData) error {
+func (svc *Service) UpdateRouter(ctx context.Context, data *data.RouterFormData) error {
 	return svc.db.RouterDao.WithContext(ctx).Save(&data.Router)
 }
 

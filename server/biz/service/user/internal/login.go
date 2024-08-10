@@ -6,13 +6,15 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"errors"
-	"github.com/golang-jwt/jwt/v5"
-	"github.com/moumou/server/biz/model"
-	"github.com/moumou/server/biz/service/user/param"
-	"github.com/moumou/server/gen/dao"
-	"github.com/moumou/server/pkgs/config"
 	"strconv"
 	"time"
+
+	"github.com/go-kratos/kratos/v2/middleware/auth/jwt"
+	golangjwt "github.com/golang-jwt/jwt/v5"
+	"github.com/moumou/server/biz/model"
+	"github.com/moumou/server/biz/service/user/data"
+	"github.com/moumou/server/gen/dao"
+	"github.com/moumou/server/pkgs/config"
 )
 
 type LoginService struct {
@@ -43,31 +45,37 @@ func (svc *LoginService) FindUserByUserNameAndPassword(ctx context.Context, user
 	return user, nil
 }
 
-func (svc *LoginService) FindUserByToken(token string) (*model.User, error) {
-	// TODO
-	if token != "token" {
-		return nil, errors.New("token异常")
+func (svc *LoginService) FindUserByToken(ctx context.Context) (*model.User, error) {
+	claims, ok := jwt.FromContext(ctx)
+	if !ok {
+		return nil, errors.New("user nof found")
+	}
+	customClaims, ok := claims.(*data.CustomClaims)
+	if !ok {
+		return nil, errors.New("parse token fail")
 	}
 
-	var userID = int64(1)
+	var userID = customClaims.UserID
 	return svc.db.UserDao.GetByID(userID)
 }
 
 func (svc *LoginService) CreateToken(userInfo *model.User) (string, error) {
-	claims := jwt.RegisteredClaims{
-		ExpiresAt: jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
-		IssuedAt:  jwt.NewNumericDate(time.Now()),
-		NotBefore: jwt.NewNumericDate(time.Now()),
-		ID:        strconv.FormatInt(userInfo.ID, 10),
+	claims := data.CustomClaims{
+		RegisteredClaims: golangjwt.RegisteredClaims{
+			ExpiresAt: golangjwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
+			IssuedAt:  golangjwt.NewNumericDate(time.Now()),
+			NotBefore: golangjwt.NewNumericDate(time.Now()),
+			ID:        strconv.FormatInt(userInfo.ID, 10),
+		},
 	}
 
-	var cnf param.SecurityConfig
+	var cnf data.SecurityConfig
 	err := config.GetConfig(cnf.GetConfigName(), &cnf)
 	if err != nil {
 		return "", err
 	}
 
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	token := golangjwt.NewWithClaims(golangjwt.SigningMethodHS256, claims)
 	return token.SignedString([]byte(cnf.JWTKey))
 }
 

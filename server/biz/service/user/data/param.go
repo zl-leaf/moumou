@@ -1,4 +1,4 @@
-package param
+package data
 
 type ListUserFilter struct {
 }

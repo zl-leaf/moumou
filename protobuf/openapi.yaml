@@ -6,6 +6,24 @@ info:
     title: ""
     version: 0.0.1
 paths:
+    /permission/list:
+        post:
+            tags:
+                - PermissionHandler
+            operationId: PermissionHandler_GetPermissionList
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/server.api.GetPermissionListRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/server.api.GetPermissionListResponse'
     /role/create:
         post:
             tags:
@@ -42,6 +60,24 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/server.api.DeleteRoleResponse'
+    /role/info:
+        post:
+            tags:
+                - RoleHandler
+            operationId: RoleHandler_GetRoleInfo
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/server.api.GetRoleInfoRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/server.api.GetRoleInfoResponse'
     /role/list:
         post:
             tags:
@@ -297,7 +333,12 @@ components:
                 message:
                     type: string
                 data:
-                    $ref: '#/components/schemas/server.api.CreateRoleRequestData'
+                    $ref: '#/components/schemas/server.api.CreateRoleResponseData'
+        server.api.CreateRoleResponseData:
+            type: object
+            properties:
+                id:
+                    type: string
         server.api.CreateRouterRequest:
             type: object
             properties:
@@ -366,6 +407,45 @@ components:
                     format: int32
                 message:
                     type: string
+        server.api.GetPermissionListRequest:
+            type: object
+            properties:
+                filter:
+                    $ref: '#/components/schemas/server.api.GetPermissionListRequest'
+        server.api.GetPermissionListResponse:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                message:
+                    type: string
+                data:
+                    $ref: '#/components/schemas/server.api.GetPermissionListResponseData'
+        server.api.GetPermissionListResponseData:
+            type: object
+            properties:
+                total:
+                    type: string
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/server.api.Permission'
+        server.api.GetRoleInfoRequest:
+            type: object
+            properties:
+                id:
+                    type: string
+        server.api.GetRoleInfoResponse:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                message:
+                    type: string
+                data:
+                    $ref: '#/components/schemas/server.api.Role'
         server.api.GetRoleListRequest:
             type: object
             properties:
@@ -537,6 +617,20 @@ components:
                     format: int32
                 message:
                     type: string
+        server.api.Permission:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                path:
+                    type: string
+                pid:
+                    type: string
+                sort:
+                    type: integer
+                    format: int32
         server.api.Role:
             type: object
             properties:
@@ -644,6 +738,7 @@ components:
                 username:
                     type: string
 tags:
+    - name: PermissionHandler
     - name: RoleHandler
     - name: RouterHandler
     - name: SecurityHandler

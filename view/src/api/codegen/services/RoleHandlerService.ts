@@ -6,6 +6,8 @@ import type { server_api_CreateRoleRequest } from '../models/server_api_CreateRo
 import type { server_api_CreateRoleResponse } from '../models/server_api_CreateRoleResponse';
 import type { server_api_DeleteRoleRequest } from '../models/server_api_DeleteRoleRequest';
 import type { server_api_DeleteRoleResponse } from '../models/server_api_DeleteRoleResponse';
+import type { server_api_GetRoleInfoRequest } from '../models/server_api_GetRoleInfoRequest';
+import type { server_api_GetRoleInfoResponse } from '../models/server_api_GetRoleInfoResponse';
 import type { server_api_GetRoleListRequest } from '../models/server_api_GetRoleListRequest';
 import type { server_api_GetRoleListResponse } from '../models/server_api_GetRoleListResponse';
 import type { server_api_UpdateRoleRequest } from '../models/server_api_UpdateRoleRequest';
@@ -40,6 +42,21 @@ export class RoleHandlerService {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/role/delete',
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+    /**
+     * @param requestBody
+     * @returns server_api_GetRoleInfoResponse OK
+     * @throws ApiError
+     */
+    public static roleHandlerGetRoleInfo(
+        requestBody: server_api_GetRoleInfoRequest,
+    ): CancelablePromise<server_api_GetRoleInfoResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/role/info',
             body: requestBody,
             mediaType: 'application/json',
         });

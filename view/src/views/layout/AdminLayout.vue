@@ -31,6 +31,7 @@ import { useUserStore } from "@/pinia/modules/user"
 import router from '@/router';
 
 const openMenu = (e: any) => {
+  console.log(e)
   router.push({
     name: e.key,
     replace: true,

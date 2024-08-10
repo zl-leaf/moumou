@@ -1,4 +1,4 @@
-package param
+package data
 
 import "github.com/moumou/server/biz/model"
 

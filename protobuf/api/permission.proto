@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package server.api;
+
+import "google/api/annotations.proto";
+
+option go_package = "server/api;api";
+
+service PermissionHandler {
+  rpc GetPermissionList(GetPermissionListRequest) returns (GetPermissionListResponse) {
+    option(google.api.http) = {
+      post: "/permission/list",
+      body: "*"
+    };
+  };
+}
+
+message GetPermissionListRequestFilter {}
+message GetPermissionListRequest {
+  optional GetPermissionListRequest filter = 1;
+}
+
+message GetPermissionListResponseData {
+  int64 total = 1;
+  repeated Permission list = 2;
+}
+
+message GetPermissionListResponse {
+  int32 code = 1;
+  string message = 2;
+  optional GetPermissionListResponseData data = 3;
+}
+
+message Permission {
+  int64 id = 1;
+  string name = 2;
+  string path = 3;
+  int64 pid = 4;
+  int32 sort = 5;
+}

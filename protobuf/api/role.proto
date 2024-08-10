@@ -34,6 +34,13 @@ service RoleHandler {
       body: "*"
     };
   }
+
+  rpc GetRoleInfo(GetRoleInfoRequest) returns (GetRoleInfoResponse){
+    option (google.api.http) = {
+      post: "/role/info",
+      body: "*"
+    };
+  }
 }
 
 message Role {
@@ -76,7 +83,7 @@ message CreateRoleResponseData {
 message CreateRoleResponse {
   int32 code = 1;
   string message = 2;
-  CreateRoleRequestData data = 3;
+  CreateRoleResponseData data = 3;
 }
 
 message UpdateRoleRequestData {
@@ -100,4 +107,14 @@ message DeleteRoleRequest {
 message DeleteRoleResponse {
   int32 code = 1;
   string message = 2;
+}
+
+message GetRoleInfoRequest {
+  int64 id = 1;
+}
+
+message GetRoleInfoResponse {
+  int32 code = 1;
+  string message = 2;
+  Role data = 3;
 }

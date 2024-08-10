@@ -17,20 +17,19 @@ func newRouterDao(db *gorm.DB) *routerDao {
 }
 
 func (d *routerDao) WithContext(ctx context.Context) *routerDao {
-	d.DB = d.DB.WithContext(ctx)
-	return d
+	return &routerDao{d.DB.WithContext(ctx)}
 }
 
-func (d *routerDao) WhereIDEq(ID int) *routerDao {
+func (d *routerDao) WhereIDEq(ID int64) *routerDao {
 	d.DB = d.DB.Where(clause.Eq{Column: "id", Value: ID})
 	return d
 }
-func (d *routerDao) WhereIDNeq(ID int) *routerDao {
+func (d *routerDao) WhereIDNeq(ID int64) *routerDao {
 	d.DB = d.DB.Where(clause.Neq{Column: "id", Value: ID})
 	return d
 }
-func (d *routerDao) WhereIDIn(ID []int) *routerDao {
-	d.DB = d.DB.Where(clause.IN{Column: "id", Values: func(v []int) []interface{} {
+func (d *routerDao) WhereIDIn(ID []int64) *routerDao {
+	d.DB = d.DB.Where(clause.IN{Column: "id", Values: func(v []int64) []interface{} {
 		ret := make([]interface{}, len(v))
 		for i, item := range v {
 			ret[i] = item
@@ -39,8 +38,8 @@ func (d *routerDao) WhereIDIn(ID []int) *routerDao {
 	}(ID)})
 	return d
 }
-func (d *routerDao) WhereIDNotIn(ID []int) *routerDao {
-	d.DB = d.DB.Where(clause.Not((clause.IN{Column: "id", Values: func(v []int) []interface{} {
+func (d *routerDao) WhereIDNotIn(ID []int64) *routerDao {
+	d.DB = d.DB.Where(clause.Not((clause.IN{Column: "id", Values: func(v []int64) []interface{} {
 		ret := make([]interface{}, len(v))
 		for i, item := range v {
 			ret[i] = item
@@ -49,36 +48,36 @@ func (d *routerDao) WhereIDNotIn(ID []int) *routerDao {
 	}(ID)})))
 	return d
 }
-func (d *routerDao) WhereIDLt(ID int) *routerDao {
+func (d *routerDao) WhereIDLt(ID int64) *routerDao {
 	d.DB = d.DB.Where(clause.Lt{Column: "id", Value: ID})
 	return d
 }
-func (d *routerDao) WhereIDLte(ID int) *routerDao {
+func (d *routerDao) WhereIDLte(ID int64) *routerDao {
 	d.DB = d.DB.Where(clause.Lte{Column: "id", Value: ID})
 	return d
 }
-func (d *routerDao) WhereIDGt(ID int) *routerDao {
+func (d *routerDao) WhereIDGt(ID int64) *routerDao {
 	d.DB = d.DB.Where(clause.Gt{Column: "id", Value: ID})
 	return d
 }
-func (d *routerDao) WhereIDGte(ID int) *routerDao {
+func (d *routerDao) WhereIDGte(ID int64) *routerDao {
 	d.DB = d.DB.Where(clause.Gte{Column: "id", Value: ID})
 	return d
 }
-func (d *routerDao) WhereIDBetween(left int, right int) *routerDao {
+func (d *routerDao) WhereIDBetween(left int64, right int64) *routerDao {
 	d.DB = d.DB.Where(clause.Expr{SQL: "id Between ? AND ?", Vars: []interface{}{left, right}})
 	return d
 }
-func (d *routerDao) WhereCreatedAtEq(createdAt int) *routerDao {
+func (d *routerDao) WhereCreatedAtEq(createdAt int64) *routerDao {
 	d.DB = d.DB.Where(clause.Eq{Column: "created_at", Value: createdAt})
 	return d
 }
-func (d *routerDao) WhereCreatedAtNeq(createdAt int) *routerDao {
+func (d *routerDao) WhereCreatedAtNeq(createdAt int64) *routerDao {
 	d.DB = d.DB.Where(clause.Neq{Column: "created_at", Value: createdAt})
 	return d
 }
-func (d *routerDao) WhereCreatedAtIn(createdAt []int) *routerDao {
-	d.DB = d.DB.Where(clause.IN{Column: "created_at", Values: func(v []int) []interface{} {
+func (d *routerDao) WhereCreatedAtIn(createdAt []int64) *routerDao {
+	d.DB = d.DB.Where(clause.IN{Column: "created_at", Values: func(v []int64) []interface{} {
 		ret := make([]interface{}, len(v))
 		for i, item := range v {
 			ret[i] = item
@@ -87,8 +86,8 @@ func (d *routerDao) WhereCreatedAtIn(createdAt []int) *routerDao {
 	}(createdAt)})
 	return d
 }
-func (d *routerDao) WhereCreatedAtNotIn(createdAt []int) *routerDao {
-	d.DB = d.DB.Where(clause.Not((clause.IN{Column: "created_at", Values: func(v []int) []interface{} {
+func (d *routerDao) WhereCreatedAtNotIn(createdAt []int64) *routerDao {
+	d.DB = d.DB.Where(clause.Not((clause.IN{Column: "created_at", Values: func(v []int64) []interface{} {
 		ret := make([]interface{}, len(v))
 		for i, item := range v {
 			ret[i] = item
@@ -97,36 +96,36 @@ func (d *routerDao) WhereCreatedAtNotIn(createdAt []int) *routerDao {
 	}(createdAt)})))
 	return d
 }
-func (d *routerDao) WhereCreatedAtLt(createdAt int) *routerDao {
+func (d *routerDao) WhereCreatedAtLt(createdAt int64) *routerDao {
 	d.DB = d.DB.Where(clause.Lt{Column: "created_at", Value: createdAt})
 	return d
 }
-func (d *routerDao) WhereCreatedAtLte(createdAt int) *routerDao {
+func (d *routerDao) WhereCreatedAtLte(createdAt int64) *routerDao {
 	d.DB = d.DB.Where(clause.Lte{Column: "created_at", Value: createdAt})
 	return d
 }
-func (d *routerDao) WhereCreatedAtGt(createdAt int) *routerDao {
+func (d *routerDao) WhereCreatedAtGt(createdAt int64) *routerDao {
 	d.DB = d.DB.Where(clause.Gt{Column: "created_at", Value: createdAt})
 	return d
 }
-func (d *routerDao) WhereCreatedAtGte(createdAt int) *routerDao {
+func (d *routerDao) WhereCreatedAtGte(createdAt int64) *routerDao {
 	d.DB = d.DB.Where(clause.Gte{Column: "created_at", Value: createdAt})
 	return d
 }
-func (d *routerDao) WhereCreatedAtBetween(left int, right int) *routerDao {
+func (d *routerDao) WhereCreatedAtBetween(left int64, right int64) *routerDao {
 	d.DB = d.DB.Where(clause.Expr{SQL: "created_at Between ? AND ?", Vars: []interface{}{left, right}})
 	return d
 }
-func (d *routerDao) WhereUpdatedAtEq(updatedAt int) *routerDao {
+func (d *routerDao) WhereUpdatedAtEq(updatedAt int64) *routerDao {
 	d.DB = d.DB.Where(clause.Eq{Column: "updated_at", Value: updatedAt})
 	return d
 }
-func (d *routerDao) WhereUpdatedAtNeq(updatedAt int) *routerDao {
+func (d *routerDao) WhereUpdatedAtNeq(updatedAt int64) *routerDao {
 	d.DB = d.DB.Where(clause.Neq{Column: "updated_at", Value: updatedAt})
 	return d
 }
-func (d *routerDao) WhereUpdatedAtIn(updatedAt []int) *routerDao {
-	d.DB = d.DB.Where(clause.IN{Column: "updated_at", Values: func(v []int) []interface{} {
+func (d *routerDao) WhereUpdatedAtIn(updatedAt []int64) *routerDao {
+	d.DB = d.DB.Where(clause.IN{Column: "updated_at", Values: func(v []int64) []interface{} {
 		ret := make([]interface{}, len(v))
 		for i, item := range v {
 			ret[i] = item
@@ -135,8 +134,8 @@ func (d *routerDao) WhereUpdatedAtIn(updatedAt []int) *routerDao {
 	}(updatedAt)})
 	return d
 }
-func (d *routerDao) WhereUpdatedAtNotIn(updatedAt []int) *routerDao {
-	d.DB = d.DB.Where(clause.Not((clause.IN{Column: "updated_at", Values: func(v []int) []interface{} {
+func (d *routerDao) WhereUpdatedAtNotIn(updatedAt []int64) *routerDao {
+	d.DB = d.DB.Where(clause.Not((clause.IN{Column: "updated_at", Values: func(v []int64) []interface{} {
 		ret := make([]interface{}, len(v))
 		for i, item := range v {
 			ret[i] = item
@@ -145,72 +144,24 @@ func (d *routerDao) WhereUpdatedAtNotIn(updatedAt []int) *routerDao {
 	}(updatedAt)})))
 	return d
 }
-func (d *routerDao) WhereUpdatedAtLt(updatedAt int) *routerDao {
+func (d *routerDao) WhereUpdatedAtLt(updatedAt int64) *routerDao {
 	d.DB = d.DB.Where(clause.Lt{Column: "updated_at", Value: updatedAt})
 	return d
 }
-func (d *routerDao) WhereUpdatedAtLte(updatedAt int) *routerDao {
+func (d *routerDao) WhereUpdatedAtLte(updatedAt int64) *routerDao {
 	d.DB = d.DB.Where(clause.Lte{Column: "updated_at", Value: updatedAt})
 	return d
 }
-func (d *routerDao) WhereUpdatedAtGt(updatedAt int) *routerDao {
+func (d *routerDao) WhereUpdatedAtGt(updatedAt int64) *routerDao {
 	d.DB = d.DB.Where(clause.Gt{Column: "updated_at", Value: updatedAt})
 	return d
 }
-func (d *routerDao) WhereUpdatedAtGte(updatedAt int) *routerDao {
+func (d *routerDao) WhereUpdatedAtGte(updatedAt int64) *routerDao {
 	d.DB = d.DB.Where(clause.Gte{Column: "updated_at", Value: updatedAt})
 	return d
 }
-func (d *routerDao) WhereUpdatedAtBetween(left int, right int) *routerDao {
+func (d *routerDao) WhereUpdatedAtBetween(left int64, right int64) *routerDao {
 	d.DB = d.DB.Where(clause.Expr{SQL: "updated_at Between ? AND ?", Vars: []interface{}{left, right}})
-	return d
-}
-func (d *routerDao) WhereDeletedAtEq(deletedAt uint) *routerDao {
-	d.DB = d.DB.Where(clause.Eq{Column: "deleted_at", Value: deletedAt})
-	return d
-}
-func (d *routerDao) WhereDeletedAtNeq(deletedAt uint) *routerDao {
-	d.DB = d.DB.Where(clause.Neq{Column: "deleted_at", Value: deletedAt})
-	return d
-}
-func (d *routerDao) WhereDeletedAtIn(deletedAt []uint) *routerDao {
-	d.DB = d.DB.Where(clause.IN{Column: "deleted_at", Values: func(v []uint) []interface{} {
-		ret := make([]interface{}, len(v))
-		for i, item := range v {
-			ret[i] = item
-		}
-		return ret
-	}(deletedAt)})
-	return d
-}
-func (d *routerDao) WhereDeletedAtNotIn(deletedAt []uint) *routerDao {
-	d.DB = d.DB.Where(clause.Not((clause.IN{Column: "deleted_at", Values: func(v []uint) []interface{} {
-		ret := make([]interface{}, len(v))
-		for i, item := range v {
-			ret[i] = item
-		}
-		return ret
-	}(deletedAt)})))
-	return d
-}
-func (d *routerDao) WhereDeletedAtLt(deletedAt uint) *routerDao {
-	d.DB = d.DB.Where(clause.Lt{Column: "deleted_at", Value: deletedAt})
-	return d
-}
-func (d *routerDao) WhereDeletedAtLte(deletedAt uint) *routerDao {
-	d.DB = d.DB.Where(clause.Lte{Column: "deleted_at", Value: deletedAt})
-	return d
-}
-func (d *routerDao) WhereDeletedAtGt(deletedAt uint) *routerDao {
-	d.DB = d.DB.Where(clause.Gt{Column: "deleted_at", Value: deletedAt})
-	return d
-}
-func (d *routerDao) WhereDeletedAtGte(deletedAt uint) *routerDao {
-	d.DB = d.DB.Where(clause.Gte{Column: "deleted_at", Value: deletedAt})
-	return d
-}
-func (d *routerDao) WhereDeletedAtBetween(left uint, right uint) *routerDao {
-	d.DB = d.DB.Where(clause.Expr{SQL: "deleted_at Between ? AND ?", Vars: []interface{}{left, right}})
 	return d
 }
 func (d *routerDao) WhereNameEq(name string) *routerDao {
@@ -482,6 +433,18 @@ func (d *routerDao) Limit(limit int) *routerDao {
 
 func (d *routerDao) Offset(offset int) *routerDao {
 	d.DB = d.DB.Offset(offset)
+	return d
+}
+
+func (d *routerDao) Page(page, pageSize int) *routerDao {
+	if page <= 0 {
+		page = 1
+	}
+	if pageSize <= 0 {
+		pageSize = 10
+	}
+	d.DB = d.DB.Offset((page - 1) * pageSize)
+	d.DB = d.DB.Limit(pageSize)
 	return d
 }
 

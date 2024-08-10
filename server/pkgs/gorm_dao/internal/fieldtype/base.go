@@ -13,7 +13,7 @@ type baseField struct {
 
 func (f *baseField) eq() *method.Method {
 	params := method.Params{
-		{Name: method.ToArgsName(f.field.Name), Type: string(f.field.DataType)},
+		{Name: method.ToArgsName(f.field.Name), Type: f.field.FieldType.Name()},
 	}
 	return &method.Method{
 		Field:      f.field,
@@ -25,7 +25,7 @@ func (f *baseField) eq() *method.Method {
 
 func (f *baseField) neq() *method.Method {
 	params := method.Params{
-		{Name: method.ToArgsName(f.field.Name), Type: string(f.field.DataType)},
+		{Name: method.ToArgsName(f.field.Name), Type: f.field.FieldType.Name()},
 	}
 
 	return &method.Method{
@@ -38,7 +38,7 @@ func (f *baseField) neq() *method.Method {
 
 func (f *baseField) like() *method.Method {
 	params := method.Params{
-		{Name: method.ToArgsName(f.field.Name), Type: string(f.field.DataType)},
+		{Name: method.ToArgsName(f.field.Name), Type: f.field.FieldType.Name()},
 	}
 	return &method.Method{
 		Field:      f.field,
@@ -50,7 +50,7 @@ func (f *baseField) like() *method.Method {
 
 func (f *baseField) prefixLike() *method.Method {
 	params := method.Params{
-		{Name: method.ToArgsName(f.field.Name), Type: string(f.field.DataType)},
+		{Name: method.ToArgsName(f.field.Name), Type: f.field.FieldType.Name()},
 	}
 	return &method.Method{
 		Field:      f.field,
@@ -62,7 +62,7 @@ func (f *baseField) prefixLike() *method.Method {
 
 func (f *baseField) notLike() *method.Method {
 	params := method.Params{
-		{Name: method.ToArgsName(f.field.Name), Type: string(f.field.DataType)},
+		{Name: method.ToArgsName(f.field.Name), Type: f.field.FieldType.Name()},
 	}
 	return &method.Method{
 		Field:      f.field,
@@ -74,7 +74,7 @@ func (f *baseField) notLike() *method.Method {
 
 func (f *baseField) in() *method.Method {
 	params := method.Params{
-		{Name: method.ToArgsName(f.field.Name), Type: string(f.field.DataType), IsArray: true},
+		{Name: method.ToArgsName(f.field.Name), Type: f.field.FieldType.Name(), IsArray: true},
 	}
 
 	toSliceFnStr := fmt.Sprintf(`func(v []%s) []interface{} {
@@ -94,7 +94,7 @@ func (f *baseField) in() *method.Method {
 
 func (f *baseField) notIn() *method.Method {
 	params := method.Params{
-		{Name: method.ToArgsName(f.field.Name), Type: string(f.field.DataType), IsArray: true},
+		{Name: method.ToArgsName(f.field.Name), Type: f.field.FieldType.Name(), IsArray: true},
 	}
 
 	toSliceFnStr := fmt.Sprintf(`func(v []%s) []interface{} {
@@ -114,7 +114,7 @@ func (f *baseField) notIn() *method.Method {
 
 func (f *baseField) gt() *method.Method {
 	params := method.Params{
-		{Name: method.ToArgsName(f.field.Name), Type: string(f.field.DataType)},
+		{Name: method.ToArgsName(f.field.Name), Type: f.field.FieldType.Name()},
 	}
 
 	return &method.Method{
@@ -127,7 +127,7 @@ func (f *baseField) gt() *method.Method {
 
 func (f *baseField) gte() *method.Method {
 	params := method.Params{
-		{Name: method.ToArgsName(f.field.Name), Type: string(f.field.DataType)},
+		{Name: method.ToArgsName(f.field.Name), Type: f.field.FieldType.Name()},
 	}
 
 	return &method.Method{
@@ -140,7 +140,7 @@ func (f *baseField) gte() *method.Method {
 
 func (f *baseField) lt() *method.Method {
 	params := method.Params{
-		{Name: method.ToArgsName(f.field.Name), Type: string(f.field.DataType)},
+		{Name: method.ToArgsName(f.field.Name), Type: f.field.FieldType.Name()},
 	}
 
 	return &method.Method{
@@ -153,7 +153,7 @@ func (f *baseField) lt() *method.Method {
 
 func (f *baseField) lte() *method.Method {
 	params := method.Params{
-		{Name: method.ToArgsName(f.field.Name), Type: string(f.field.DataType)},
+		{Name: method.ToArgsName(f.field.Name), Type: f.field.FieldType.Name()},
 	}
 
 	return &method.Method{
@@ -166,8 +166,8 @@ func (f *baseField) lte() *method.Method {
 
 func (f *baseField) between() *method.Method {
 	params := method.Params{
-		{Name: "left", Type: string(f.field.DataType)},
-		{Name: "right", Type: string(f.field.DataType)},
+		{Name: "left", Type: f.field.FieldType.Name()},
+		{Name: "right", Type: f.field.FieldType.Name()},
 	}
 
 	return &method.Method{

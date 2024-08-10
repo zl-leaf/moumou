@@ -10,6 +10,7 @@ export type { OpenAPIConfig } from './core/OpenAPI';
 export type { server_api_CreateRoleRequest } from './models/server_api_CreateRoleRequest';
 export type { server_api_CreateRoleRequestData } from './models/server_api_CreateRoleRequestData';
 export type { server_api_CreateRoleResponse } from './models/server_api_CreateRoleResponse';
+export type { server_api_CreateRoleResponseData } from './models/server_api_CreateRoleResponseData';
 export type { server_api_CreateRouterRequest } from './models/server_api_CreateRouterRequest';
 export type { server_api_CreateRouterRequestData } from './models/server_api_CreateRouterRequestData';
 export type { server_api_CreateRouterResponse } from './models/server_api_CreateRouterResponse';
@@ -18,6 +19,11 @@ export type { server_api_DeleteRoleRequest } from './models/server_api_DeleteRol
 export type { server_api_DeleteRoleResponse } from './models/server_api_DeleteRoleResponse';
 export type { server_api_DeleteRouterRequest } from './models/server_api_DeleteRouterRequest';
 export type { server_api_DeleteRouterResponse } from './models/server_api_DeleteRouterResponse';
+export type { server_api_GetPermissionListRequest } from './models/server_api_GetPermissionListRequest';
+export type { server_api_GetPermissionListResponse } from './models/server_api_GetPermissionListResponse';
+export type { server_api_GetPermissionListResponseData } from './models/server_api_GetPermissionListResponseData';
+export type { server_api_GetRoleInfoRequest } from './models/server_api_GetRoleInfoRequest';
+export type { server_api_GetRoleInfoResponse } from './models/server_api_GetRoleInfoResponse';
 export type { server_api_GetRoleListRequest } from './models/server_api_GetRoleListRequest';
 export type { server_api_GetRoleListRequestFilter } from './models/server_api_GetRoleListRequestFilter';
 export type { server_api_GetRoleListResponse } from './models/server_api_GetRoleListResponse';
@@ -41,6 +47,7 @@ export type { server_api_LoginResponse } from './models/server_api_LoginResponse
 export type { server_api_LoginResponseData } from './models/server_api_LoginResponseData';
 export type { server_api_LogoutRequest } from './models/server_api_LogoutRequest';
 export type { server_api_LogoutResponse } from './models/server_api_LogoutResponse';
+export type { server_api_Permission } from './models/server_api_Permission';
 export type { server_api_Role } from './models/server_api_Role';
 export type { server_api_Router } from './models/server_api_Router';
 export type { server_api_SelfRequest } from './models/server_api_SelfRequest';
@@ -53,6 +60,7 @@ export type { server_api_UpdateRouterRequestData } from './models/server_api_Upd
 export type { server_api_UpdateRouterResponse } from './models/server_api_UpdateRouterResponse';
 export type { server_api_User } from './models/server_api_User';
 
+export { PermissionHandlerService } from './services/PermissionHandlerService';
 export { RoleHandlerService } from './services/RoleHandlerService';
 export { RouterHandlerService } from './services/RouterHandlerService';
 export { SecurityHandlerService } from './services/SecurityHandlerService';

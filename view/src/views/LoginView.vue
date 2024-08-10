@@ -22,7 +22,7 @@ const routerStore = useRouterStore()
 const redirectToDefaultPage = async () => {
     try {
         await routerStore.updateRouter()
-        router.replace({ name: 'home' })
+        router.replace({ path: '/' })
     } catch (err) {
         console.log('error', err)
     }
@@ -30,10 +30,6 @@ const redirectToDefaultPage = async () => {
 
 const onLoginSuccess = function (ret: any) {
     console.log(ret)
-
-    userStore.SetUserInfo({
-        userID: ret.user.user_id
-    })
     userStore.SetToken(ret.token)
     redirectToDefaultPage()
 }

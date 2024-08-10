@@ -3,6 +3,8 @@ package main
 import (
 	"context"
 	"fmt"
+	"os"
+
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/auth/jwt"
@@ -13,13 +15,12 @@ import (
 	"github.com/go-kratos/kratos/v2/transport/http"
 	jwtv5 "github.com/golang-jwt/jwt/v5"
 	"github.com/moumou/server/biz/service"
-	"github.com/moumou/server/biz/service/user/param"
+	"github.com/moumou/server/biz/service/user/data"
 	api "github.com/moumou/server/gen/proto"
 	"github.com/moumou/server/handler"
 	"github.com/moumou/server/handler/mw"
 	"github.com/moumou/server/pkgs/config"
 	"go.opentelemetry.io/otel/sdk/trace"
-	"os"
 )
 
 type serverConfig struct {
@@ -52,7 +53,7 @@ func newApp(logger log.Logger, hs *http.Server) *kratos.App {
 	)
 }
 
-func NewHTTPServer(logger log.Logger, cnf serverConfig, securityCnf param.SecurityConfig) *http.Server {
+func NewHTTPServer(logger log.Logger, cnf serverConfig, securityCnf data.SecurityConfig) *http.Server {
 	var opts = []http.ServerOption{
 		http.Filter(mw.CorsFilter),
 		http.Middleware(
@@ -86,10 +87,12 @@ func NewHTTPServer(logger log.Logger, cnf serverConfig, securityCnf param.Securi
 	userHandler := handler.NewUserHandler(svc)
 	roleHandler := handler.NewRoleHandler(svc)
 	securityHandler := handler.NewSecurityHandler(svc)
+	permissionHandler := handler.NewPermissionHandler(svc)
 	api.RegisterRouterHandlerHTTPServer(srv, routerHandler)
 	api.RegisterUserHandlerHTTPServer(srv, userHandler)
 	api.RegisterRoleHandlerHTTPServer(srv, roleHandler)
 	api.RegisterSecurityHandlerHTTPServer(srv, securityHandler)
+	api.RegisterPermissionHandlerHTTPServer(srv, permissionHandler)
 
 	return srv
 }
@@ -113,7 +116,7 @@ func main() {
 	}
 
 	var serverCnf serverConfig
-	var securityCnf param.SecurityConfig
+	var securityCnf data.SecurityConfig
 	err = config.GetConfigs([]string{"server", securityCnf.GetConfigName()}, []any{&serverCnf, &securityCnf})
 	if err != nil {
 		panic(err)

@@ -7,18 +7,8 @@ import { useRouterStore } from './router';
 import router from '@/router';
 
 export const useUserStore = defineStore('user', () => {
-    const userInfo = ref({
-        userID: '',
-    })
     const token = ref(window.localStorage.getItem('token') || cookie.get('x-token') || '')
 
-    const SetUserInfo = (val:any) => {
-        userInfo.value = val
-    }
-
-    const GetUserInfo = () =>{
-        return userInfo
-    }
 
     const SetToken = (val:any) => {
         token.value = val
@@ -37,7 +27,6 @@ export const useUserStore = defineStore('user', () => {
 
             // 清理数据
             SetToken('')
-            SetUserInfo({})
             sessionStorage.clear()
             window.localStorage.removeItem('token')
             cookie.remove('x-token')
@@ -51,29 +40,12 @@ export const useUserStore = defineStore('user', () => {
         }
     }
 
-    const Self = async() => {
-        try {
-            const selfResponse = await api.SecurityHandlerService.securityHandlerSelf({})
-            if (selfResponse.code != 0) {
-                return Promise.reject(selfResponse.message)
-            }
-            SetUserInfo({
-                userID: selfResponse.data?.id
-            })
-        } catch (err) {
-            return Promise.reject('网络错误')
-        }
-    }
-
     watch(() => token.value, () => {
         window.localStorage.setItem('token', token.value)
     })
     
     return {
         Logout,
-        Self,
-        SetUserInfo,
-        GetUserInfo,
         SetToken,
         GetToken,
     }
