@@ -9,19 +9,21 @@ import (
 type Dao struct {
 	db *gorm.DB
 
-	UserDao       *userDao
-	RouterDao     *routerDao
-	RoleDao       *roleDao
-	PermissionDao *permissionDao
+	UserDao           *userDao
+	RouterDao         *routerDao
+	RoleDao           *roleDao
+	PermissionDao     *permissionDao
+	RolePermissionDao *rolePermissionDao
 }
 
 func NewDao(db *gorm.DB) *Dao {
 	return &Dao{
-		db:            db,
-		UserDao:       newUserDao(db),
-		RouterDao:     newRouterDao(db),
-		RoleDao:       newRoleDao(db),
-		PermissionDao: newPermissionDao(db),
+		db:                db,
+		UserDao:           newUserDao(db),
+		RouterDao:         newRouterDao(db),
+		RoleDao:           newRoleDao(db),
+		PermissionDao:     newPermissionDao(db),
+		RolePermissionDao: newRolePermissionDao(db),
 	}
 }
 

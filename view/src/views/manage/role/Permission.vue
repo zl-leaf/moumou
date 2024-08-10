@@ -16,7 +16,7 @@ import { message } from 'ant-design-vue';
 import { useRouterStore } from '@/pinia/modules/router';
 
 type FormState = {
-    values: any[]
+    values: string[]
 }
 
 type PermissionOption = {
@@ -42,6 +42,7 @@ export default defineComponent({
     },
     methods: {
         initData: async function(dataId: string) {
+            let _this = this
             this.loading = true
             try {
                 let permissionResponse = await api.PermissionHandlerService.permissionHandlerGetPermissionList({})
@@ -55,6 +56,19 @@ export default defineComponent({
                         value: permission.id ?? "",
                     })
                 })
+
+                // 加载详情数据
+                let infoResponse = await api.RoleHandlerService.roleHandlerGetRoleInfo({
+                    id: this.dataId,
+                    field: {permission: true}
+                })
+                if (infoResponse.code != 0) {
+                    throw new Error(infoResponse.message)
+                }
+                infoResponse.data?.permissions?.forEach(function(permission) {
+                    _this.formState.values.push(permission.id ?? "")
+                })
+
                 this.loading = false
             } catch (err) {
                 message.error("网络错误")
@@ -62,6 +76,21 @@ export default defineComponent({
 
         },
         onSubmit: async function() {
+            this.loading = true
+            try {
+                let response = await api.RoleHandlerService.roleHandlerUpdateRolePermission({
+                    id: this.dataId,
+                    permission_ids: this.formState.values
+                })
+                if(response.code != 0) {
+                    throw new Error(response.message)
+                }
+
+                message.success('操作完成')
+                this.loading = false
+            } catch(err) {
+                message.error("网络异常")
+            }
         }
     }
 })

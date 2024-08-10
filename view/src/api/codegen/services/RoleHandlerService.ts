@@ -10,6 +10,8 @@ import type { server_api_GetRoleInfoRequest } from '../models/server_api_GetRole
 import type { server_api_GetRoleInfoResponse } from '../models/server_api_GetRoleInfoResponse';
 import type { server_api_GetRoleListRequest } from '../models/server_api_GetRoleListRequest';
 import type { server_api_GetRoleListResponse } from '../models/server_api_GetRoleListResponse';
+import type { server_api_UpdateRolePermissionRequest } from '../models/server_api_UpdateRolePermissionRequest';
+import type { server_api_UpdateRolePermissionResponse } from '../models/server_api_UpdateRolePermissionResponse';
 import type { server_api_UpdateRoleRequest } from '../models/server_api_UpdateRoleRequest';
 import type { server_api_UpdateRoleResponse } from '../models/server_api_UpdateRoleResponse';
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -72,6 +74,21 @@ export class RoleHandlerService {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/role/list',
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+    /**
+     * @param requestBody
+     * @returns server_api_UpdateRolePermissionResponse OK
+     * @throws ApiError
+     */
+    public static roleHandlerUpdateRolePermission(
+        requestBody: server_api_UpdateRolePermissionRequest,
+    ): CancelablePromise<server_api_UpdateRolePermissionResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/role/permission/update',
             body: requestBody,
             mediaType: 'application/json',
         });

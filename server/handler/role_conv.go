@@ -8,15 +8,16 @@ import (
 func ConvRoleList2VO(roleModelList []*model.Role) []*api.Role {
 	ret := make([]*api.Role, len(roleModelList))
 	for i, roleModel := range roleModelList {
-		ret[i] = ConvRole2VO(roleModel)
+		ret[i] = ConvRole2VO(roleModel, nil)
 	}
 	return ret
 }
 
-func ConvRole2VO(roleModel *model.Role) *api.Role {
+func ConvRole2VO(roleModel *model.Role, permissionList []*model.Permission) *api.Role {
 	return &api.Role{
-		Id:   roleModel.ID,
-		Name: roleModel.Name,
+		Id:          roleModel.ID,
+		Name:        roleModel.Name,
+		Permissions: ConvPermissionList2VO(permissionList),
 	}
 }
 

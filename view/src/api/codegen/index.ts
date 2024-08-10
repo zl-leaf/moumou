@@ -49,9 +49,12 @@ export type { server_api_LogoutRequest } from './models/server_api_LogoutRequest
 export type { server_api_LogoutResponse } from './models/server_api_LogoutResponse';
 export type { server_api_Permission } from './models/server_api_Permission';
 export type { server_api_Role } from './models/server_api_Role';
+export type { server_api_RoleRelateField } from './models/server_api_RoleRelateField';
 export type { server_api_Router } from './models/server_api_Router';
 export type { server_api_SelfRequest } from './models/server_api_SelfRequest';
 export type { server_api_SelfResponse } from './models/server_api_SelfResponse';
+export type { server_api_UpdateRolePermissionRequest } from './models/server_api_UpdateRolePermissionRequest';
+export type { server_api_UpdateRolePermissionResponse } from './models/server_api_UpdateRolePermissionResponse';
 export type { server_api_UpdateRoleRequest } from './models/server_api_UpdateRoleRequest';
 export type { server_api_UpdateRoleRequestData } from './models/server_api_UpdateRoleRequestData';
 export type { server_api_UpdateRoleResponse } from './models/server_api_UpdateRoleResponse';

@@ -3,6 +3,7 @@ syntax = "proto3";
 package server.api;
 
 import "google/api/annotations.proto";
+import "permission.proto";
 
 option go_package = "server/api;api";
 
@@ -33,19 +34,27 @@ service RoleHandler {
       post: "/role/delete",
       body: "*"
     };
-  }
+  };
 
   rpc GetRoleInfo(GetRoleInfoRequest) returns (GetRoleInfoResponse){
     option (google.api.http) = {
       post: "/role/info",
       body: "*"
     };
-  }
+  };
+
+  rpc UpdateRolePermission(UpdateRolePermissionRequest) returns (UpdateRolePermissionResponse){
+    option (google.api.http) = {
+      post: "/role/permission/update",
+      body: "*"
+    };
+  };
 }
 
 message Role {
   int64 id = 1;
   string name = 2;
+  repeated Permission permissions = 3;
 }
 
 message GetRoleListRequestFilter {
@@ -109,12 +118,27 @@ message DeleteRoleResponse {
   string message = 2;
 }
 
+message RoleRelateField {
+  bool permission = 1;
+}
+
 message GetRoleInfoRequest {
   int64 id = 1;
+  optional RoleRelateField field = 2;
 }
 
 message GetRoleInfoResponse {
   int32 code = 1;
   string message = 2;
   Role data = 3;
+}
+
+message UpdateRolePermissionRequest {
+  int64 id = 1;
+  repeated int64 permission_ids = 2 [json_name="permission_ids"];
+}
+
+message UpdateRolePermissionResponse {
+  int32 code = 1;
+  string message = 2;
 }

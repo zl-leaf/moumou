@@ -68,9 +68,10 @@ export default defineComponent({
                     })
                 }
                 if (item.meta?.isMenu) {
+                    let name = item.meta.page ?? item.name
                     // 菜单
                     let menuData: ItemType = {
-                        key: String(item.name),
+                        key: String(name),
                         title: String(item.meta?.title),
                         label: String(item.meta?.title),
                         children: menus.length > 0 ? menus : undefined,

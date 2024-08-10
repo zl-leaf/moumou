@@ -96,6 +96,24 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/server.api.GetRoleListResponse'
+    /role/permission/update:
+        post:
+            tags:
+                - RoleHandler
+            operationId: RoleHandler_UpdateRolePermission
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/server.api.UpdateRolePermissionRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/server.api.UpdateRolePermissionResponse'
     /role/update:
         post:
             tags:
@@ -436,6 +454,8 @@ components:
             properties:
                 id:
                     type: string
+                field:
+                    $ref: '#/components/schemas/server.api.RoleRelateField'
         server.api.GetRoleInfoResponse:
             type: object
             properties:
@@ -638,6 +658,15 @@ components:
                     type: string
                 name:
                     type: string
+                permissions:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/server.api.Permission'
+        server.api.RoleRelateField:
+            type: object
+            properties:
+                permission:
+                    type: boolean
         server.api.Router:
             type: object
             properties:
@@ -677,6 +706,23 @@ components:
                     type: string
                 data:
                     $ref: '#/components/schemas/server.api.User'
+        server.api.UpdateRolePermissionRequest:
+            type: object
+            properties:
+                id:
+                    type: string
+                permission_ids:
+                    type: array
+                    items:
+                        type: string
+        server.api.UpdateRolePermissionResponse:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                message:
+                    type: string
         server.api.UpdateRoleRequest:
             type: object
             properties:

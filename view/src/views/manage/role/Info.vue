@@ -36,7 +36,9 @@ export default defineComponent({
             try {
 
                 // 加载详情数据
-                let infoResponse = await api.RoleHandlerService.roleHandlerGetRoleInfo({id: this.dataId})
+                let infoResponse = await api.RoleHandlerService.roleHandlerGetRoleInfo({
+                    id: this.dataId,
+                })
                 if (infoResponse.code != 0) {
                     throw new Error(infoResponse.message)
                 }

@@ -16,7 +16,7 @@ func NewPermissionHandler(svc *service.Service) api.PermissionHandlerHTTPServer 
 }
 
 func (p PermissionHandler) GetPermissionList(ctx context.Context, request *api.GetPermissionListRequest) (*api.GetPermissionListResponse, error) {
-	permissionList, total, err := p.svc.Dao.PermissionDao.OrderBySort().Find()
+	permissionList, total, err := p.svc.Dao.PermissionDao.WithContext(ctx).OrderBySort().Find()
 	if err != nil {
 		return nil, err
 	}

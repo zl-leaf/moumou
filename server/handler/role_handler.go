@@ -3,6 +3,8 @@ package handler
 import (
 	"context"
 
+	"github.com/moumou/server/biz/model"
+
 	"github.com/moumou/server/biz/service"
 	api "github.com/moumou/server/gen/proto"
 )
@@ -29,8 +31,11 @@ func (r RoleHandler) CreateRole(ctx context.Context, request *api.CreateRoleRequ
 }
 
 func (r RoleHandler) DeleteRole(ctx context.Context, request *api.DeleteRoleRequest) (*api.DeleteRoleResponse, error) {
-	//TODO implement me
-	panic("implement me")
+	err := r.svc.Dao.RoleDao.WithContext(ctx).Delete(request.Ids)
+	if err != nil {
+		return nil, err
+	}
+	return &api.DeleteRoleResponse{}, nil
 }
 
 func (r RoleHandler) UpdateRole(ctx context.Context, request *api.UpdateRoleRequest) (*api.UpdateRoleResponse, error) {
@@ -65,7 +70,31 @@ func (r RoleHandler) GetRoleInfo(ctx context.Context, request *api.GetRoleInfoRe
 	if err != nil {
 		return nil, err
 	}
+	var permissionList []*model.Permission
+	if request.GetField() != nil && request.GetField().GetPermission() {
+		rolePermissionList, _, err := r.svc.Dao.RolePermissionDao.WithContext(ctx).WhereRoleIDEq(request.GetId()).Find()
+		if err != nil {
+			return nil, err
+		}
+
+		permissionIDs := make([]int64, len(rolePermissionList))
+		for i, rolePermission := range rolePermissionList {
+			permissionIDs[i] = rolePermission.PermissionID
+		}
+		if len(permissionIDs) > 0 {
+			permissionList, _, err = r.svc.Dao.PermissionDao.WithContext(ctx).WhereIDIn(permissionIDs).Find()
+		}
+	}
+
 	return &api.GetRoleInfoResponse{
-		Data: ConvRole2VO(role),
+		Data: ConvRole2VO(role, permissionList),
 	}, nil
+}
+
+func (r RoleHandler) UpdateRolePermission(ctx context.Context, request *api.UpdateRolePermissionRequest) (*api.UpdateRolePermissionResponse, error) {
+	err := r.svc.RoleService.UpdateRolePermission(ctx, request.GetId(), request.GetPermissionIds())
+	if err != nil {
+		return nil, err
+	}
+	return &api.UpdateRolePermissionResponse{}, nil
 }

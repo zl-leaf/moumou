@@ -12,7 +12,9 @@
                 <span>
                     <a-button size="small" :href="`info?id=${record.id}`" style="margin-right:5px;">详情</a-button>
                     <a-button size="small" :href="`permission?id=${record.id}`" style="margin-right:5px;">权限</a-button>
-                    <a-button danger size="small">删除</a-button>
+                    <a-popconfirm title="确认删除？" ok-text="确认" ok-type="danger" cancel-text="取消" @confirm="onDelete(record.id)">
+                        <a-button danger size="small">删除</a-button>
+                    </a-popconfirm>
                 </span>
             </template>
         </template>
@@ -20,7 +22,7 @@
 </template>
 <script lang="ts">
 import { defineComponent, computed, ref } from 'vue';
-import type { TableColumnType } from 'ant-design-vue';
+import { message, type TableColumnType } from 'ant-design-vue';
 import * as api from '@/api'
 
 export default defineComponent({
@@ -68,6 +70,19 @@ export default defineComponent({
             }).catch(err => {
                 console.log('err:', err)
             })
+        },
+        onDelete: async function(id: string) {
+            try {
+                let response = await api.RoleHandlerService.roleHandlerDeleteRole({
+                    ids: [id]
+                })
+                if(response.code != 0) {
+                    throw new Error(response.message)
+                }
+                this.handleTableChange(this.pagination, {}, {})
+            } catch(err) {
+                message.error("删除失败")
+            }
         }
     }
 })
