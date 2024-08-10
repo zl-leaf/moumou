@@ -35,7 +35,7 @@ const router = createRouter({
                 {
                   path: 'list',
                   name: 'user_list',
-                  component: () => import('@/views/sys/user/list.vue'),
+                  component: () => import('@/views/manage/user/List.vue'),
                   meta: {
                     title: '账号管理',
                     isMenu: true,
@@ -44,7 +44,7 @@ const router = createRouter({
                 {
                   path: 'info',
                   name: 'user_info',
-                  component: () => import('@/views/sys/user/info.vue'),
+                  component: () => import('@/views/manage/user/Info.vue'),
                 }
               ]
             },

@@ -5,7 +5,7 @@
         <template #bodyCell="{ column, record }">
             <template v-if="column.key === 'action'">
                 <span>
-                    <a-button type="primary" size="small" :href="`info?id=${record.id}`" style="margin-right:5px;">详情</a-button>
+                    <a-button size="small" :href="`info?id=${record.id}`" style="margin-right:5px;">详情</a-button>
                     <a-button danger size="small">删除</a-button>
                 </span>
             </template>
