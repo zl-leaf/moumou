@@ -27,6 +27,7 @@
 import { defineComponent, ref } from 'vue';
 import * as api from '@/api'
 import router from '@/router';
+import { useUserStore } from '@/pinia/modules/user';
 import { debounce } from 'lodash';
 import { message } from 'ant-design-vue';
 import type { DefaultOptionType } from 'ant-design-vue/es/select';
@@ -90,6 +91,8 @@ export default defineComponent({
                 if(response.code != 0) {
                     throw new Error(response.message)
                 }
+
+                await useUserStore().UpdatePermissions()
 
                 message.success('操作完成')
                 this.loading = false

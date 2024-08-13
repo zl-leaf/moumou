@@ -15,7 +15,7 @@ import (
 	"github.com/go-kratos/kratos/v2/transport/http"
 	jwtv5 "github.com/golang-jwt/jwt/v5"
 	"github.com/moumou/server/biz/service"
-	"github.com/moumou/server/biz/service/user/data"
+	userdata "github.com/moumou/server/biz/service/user/data"
 	api "github.com/moumou/server/gen/proto"
 	"github.com/moumou/server/handler"
 	"github.com/moumou/server/handler/mw"
@@ -53,7 +53,7 @@ func newApp(logger log.Logger, hs *http.Server) *kratos.App {
 	)
 }
 
-func NewHTTPServer(logger log.Logger, cnf serverConfig, securityCnf data.SecurityConfig) *http.Server {
+func NewHTTPServer(logger log.Logger, cnf serverConfig, securityCnf userdata.SecurityConfig) *http.Server {
 	var opts = []http.ServerOption{
 		http.Filter(mw.CorsFilter),
 		http.Middleware(
@@ -62,7 +62,9 @@ func NewHTTPServer(logger log.Logger, cnf serverConfig, securityCnf data.Securit
 			mw.HttpTrace(),
 			selector.Server(jwt.Server(func(token *jwtv5.Token) (interface{}, error) {
 				return []byte(securityCnf.JWTKey), nil
-			})).Match(func(ctx context.Context, operation string) bool {
+			}, jwt.WithClaims(func() jwtv5.Claims {
+				return &userdata.CustomClaims{}
+			}))).Match(func(ctx context.Context, operation string) bool {
 				whiteList := []string{api.OperationSecurityHandlerLogin}
 				for _, white := range whiteList {
 					if operation == white {
@@ -116,7 +118,7 @@ func main() {
 	}
 
 	var serverCnf serverConfig
-	var securityCnf data.SecurityConfig
+	var securityCnf userdata.SecurityConfig
 	err = config.GetConfigs([]string{"server", securityCnf.GetConfigName()}, []any{&serverCnf, &securityCnf})
 	if err != nil {
 		panic(err)

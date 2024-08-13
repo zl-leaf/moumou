@@ -42,6 +42,9 @@ export type { server_api_GetUserListRequest } from './models/server_api_GetUserL
 export type { server_api_GetUserListRequestFilter } from './models/server_api_GetUserListRequestFilter';
 export type { server_api_GetUserListResponse } from './models/server_api_GetUserListResponse';
 export type { server_api_GetUserListResponseData } from './models/server_api_GetUserListResponseData';
+export type { server_api_GetUserPermissionPathRequest } from './models/server_api_GetUserPermissionPathRequest';
+export type { server_api_GetUserPermissionPathResponse } from './models/server_api_GetUserPermissionPathResponse';
+export type { server_api_GetUserPermissionPathResponseData } from './models/server_api_GetUserPermissionPathResponseData';
 export type { server_api_LoginRequest } from './models/server_api_LoginRequest';
 export type { server_api_LoginResponse } from './models/server_api_LoginResponse';
 export type { server_api_LoginResponseData } from './models/server_api_LoginResponseData';

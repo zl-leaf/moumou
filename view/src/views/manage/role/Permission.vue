@@ -14,6 +14,7 @@ import * as api from '@/api'
 import router from '@/router';
 import { message } from 'ant-design-vue';
 import { useRouterStore } from '@/pinia/modules/router';
+import { useUserStore } from '@/pinia/modules/user';
 
 type FormState = {
     values: string[]
@@ -85,6 +86,8 @@ export default defineComponent({
                 if(response.code != 0) {
                     throw new Error(response.message)
                 }
+
+                await useUserStore().UpdatePermissions()
 
                 message.success('操作完成')
                 this.loading = false

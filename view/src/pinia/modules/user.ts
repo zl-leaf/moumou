@@ -8,6 +8,7 @@ import router from '@/router';
 
 export const useUserStore = defineStore('user', () => {
     const token = ref(window.localStorage.getItem('token') || cookie.get('x-token') || '')
+    const permissions = ref<string[]>([]) // 记录用户的权限
 
 
     const SetToken = (val:any) => {
@@ -40,6 +41,20 @@ export const useUserStore = defineStore('user', () => {
         }
     }
 
+    const UpdatePermissions = async () => {
+        permissions.value = []
+        try {
+            let response = await api.PermissionHandlerService.permissionHandlerGetUserPermissionPath({})
+            if (response.code != 0) {
+                throw new Error(response.message)
+            }
+            permissions.value = response.data?.permissions ?? []
+        } catch (err) {
+            return false
+        }
+        return true
+    }
+
     watch(() => token.value, () => {
         window.localStorage.setItem('token', token.value)
     })
@@ -48,5 +63,6 @@ export const useUserStore = defineStore('user', () => {
         Logout,
         SetToken,
         GetToken,
+        UpdatePermissions,
     }
 })

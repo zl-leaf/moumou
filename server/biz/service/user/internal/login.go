@@ -56,11 +56,12 @@ func (svc *LoginService) FindUserByToken(ctx context.Context) (*model.User, erro
 	}
 
 	var userID = customClaims.UserID
-	return svc.db.UserDao.GetByID(userID)
+	return svc.db.UserDao.WithContext(ctx).GetByID(userID)
 }
 
 func (svc *LoginService) CreateToken(userInfo *model.User) (string, error) {
-	claims := data.CustomClaims{
+	claims := &data.CustomClaims{
+		UserID: userInfo.ID,
 		RegisteredClaims: golangjwt.RegisteredClaims{
 			ExpiresAt: golangjwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
 			IssuedAt:  golangjwt.NewNumericDate(time.Now()),

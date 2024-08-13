@@ -26,22 +26,16 @@ router.beforeEach(async(to, from) => {
         }
     } else {
         try {
-            const routerStore = useRouterStore()
+            let getPermissionsResult = await userStore.UpdatePermissions()
+            if (!getPermissionsResult) {
+                throw new Error()
+            }
+
             if (whiteList.indexOf(String(to.name)) > -1) {
                 // 登录过后不允许再打开登录页面
-                if (!routerStore.updateRouterFlag) {
-                    // 没有更新路由
-                    await routerStore.updateRouter()
-                }
                 return { name: 'home', replace: true }
             } else {
                 // 正常访问
-                if (!routerStore.updateRouterFlag) {
-                    // 没有更新路由
-                    await routerStore.updateRouter()
-                    return { ...to, replace: true }
-                }
-
                 return true
             }
         } catch (err) {

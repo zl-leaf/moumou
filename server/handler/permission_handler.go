@@ -27,3 +27,35 @@ func (p PermissionHandler) GetPermissionList(ctx context.Context, request *api.G
 		},
 	}, nil
 }
+
+func (p PermissionHandler) GetUserPermissionPath(ctx context.Context, request *api.GetUserPermissionPathRequest) (*api.GetUserPermissionPathResponse, error) {
+	user, err := p.svc.SysUserService.Self(ctx)
+	if err != nil {
+		return nil, err
+	}
+	userRoleList, _, err := p.svc.Dao.UserRelRoleDao.WithContext(ctx).WhereUserIDEq(user.ID).Find()
+	roleIDs := make([]int64, len(userRoleList))
+	for i, userRole := range userRoleList {
+		roleIDs[i] = userRole.RoleID
+	}
+	rolePermissionList, _, err := p.svc.Dao.RolePermissionDao.WhereRoleIDIn(roleIDs).Find()
+	if err != nil {
+		return nil, err
+	}
+	permissionIDList := make([]int64, len(rolePermissionList))
+	for i, rolePermission := range rolePermissionList {
+		permissionIDList[i] = rolePermission.PermissionID
+	}
+	permissionList, _, err := p.svc.Dao.PermissionDao.WithContext(ctx).WhereIDIn(permissionIDList).Find()
+
+	permissionPaths := make([]string, len(permissionList))
+	for i, permission := range permissionList {
+		permissionPaths[i] = permission.Path
+	}
+
+	return &api.GetUserPermissionPathResponse{
+		Data: &api.GetUserPermissionPathResponseData{
+			Permissions: permissionPaths,
+		},
+	}, nil
+}

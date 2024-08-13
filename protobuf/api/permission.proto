@@ -13,6 +13,13 @@ service PermissionHandler {
       body: "*"
     };
   };
+
+  rpc GetUserPermissionPath(GetUserPermissionPathRequest) returns (GetUserPermissionPathResponse) {
+    option(google.api.http) = {
+      post: "/permission/user_permission",
+      body: "*"
+    };
+  };
 }
 
 message GetPermissionListRequestFilter {}
@@ -37,4 +44,14 @@ message Permission {
   string path = 3;
   int64 pid = 4;
   int32 sort = 5;
+}
+
+message GetUserPermissionPathRequest {}
+message GetUserPermissionPathResponseData {
+  repeated string permissions = 1;
+}
+message GetUserPermissionPathResponse {
+  int32 code = 1;
+  string message = 2;
+  optional GetUserPermissionPathResponseData data = 3;
 }

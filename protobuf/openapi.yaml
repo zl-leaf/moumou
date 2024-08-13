@@ -24,6 +24,24 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/server.api.GetPermissionListResponse'
+    /permission/user_permission:
+        post:
+            tags:
+                - PermissionHandler
+            operationId: PermissionHandler_GetUserPermissionPath
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/server.api.GetUserPermissionPathRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/server.api.GetUserPermissionPathResponse'
     /role/bind_user/update:
         post:
             tags:
@@ -622,6 +640,26 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/server.api.User'
+        server.api.GetUserPermissionPathRequest:
+            type: object
+            properties: {}
+        server.api.GetUserPermissionPathResponse:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                message:
+                    type: string
+                data:
+                    $ref: '#/components/schemas/server.api.GetUserPermissionPathResponseData'
+        server.api.GetUserPermissionPathResponseData:
+            type: object
+            properties:
+                permissions:
+                    type: array
+                    items:
+                        type: string
         server.api.LoginRequest:
             type: object
             properties:
