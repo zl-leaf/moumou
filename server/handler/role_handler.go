@@ -86,8 +86,23 @@ func (r RoleHandler) GetRoleInfo(ctx context.Context, request *api.GetRoleInfoRe
 		}
 	}
 
+	var userList []*model.User
+	if request.GetField() != nil && request.GetField().GetBindUser() {
+		userRelRoleList, _, err := r.svc.Dao.UserRelRoleDao.WithContext(ctx).WhereRoleIDEq(request.GetId()).Find()
+		if err != nil {
+			return nil, err
+		}
+		userIDs := make([]int64, len(userRelRoleList))
+		for i, userRelRole := range userRelRoleList {
+			userIDs[i] = userRelRole.UserID
+		}
+		if len(userIDs) > 0 {
+			userList, _, err = r.svc.Dao.UserDao.WithContext(ctx).WhereIDIn(userIDs).Find()
+		}
+	}
+
 	return &api.GetRoleInfoResponse{
-		Data: ConvRole2VO(role, permissionList),
+		Data: ConvRole2VO(role, permissionList, userList),
 	}, nil
 }
 
@@ -97,4 +112,12 @@ func (r RoleHandler) UpdateRolePermission(ctx context.Context, request *api.Upda
 		return nil, err
 	}
 	return &api.UpdateRolePermissionResponse{}, nil
+}
+
+func (r RoleHandler) UpdateBindUser(ctx context.Context, request *api.UpdateBindUserRequest) (*api.UpdateBindUserResponse, error) {
+	err := r.svc.RoleService.BindUsers(ctx, request.GetRoleId(), request.GetUserIds())
+	if err != nil {
+		return nil, err
+	}
+	return &api.UpdateBindUserResponse{}, nil
 }

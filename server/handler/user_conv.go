@@ -7,19 +7,25 @@ import (
 )
 
 func ConvVO2UserListFilter(filterVO *api.GetUserListRequestFilter) *data.ListUserFilter {
-	return &data.ListUserFilter{}
+	return &data.ListUserFilter{
+		UsernameLike: filterVO.UsernameLike,
+	}
 }
 
 func ConvUserList2RespData(userList []*model.User, total int64) *api.GetUserListResponseData {
-	userVOList := make([]*api.User, 0, len(userList))
-	for _, userinfo := range userList {
-		userVOList = append(userVOList, ConvUser2VO(userinfo))
-	}
 
 	return &api.GetUserListResponseData{
 		Total: total,
-		List:  userVOList,
+		List:  ConvUserList2VOList(userList),
 	}
+}
+
+func ConvUserList2VOList(userModelList []*model.User) []*api.User {
+	userVOList := make([]*api.User, 0, len(userModelList))
+	for _, userinfo := range userModelList {
+		userVOList = append(userVOList, ConvUser2VO(userinfo))
+	}
+	return userVOList
 }
 
 func ConvUser2VO(userInfo *model.User) *api.User {

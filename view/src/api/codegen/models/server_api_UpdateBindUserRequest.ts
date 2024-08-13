@@ -2,7 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type server_api_GetUserListRequestFilter = {
-    username_like?: string;
+export type server_api_UpdateBindUserRequest = {
+    role_id?: string;
+    user_ids?: Array<string>;
 };
 

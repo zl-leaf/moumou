@@ -12,6 +12,7 @@
                 <span>
                     <a-button size="small" :href="`info?id=${record.id}`" style="margin-right:5px;">详情</a-button>
                     <a-button size="small" :href="`permission?id=${record.id}`" style="margin-right:5px;">权限</a-button>
+                    <a-button size="small" :href="`bind_user?id=${record.id}`" style="margin-right:5px;">授权</a-button>
                     <a-popconfirm title="确认删除？" ok-text="确认" ok-type="danger" cancel-text="取消" @confirm="onDelete(record.id)">
                         <a-button danger size="small">删除</a-button>
                     </a-popconfirm>

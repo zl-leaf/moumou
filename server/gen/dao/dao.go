@@ -14,6 +14,7 @@ type Dao struct {
 	RoleDao           *roleDao
 	PermissionDao     *permissionDao
 	RolePermissionDao *rolePermissionDao
+	UserRelRoleDao    *userRelRoleDao
 }
 
 func NewDao(db *gorm.DB) *Dao {
@@ -24,6 +25,7 @@ func NewDao(db *gorm.DB) *Dao {
 		RoleDao:           newRoleDao(db),
 		PermissionDao:     newPermissionDao(db),
 		RolePermissionDao: newRolePermissionDao(db),
+		UserRelRoleDao:    newUserRelRoleDao(db),
 	}
 }
 

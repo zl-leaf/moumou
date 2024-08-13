@@ -24,6 +24,24 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/server.api.GetPermissionListResponse'
+    /role/bind_user/update:
+        post:
+            tags:
+                - RoleHandler
+            operationId: RoleHandler_UpdateBindUser
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/server.api.UpdateBindUserRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/server.api.UpdateBindUserResponse'
     /role/create:
         post:
             tags:
@@ -582,7 +600,9 @@ components:
                     $ref: '#/components/schemas/server.api.GetUserListRequestFilter'
         server.api.GetUserListRequestFilter:
             type: object
-            properties: {}
+            properties:
+                username_like:
+                    type: string
         server.api.GetUserListResponse:
             type: object
             properties:
@@ -662,10 +682,16 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/server.api.Permission'
+                users:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/server.api.User'
         server.api.RoleRelateField:
             type: object
             properties:
                 permission:
+                    type: boolean
+                bind_user:
                     type: boolean
         server.api.Router:
             type: object
@@ -706,6 +732,23 @@ components:
                     type: string
                 data:
                     $ref: '#/components/schemas/server.api.User'
+        server.api.UpdateBindUserRequest:
+            type: object
+            properties:
+                role_id:
+                    type: string
+                user_ids:
+                    type: array
+                    items:
+                        type: string
+        server.api.UpdateBindUserResponse:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                message:
+                    type: string
         server.api.UpdateRolePermissionRequest:
             type: object
             properties:

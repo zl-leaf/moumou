@@ -27,7 +27,7 @@ message User {
 }
 
 message GetUserListRequestFilter {
-
+  optional string username_like = 1[json_name="username_like"];
 }
 
 message GetUserListRequest {

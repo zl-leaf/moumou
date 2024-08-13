@@ -4,6 +4,7 @@ package server.api;
 
 import "google/api/annotations.proto";
 import "permission.proto";
+import "user.proto";
 
 option go_package = "server/api;api";
 
@@ -49,12 +50,20 @@ service RoleHandler {
       body: "*"
     };
   };
+
+  rpc UpdateBindUser(UpdateBindUserRequest) returns (UpdateBindUserResponse) {
+    option (google.api.http) = {
+      post: "/role/bind_user/update",
+      body: "*"
+    };
+  };
 }
 
 message Role {
   int64 id = 1;
   string name = 2;
   repeated Permission permissions = 3;
+  repeated User users = 4;
 }
 
 message GetRoleListRequestFilter {
@@ -120,6 +129,7 @@ message DeleteRoleResponse {
 
 message RoleRelateField {
   bool permission = 1;
+  bool bind_user = 2[json_name="bind_user"];
 }
 
 message GetRoleInfoRequest {
@@ -139,6 +149,16 @@ message UpdateRolePermissionRequest {
 }
 
 message UpdateRolePermissionResponse {
+  int32 code = 1;
+  string message = 2;
+}
+
+message UpdateBindUserRequest {
+  int64 role_id = 1 [json_name="role_id"];
+  repeated int64 user_ids = 2[json_name="user_ids"];
+}
+
+message UpdateBindUserResponse {
   int32 code = 1;
   string message = 2;
 }

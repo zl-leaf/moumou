@@ -53,6 +53,8 @@ export type { server_api_RoleRelateField } from './models/server_api_RoleRelateF
 export type { server_api_Router } from './models/server_api_Router';
 export type { server_api_SelfRequest } from './models/server_api_SelfRequest';
 export type { server_api_SelfResponse } from './models/server_api_SelfResponse';
+export type { server_api_UpdateBindUserRequest } from './models/server_api_UpdateBindUserRequest';
+export type { server_api_UpdateBindUserResponse } from './models/server_api_UpdateBindUserResponse';
 export type { server_api_UpdateRolePermissionRequest } from './models/server_api_UpdateRolePermissionRequest';
 export type { server_api_UpdateRolePermissionResponse } from './models/server_api_UpdateRolePermissionResponse';
 export type { server_api_UpdateRoleRequest } from './models/server_api_UpdateRoleRequest';

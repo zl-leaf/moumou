@@ -23,6 +23,7 @@ const OperationRoleHandlerCreateRole = "/server.api.RoleHandler/CreateRole"
 const OperationRoleHandlerDeleteRole = "/server.api.RoleHandler/DeleteRole"
 const OperationRoleHandlerGetRoleInfo = "/server.api.RoleHandler/GetRoleInfo"
 const OperationRoleHandlerGetRoleList = "/server.api.RoleHandler/GetRoleList"
+const OperationRoleHandlerUpdateBindUser = "/server.api.RoleHandler/UpdateBindUser"
 const OperationRoleHandlerUpdateRole = "/server.api.RoleHandler/UpdateRole"
 const OperationRoleHandlerUpdateRolePermission = "/server.api.RoleHandler/UpdateRolePermission"
 
@@ -31,6 +32,7 @@ type RoleHandlerHTTPServer interface {
 	DeleteRole(context.Context, *DeleteRoleRequest) (*DeleteRoleResponse, error)
 	GetRoleInfo(context.Context, *GetRoleInfoRequest) (*GetRoleInfoResponse, error)
 	GetRoleList(context.Context, *GetRoleListRequest) (*GetRoleListResponse, error)
+	UpdateBindUser(context.Context, *UpdateBindUserRequest) (*UpdateBindUserResponse, error)
 	UpdateRole(context.Context, *UpdateRoleRequest) (*UpdateRoleResponse, error)
 	UpdateRolePermission(context.Context, *UpdateRolePermissionRequest) (*UpdateRolePermissionResponse, error)
 }
@@ -43,6 +45,7 @@ func RegisterRoleHandlerHTTPServer(s *http.Server, srv RoleHandlerHTTPServer) {
 	r.POST("/role/delete", _RoleHandler_DeleteRole0_HTTP_Handler(srv))
 	r.POST("/role/info", _RoleHandler_GetRoleInfo0_HTTP_Handler(srv))
 	r.POST("/role/permission/update", _RoleHandler_UpdateRolePermission0_HTTP_Handler(srv))
+	r.POST("/role/bind_user/update", _RoleHandler_UpdateBindUser0_HTTP_Handler(srv))
 }
 
 func _RoleHandler_GetRoleList0_HTTP_Handler(srv RoleHandlerHTTPServer) func(ctx http.Context) error {
@@ -177,11 +180,34 @@ func _RoleHandler_UpdateRolePermission0_HTTP_Handler(srv RoleHandlerHTTPServer) 
 	}
 }
 
+func _RoleHandler_UpdateBindUser0_HTTP_Handler(srv RoleHandlerHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in UpdateBindUserRequest
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationRoleHandlerUpdateBindUser)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.UpdateBindUser(ctx, req.(*UpdateBindUserRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*UpdateBindUserResponse)
+		return ctx.Result(200, reply)
+	}
+}
+
 type RoleHandlerHTTPClient interface {
 	CreateRole(ctx context.Context, req *CreateRoleRequest, opts ...http.CallOption) (rsp *CreateRoleResponse, err error)
 	DeleteRole(ctx context.Context, req *DeleteRoleRequest, opts ...http.CallOption) (rsp *DeleteRoleResponse, err error)
 	GetRoleInfo(ctx context.Context, req *GetRoleInfoRequest, opts ...http.CallOption) (rsp *GetRoleInfoResponse, err error)
 	GetRoleList(ctx context.Context, req *GetRoleListRequest, opts ...http.CallOption) (rsp *GetRoleListResponse, err error)
+	UpdateBindUser(ctx context.Context, req *UpdateBindUserRequest, opts ...http.CallOption) (rsp *UpdateBindUserResponse, err error)
 	UpdateRole(ctx context.Context, req *UpdateRoleRequest, opts ...http.CallOption) (rsp *UpdateRoleResponse, err error)
 	UpdateRolePermission(ctx context.Context, req *UpdateRolePermissionRequest, opts ...http.CallOption) (rsp *UpdateRolePermissionResponse, err error)
 }
@@ -238,6 +264,19 @@ func (c *RoleHandlerHTTPClientImpl) GetRoleList(ctx context.Context, in *GetRole
 	pattern := "/role/list"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationRoleHandlerGetRoleList))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, nil
+}
+
+func (c *RoleHandlerHTTPClientImpl) UpdateBindUser(ctx context.Context, in *UpdateBindUserRequest, opts ...http.CallOption) (*UpdateBindUserResponse, error) {
+	var out UpdateBindUserResponse
+	pattern := "/role/bind_user/update"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationRoleHandlerUpdateBindUser))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {

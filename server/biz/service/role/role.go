@@ -18,3 +18,7 @@ func NewService(db *dao.Dao) *Service {
 func (s *Service) UpdateRolePermission(ctx context.Context, roleID int64, permissionIDs []int64) error {
 	return internal.NewUpdateRolePermissionService(s.db).Execute(ctx, roleID, permissionIDs)
 }
+
+func (s *Service) BindUsers(ctx context.Context, roleID int64, userIDs []int64) error {
+	return internal.NewBindUserService(s.db).Execute(ctx, roleID, userIDs)
+}

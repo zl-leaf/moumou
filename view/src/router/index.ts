@@ -88,6 +88,14 @@ const router = createRouter({
                   meta: {
                     title: '角色权限',
                   },
+                },
+                {
+                  path: 'bind_user',
+                  name: 'role_bind_user',
+                  component: () => import('@/views/manage/role/BindUser.vue'),
+                  meta: {
+                    title: '绑定用户',
+                  },
                 }
               ]
             }

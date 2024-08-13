@@ -4,5 +4,6 @@
 /* eslint-disable */
 export type server_api_RoleRelateField = {
     permission?: boolean;
+    bind_user?: boolean;
 };
 
