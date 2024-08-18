@@ -1,9 +1,10 @@
 package database
 
 import (
+	"time"
+
 	"github.com/go-sql-driver/mysql"
 	"github.com/moumou/server/pkgs/config"
-	"time"
 )
 
 type dbConfig struct {
@@ -31,5 +32,6 @@ func newConfig() (*mysql.Config, error) {
 		Params: map[string]string{
 			"charset": "utf8mb4",
 		},
+		AllowNativePasswords: true,
 	}, nil
 }
