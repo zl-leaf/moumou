@@ -1,6 +1,6 @@
 module github.com/moumou/server
 
-go 1.22.0
+go 1.19
 
 require (
 	github.com/go-kratos/kratos/v2 v2.7.3
