@@ -1,21 +1,23 @@
 FROM alibaba-cloud-linux-3-registry.cn-hangzhou.cr.aliyuncs.com/alinux3/golang:1.19.4
 LABEL authors="yipzale"
 
-ARG CONFIG_FILE=/var/www/moumou/bootstrap/config/config_prod.yml
+ARG APP_ENV=prod
+
+ENV ENV ${APP_ENV}
 
 WORKDIR /go/src/github.com/moumou/server
 COPY . .
+RUN mkdir  -p /var/www/bootstrap/log
+RUN mkdir  -p /var/www/bootstrap/config
 
 RUN go env -w GO111MODULE=on \
     && go env -w GOPROXY=https://goproxy.cn,direct \
     && go env -w CGO_ENABLED=0 \
     && go env \
-    && go build -o /var/www/bootstrap/app
+    && go build -o /var/www/bootstrap/app \
+    && cp config/config_${APP_ENV}.yml /var/www/bootstrap/config/
 
 WORKDIR /var/www/bootstrap
-RUN mkdir  -p build/log
-RUN mkdir  -p build/config
-COPY $CONFIG_FILE ./config/
 COPY ./docker/entrypoint.sh .
 RUN chmod a+x ./entrypoint.sh
 

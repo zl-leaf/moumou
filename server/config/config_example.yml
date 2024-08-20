@@ -1,12 +1,12 @@
 server:
-  host: 127.0.0.1
-  port: 8888
+  host: $APP_SERVER_HOST
+  port: $APP_SERVER_PORT
 
 security:
-  jwt_key: "demo"
+  jwt_key: $APP_SECURITY_JWTKEY
 
 database:
-  user: dev
-  password: dev
-  db_name: dev
-  addr: "localhost:3306"
+  user: $APP_DATABASE_USER
+  password: $APP_DATABASE_PASSWORD
+  db_name: $APP_DATABASE_DBNAME
+  addr: $APP_DATABASE_ADDR
