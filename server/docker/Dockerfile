@@ -7,7 +7,6 @@ ENV ENV ${APP_ENV}
 
 WORKDIR /go/src/github.com/moumou/server
 COPY . .
-RUN mkdir  -p /var/www/bootstrap/log
 RUN mkdir  -p /var/www/bootstrap/config
 
 RUN go env -w GO111MODULE=on \
