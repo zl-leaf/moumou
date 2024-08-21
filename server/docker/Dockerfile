@@ -3,6 +3,7 @@ LABEL authors="yipzale"
 
 ARG APP_ENV=prod
 
+# 设置环境变量
 ENV ENV ${APP_ENV}
 
 WORKDIR /go/src/github.com/moumou/server
