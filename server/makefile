@@ -30,10 +30,3 @@ dao:
 .PHONY: table
 table:
 	go run cmd/init_table/*
-
-
-.PHONY: build
-build:
-	go build -o build/app
-	mkdir -p build/log
-	mkdir -p build/config
