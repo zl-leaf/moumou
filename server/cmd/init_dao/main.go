@@ -7,7 +7,7 @@ import (
 
 func main() {
 	g := gorm_dao.NewGenerator("./gen/dao")
-	g.Apply(model.User{}, model.Router{}, model.Role{}, model.Permission{}, model.RolePermission{}, model.UserRelRole{})
+	g.Apply(model.User{}, model.Role{}, model.Permission{}, model.RolePermission{}, model.UserRelRole{})
 	err := g.Generate()
 	if err != nil {
 		panic(err)

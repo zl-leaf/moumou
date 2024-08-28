@@ -12,7 +12,7 @@ init:
 
 .PHONY: config
 wire:
-	wire ./biz/service
+	wire ./cmd/server
 
 .PHONY: api
 api:

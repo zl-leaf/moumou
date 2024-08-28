@@ -3,6 +3,8 @@ package user
 import (
 	"context"
 
+	"github.com/moumou/server/biz/conf"
+
 	"github.com/moumou/server/biz/model"
 	"github.com/moumou/server/biz/service/user/data"
 	"github.com/moumou/server/biz/service/user/internal"
@@ -14,9 +16,9 @@ type Service struct {
 	db       *dao.Dao
 }
 
-func NewUserService(db *dao.Dao) *Service {
+func NewUserService(cnf *conf.Data, db *dao.Dao) *Service {
 	return &Service{
-		loginSvc: internal.NewLoginService(db),
+		loginSvc: internal.NewLoginService(cnf, db),
 		db:       db,
 	}
 }

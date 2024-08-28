@@ -2,6 +2,7 @@ package handler
 
 import (
 	"context"
+
 	"github.com/moumou/server/biz/service"
 	api "github.com/moumou/server/gen/proto"
 )
@@ -42,16 +43,5 @@ func (h *SecurityHandler) Self(ctx context.Context, request *api.SelfRequest) (*
 	}
 	return &api.SelfResponse{
 		Data: ConvUser2VO(user),
-	}, nil
-}
-
-func (h *SecurityHandler) GetSecurityRouterTree(ctx context.Context, request *api.GetSecurityRouterTreeRequest) (*api.GetSecurityRouterTreeResponse, error) {
-	routerList, err := h.svc.PageService.GetRouterList()
-	if err != nil {
-		return nil, err
-	}
-
-	return &api.GetSecurityRouterTreeResponse{
-		Data: ConvRouterList2SecurityRouterTreeRespData(routerList),
 	}, nil
 }
