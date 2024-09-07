@@ -7,19 +7,19 @@ import (
 )
 
 type Service struct {
-	SysUserService *user.Service
-	RoleService    *role.Service
-	Dao            *dao.Dao
+	UserService *user.Service
+	RoleService *role.Service
+	Dao         *dao.Dao
 }
 
 func NewService(
-	sysUserService *user.Service,
+	userService *user.Service,
 	roleService *role.Service,
 	db *dao.Dao,
 ) *Service {
 	return &Service{
-		SysUserService: sysUserService,
-		RoleService:    roleService,
-		Dao:            db,
+		UserService: userService,
+		RoleService: roleService,
+		Dao:         db,
 	}
 }

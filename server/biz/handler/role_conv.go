@@ -27,10 +27,3 @@ func ConvCreateRequestData2Role(roleVO *api.CreateRoleRequestData) *model.Role {
 		Name: roleVO.Name,
 	}
 }
-
-func ConvUpdateRequestData2Role(roleVO *api.UpdateRoleRequestData) *model.Role {
-	return &model.Role{
-		BaseModel: model.BaseModel{ID: roleVO.Id},
-		Name:      roleVO.Name,
-	}
-}

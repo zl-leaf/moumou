@@ -12,15 +12,8 @@ func ConvVO2UserListFilter(filterVO *api.GetUserListRequestFilter) *data.ListUse
 	}
 }
 
-func ConvUserList2RespData(userList []*model.User, total int64) *api.GetUserListResponseData {
-
-	return &api.GetUserListResponseData{
-		Total: total,
-		List:  ConvUserList2VOList(userList),
-	}
-}
-
 func ConvUserList2VOList(userModelList []*model.User) []*api.User {
+
 	userVOList := make([]*api.User, 0, len(userModelList))
 	for _, userinfo := range userModelList {
 		userVOList = append(userVOList, ConvUser2VO(userinfo))

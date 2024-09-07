@@ -2,6 +2,7 @@ package handler
 
 import (
 	"context"
+
 	"github.com/moumou/server/biz/service"
 	api "github.com/moumou/server/gen/proto"
 )
@@ -15,13 +16,16 @@ func NewUserHandler(svc *service.Service) api.UserHandlerHTTPServer {
 }
 
 func (h *UserHandler) GetUserList(ctx context.Context, request *api.GetUserListRequest) (*api.GetUserListResponse, error) {
-	userList, total, err := h.svc.SysUserService.GetUserList(ctx, ConvVO2UserListFilter(request.GetFilter()), int(request.GetCurrentPage()), int(request.GetPageSize()))
+	userList, total, err := h.svc.UserService.GetUserList(ctx, ConvVO2UserListFilter(request.GetFilter()), int(request.GetCurrentPage()), int(request.GetPageSize()))
 
 	if err != nil {
 		return nil, err
 	}
 	return &api.GetUserListResponse{
-		Data: ConvUserList2RespData(userList, total),
+		Data: &api.GetUserListResponseData{
+			Total: total,
+			List:  ConvUserList2VOList(userList),
+		},
 	}, nil
 }
 

@@ -29,7 +29,7 @@ func (p PermissionHandler) GetPermissionList(ctx context.Context, request *api.G
 }
 
 func (p PermissionHandler) GetUserPermissionPath(ctx context.Context, request *api.GetUserPermissionPathRequest) (*api.GetUserPermissionPathResponse, error) {
-	user, err := p.svc.SysUserService.Self(ctx)
+	user, err := p.svc.UserService.Self(ctx)
 	if err != nil {
 		return nil, err
 	}

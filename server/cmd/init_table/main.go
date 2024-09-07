@@ -3,13 +3,14 @@ package main
 import (
 	"context"
 	"flag"
+	"fmt"
 
 	"github.com/go-kratos/kratos/v2/config"
 	"github.com/go-kratos/kratos/v2/config/file"
 	"github.com/moumou/server/biz/conf"
-
 	"github.com/moumou/server/biz/model"
 	"github.com/moumou/server/pkgs/database"
+	"github.com/moumou/server/pkgs/env"
 	"gorm.io/gorm"
 )
 
@@ -18,13 +19,13 @@ var (
 )
 
 func init() {
-	flag.StringVar(&flagconf, "conf", "../../configs", "config path, eg: -conf config.yaml")
+	flag.StringVar(&flagconf, "conf", "./config", "config path, eg: -conf ./config")
 }
 
 func main() {
 	c := config.New(
 		config.WithSource(
-			file.NewSource(flagconf),
+			file.NewSource(fmt.Sprintf("%s/config_%s.yaml", flagconf, env.GetEnv())),
 		),
 	)
 	defer c.Close()

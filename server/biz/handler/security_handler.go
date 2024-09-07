@@ -16,7 +16,7 @@ func NewSecurityHandler(svc *service.Service) api.SecurityHandlerHTTPServer {
 }
 
 func (h *SecurityHandler) Login(ctx context.Context, request *api.LoginRequest) (*api.LoginResponse, error) {
-	token, user, err := h.svc.SysUserService.Login(ctx, request.GetUsername(), request.GetPassword())
+	token, user, err := h.svc.UserService.Login(ctx, request.GetUsername(), request.GetPassword())
 	if err != nil {
 		return nil, err
 	}
@@ -29,7 +29,7 @@ func (h *SecurityHandler) Login(ctx context.Context, request *api.LoginRequest) 
 }
 
 func (h *SecurityHandler) Logout(ctx context.Context, request *api.LogoutRequest) (*api.LogoutResponse, error) {
-	err := h.svc.SysUserService.Logout(ctx, "token")
+	err := h.svc.UserService.Logout(ctx, "token")
 	if err != nil {
 		return nil, err
 	}
@@ -37,7 +37,7 @@ func (h *SecurityHandler) Logout(ctx context.Context, request *api.LogoutRequest
 }
 
 func (h *SecurityHandler) Self(ctx context.Context, request *api.SelfRequest) (*api.SelfResponse, error) {
-	user, err := h.svc.SysUserService.Self(ctx)
+	user, err := h.svc.UserService.Self(ctx)
 	if err != nil {
 		return nil, err
 	}
