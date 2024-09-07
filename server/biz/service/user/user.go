@@ -45,7 +45,7 @@ func (svc *Service) Self(ctx context.Context) (*model.User, error) {
 }
 
 func (svc *Service) GetUserList(ctx context.Context, filter *data.ListUserFilter, currentPage, pageSize int) ([]*model.User, int64, error) {
-	query := svc.db.UserDao.WithContext(ctx)
+	query := svc.db.UserDao(ctx)
 	if filter.UsernameLike != nil {
 		query = query.WhereUsernameLike(*filter.UsernameLike)
 	}

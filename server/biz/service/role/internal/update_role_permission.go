@@ -18,8 +18,8 @@ func NewUpdateRolePermissionService(db *dao.Dao) *UpdateRolePermissionService {
 }
 
 func (s *UpdateRolePermissionService) Execute(ctx context.Context, roleID int64, permissionIDs []int64) error {
-	return s.db.Transaction(func(tx *dao.Dao) error {
-		rolePermissionList, _, err := tx.RolePermissionDao.WhereRoleIDEq(roleID).Find()
+	return s.db.Transaction(ctx, func(tx *dao.Dao) error {
+		rolePermissionList, _, err := tx.RolePermissionDao(ctx).WhereRoleIDEq(roleID).Find()
 		if err != nil {
 			return err
 		}
@@ -50,7 +50,7 @@ func (s *UpdateRolePermissionService) Execute(ctx context.Context, roleID int64,
 		}
 
 		if len(deleteByPermissionIDs) > 0 {
-			err = tx.RolePermissionDao.WithContext(ctx).
+			err = tx.RolePermissionDao(ctx).
 				WhereRoleIDEq(roleID).
 				WherePermissionIDIn(deleteByPermissionIDs).
 				Delete()
@@ -60,7 +60,7 @@ func (s *UpdateRolePermissionService) Execute(ctx context.Context, roleID int64,
 		}
 		if len(addByPermissionIDs) > 0 {
 			for _, addByPermissionID := range addByPermissionIDs {
-				err = tx.RolePermissionDao.WithContext(ctx).Create(&model.RolePermission{
+				err = tx.RolePermissionDao(ctx).Create(&model.RolePermission{
 					RoleID:       roleID,
 					PermissionID: addByPermissionID,
 				})

@@ -30,7 +30,7 @@ func NewLoginService(cnf *conf.Data, db *dao.Dao) *LoginService {
 }
 
 func (svc *LoginService) FindUserByUserNameAndPassword(ctx context.Context, userName, password string) (*model.User, error) {
-	user, err := svc.db.UserDao.WithContext(ctx).WhereUsernameEq(userName).First()
+	user, err := svc.db.UserDao(ctx).WhereUsernameEq(userName).First()
 	if err != nil {
 		return nil, err
 	}
@@ -58,7 +58,7 @@ func (svc *LoginService) FindUserByToken(ctx context.Context) (*model.User, erro
 	}
 
 	var userID = customClaims.UserID
-	return svc.db.UserDao.WithContext(ctx).GetByID(userID)
+	return svc.db.UserDao(ctx).GetByID(userID)
 }
 
 func (svc *LoginService) CreateToken(userInfo *model.User) (string, error) {

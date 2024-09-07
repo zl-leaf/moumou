@@ -16,7 +16,7 @@ func NewPermissionHandler(svc *service.Service) api.PermissionHandlerHTTPServer 
 }
 
 func (p PermissionHandler) GetPermissionList(ctx context.Context, request *api.GetPermissionListRequest) (*api.GetPermissionListResponse, error) {
-	permissionList, total, err := p.svc.Dao.PermissionDao.WithContext(ctx).OrderBySort().Find()
+	permissionList, total, err := p.svc.Dao.PermissionDao(ctx).OrderBySort().Find()
 	if err != nil {
 		return nil, err
 	}
@@ -33,12 +33,12 @@ func (p PermissionHandler) GetUserPermissionPath(ctx context.Context, request *a
 	if err != nil {
 		return nil, err
 	}
-	userRoleList, _, err := p.svc.Dao.UserRelRoleDao.WithContext(ctx).WhereUserIDEq(user.ID).Find()
+	userRoleList, _, err := p.svc.Dao.UserRelRoleDao(ctx).WhereUserIDEq(user.ID).Find()
 	roleIDs := make([]int64, len(userRoleList))
 	for i, userRole := range userRoleList {
 		roleIDs[i] = userRole.RoleID
 	}
-	rolePermissionList, _, err := p.svc.Dao.RolePermissionDao.WhereRoleIDIn(roleIDs).Find()
+	rolePermissionList, _, err := p.svc.Dao.RolePermissionDao(ctx).WhereRoleIDIn(roleIDs).Find()
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func (p PermissionHandler) GetUserPermissionPath(ctx context.Context, request *a
 	for i, rolePermission := range rolePermissionList {
 		permissionIDList[i] = rolePermission.PermissionID
 	}
-	permissionList, _, err := p.svc.Dao.PermissionDao.WithContext(ctx).WhereIDIn(permissionIDList).Find()
+	permissionList, _, err := p.svc.Dao.PermissionDao(ctx).WhereIDIn(permissionIDList).Find()
 
 	permissionPaths := make([]string, len(permissionList))
 	for i, permission := range permissionList {

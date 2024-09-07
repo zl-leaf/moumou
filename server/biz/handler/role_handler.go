@@ -19,7 +19,7 @@ func NewRoleHandler(svc *service.Service) api.RoleHandlerHTTPServer {
 
 func (r RoleHandler) CreateRole(ctx context.Context, request *api.CreateRoleRequest) (*api.CreateRoleResponse, error) {
 	role := ConvCreateRequestData2Role(request.Role)
-	err := r.svc.Dao.RoleDao.WithContext(ctx).Create(role)
+	err := r.svc.Dao.RoleDao(ctx).Create(role)
 	if err != nil {
 		return nil, err
 	}
@@ -31,7 +31,7 @@ func (r RoleHandler) CreateRole(ctx context.Context, request *api.CreateRoleRequ
 }
 
 func (r RoleHandler) DeleteRole(ctx context.Context, request *api.DeleteRoleRequest) (*api.DeleteRoleResponse, error) {
-	err := r.svc.Dao.RoleDao.WithContext(ctx).Delete(request.Ids)
+	err := r.svc.Dao.RoleDao(ctx).Delete(request.Ids)
 	if err != nil {
 		return nil, err
 	}
@@ -39,12 +39,12 @@ func (r RoleHandler) DeleteRole(ctx context.Context, request *api.DeleteRoleRequ
 }
 
 func (r RoleHandler) UpdateRole(ctx context.Context, request *api.UpdateRoleRequest) (*api.UpdateRoleResponse, error) {
-	role, err := r.svc.Dao.RoleDao.WithContext(ctx).GetByID(request.Role.GetId())
+	role, err := r.svc.Dao.RoleDao(ctx).GetByID(request.Role.GetId())
 	if err != nil {
 		return nil, err
 	}
 	role.Name = request.Role.Name
-	err = r.svc.Dao.RoleDao.WithContext(ctx).Save(role)
+	err = r.svc.Dao.RoleDao(ctx).Save(role)
 	if err != nil {
 		return nil, err
 	}
@@ -52,7 +52,7 @@ func (r RoleHandler) UpdateRole(ctx context.Context, request *api.UpdateRoleRequ
 }
 
 func (r RoleHandler) GetRoleList(ctx context.Context, request *api.GetRoleListRequest) (*api.GetRoleListResponse, error) {
-	roleList, total, err := r.svc.Dao.RoleDao.WithContext(ctx).Page(int(request.CurrentPage), int(request.PageSize)).Find()
+	roleList, total, err := r.svc.Dao.RoleDao(ctx).Page(int(request.CurrentPage), int(request.PageSize)).Find()
 	if err != nil {
 		return nil, err
 	}
@@ -66,13 +66,13 @@ func (r RoleHandler) GetRoleList(ctx context.Context, request *api.GetRoleListRe
 }
 
 func (r RoleHandler) GetRoleInfo(ctx context.Context, request *api.GetRoleInfoRequest) (*api.GetRoleInfoResponse, error) {
-	role, err := r.svc.Dao.RoleDao.WithContext(ctx).GetByID(request.GetId())
+	role, err := r.svc.Dao.RoleDao(ctx).GetByID(request.GetId())
 	if err != nil {
 		return nil, err
 	}
 	var permissionList []*model.Permission
 	if request.GetField() != nil && request.GetField().GetPermission() {
-		rolePermissionList, _, err := r.svc.Dao.RolePermissionDao.WithContext(ctx).WhereRoleIDEq(request.GetId()).Find()
+		rolePermissionList, _, err := r.svc.Dao.RolePermissionDao(ctx).WhereRoleIDEq(request.GetId()).Find()
 		if err != nil {
 			return nil, err
 		}
@@ -82,13 +82,13 @@ func (r RoleHandler) GetRoleInfo(ctx context.Context, request *api.GetRoleInfoRe
 			permissionIDs[i] = rolePermission.PermissionID
 		}
 		if len(permissionIDs) > 0 {
-			permissionList, _, err = r.svc.Dao.PermissionDao.WithContext(ctx).WhereIDIn(permissionIDs).Find()
+			permissionList, _, err = r.svc.Dao.PermissionDao(ctx).WhereIDIn(permissionIDs).Find()
 		}
 	}
 
 	var userList []*model.User
 	if request.GetField() != nil && request.GetField().GetBindUser() {
-		userRelRoleList, _, err := r.svc.Dao.UserRelRoleDao.WithContext(ctx).WhereRoleIDEq(request.GetId()).Find()
+		userRelRoleList, _, err := r.svc.Dao.UserRelRoleDao(ctx).WhereRoleIDEq(request.GetId()).Find()
 		if err != nil {
 			return nil, err
 		}
@@ -97,7 +97,7 @@ func (r RoleHandler) GetRoleInfo(ctx context.Context, request *api.GetRoleInfoRe
 			userIDs[i] = userRelRole.UserID
 		}
 		if len(userIDs) > 0 {
-			userList, _, err = r.svc.Dao.UserDao.WithContext(ctx).WhereIDIn(userIDs).Find()
+			userList, _, err = r.svc.Dao.UserDao(ctx).WhereIDIn(userIDs).Find()
 		}
 	}
 

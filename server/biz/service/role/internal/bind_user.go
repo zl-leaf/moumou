@@ -16,8 +16,8 @@ func NewBindUserService(db *dao.Dao) *BindUserService {
 }
 
 func (s *BindUserService) Execute(ctx context.Context, roleID int64, bindUserIDList []int64) error {
-	return s.db.Transaction(func(tx *dao.Dao) error {
-		existsBindUserList, _, err := tx.UserRelRoleDao.WithContext(ctx).WhereRoleIDEq(roleID).Find()
+	return s.db.Transaction(ctx, func(tx *dao.Dao) error {
+		existsBindUserList, _, err := tx.UserRelRoleDao(ctx).WhereRoleIDEq(roleID).Find()
 		if err != nil {
 			return err
 		}
@@ -50,14 +50,14 @@ func (s *BindUserService) Execute(ctx context.Context, roleID int64, bindUserIDL
 		}
 
 		if len(unBinduserIDs) > 0 {
-			if err = tx.UserRelRoleDao.WithContext(ctx).Delete(unBinduserIDs); err != nil {
+			if err = tx.UserRelRoleDao(ctx).Delete(unBinduserIDs); err != nil {
 				return err
 			}
 		}
 
 		if len(needBindUserIDs) > 0 {
 			for _, needBindUserID := range needBindUserIDs {
-				err = tx.UserRelRoleDao.WithContext(ctx).Create(&model.UserRelRole{
+				err = tx.UserRelRoleDao(ctx).Create(&model.UserRelRole{
 					RoleID: roleID,
 					UserID: needBindUserID,
 				})
