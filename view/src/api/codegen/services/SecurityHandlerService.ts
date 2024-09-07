@@ -2,8 +2,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { server_api_GetSecurityRouterTreeRequest } from '../models/server_api_GetSecurityRouterTreeRequest';
-import type { server_api_GetSecurityRouterTreeResponse } from '../models/server_api_GetSecurityRouterTreeResponse';
 import type { server_api_LoginRequest } from '../models/server_api_LoginRequest';
 import type { server_api_LoginResponse } from '../models/server_api_LoginResponse';
 import type { server_api_LogoutRequest } from '../models/server_api_LogoutRequest';
@@ -40,21 +38,6 @@ export class SecurityHandlerService {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/security/logout',
-            body: requestBody,
-            mediaType: 'application/json',
-        });
-    }
-    /**
-     * @param requestBody
-     * @returns server_api_GetSecurityRouterTreeResponse OK
-     * @throws ApiError
-     */
-    public static securityHandlerGetSecurityRouterTree(
-        requestBody: server_api_GetSecurityRouterTreeRequest,
-    ): CancelablePromise<server_api_GetSecurityRouterTreeResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/security/router_tree',
             body: requestBody,
             mediaType: 'application/json',
         });

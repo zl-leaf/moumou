@@ -19,13 +19,11 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationSecurityHandlerGetSecurityRouterTree = "/server.api.SecurityHandler/GetSecurityRouterTree"
 const OperationSecurityHandlerLogin = "/server.api.SecurityHandler/Login"
 const OperationSecurityHandlerLogout = "/server.api.SecurityHandler/Logout"
 const OperationSecurityHandlerSelf = "/server.api.SecurityHandler/Self"
 
 type SecurityHandlerHTTPServer interface {
-	GetSecurityRouterTree(context.Context, *GetSecurityRouterTreeRequest) (*GetSecurityRouterTreeResponse, error)
 	Login(context.Context, *LoginRequest) (*LoginResponse, error)
 	Logout(context.Context, *LogoutRequest) (*LogoutResponse, error)
 	Self(context.Context, *SelfRequest) (*SelfResponse, error)
@@ -36,7 +34,6 @@ func RegisterSecurityHandlerHTTPServer(s *http.Server, srv SecurityHandlerHTTPSe
 	r.POST("/security/login", _SecurityHandler_Login0_HTTP_Handler(srv))
 	r.POST("/security/logout", _SecurityHandler_Logout0_HTTP_Handler(srv))
 	r.POST("/security/self", _SecurityHandler_Self0_HTTP_Handler(srv))
-	r.POST("/security/router_tree", _SecurityHandler_GetSecurityRouterTree0_HTTP_Handler(srv))
 }
 
 func _SecurityHandler_Login0_HTTP_Handler(srv SecurityHandlerHTTPServer) func(ctx http.Context) error {
@@ -105,30 +102,7 @@ func _SecurityHandler_Self0_HTTP_Handler(srv SecurityHandlerHTTPServer) func(ctx
 	}
 }
 
-func _SecurityHandler_GetSecurityRouterTree0_HTTP_Handler(srv SecurityHandlerHTTPServer) func(ctx http.Context) error {
-	return func(ctx http.Context) error {
-		var in GetSecurityRouterTreeRequest
-		if err := ctx.Bind(&in); err != nil {
-			return err
-		}
-		if err := ctx.BindQuery(&in); err != nil {
-			return err
-		}
-		http.SetOperation(ctx, OperationSecurityHandlerGetSecurityRouterTree)
-		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.GetSecurityRouterTree(ctx, req.(*GetSecurityRouterTreeRequest))
-		})
-		out, err := h(ctx, &in)
-		if err != nil {
-			return err
-		}
-		reply := out.(*GetSecurityRouterTreeResponse)
-		return ctx.Result(200, reply)
-	}
-}
-
 type SecurityHandlerHTTPClient interface {
-	GetSecurityRouterTree(ctx context.Context, req *GetSecurityRouterTreeRequest, opts ...http.CallOption) (rsp *GetSecurityRouterTreeResponse, err error)
 	Login(ctx context.Context, req *LoginRequest, opts ...http.CallOption) (rsp *LoginResponse, err error)
 	Logout(ctx context.Context, req *LogoutRequest, opts ...http.CallOption) (rsp *LogoutResponse, err error)
 	Self(ctx context.Context, req *SelfRequest, opts ...http.CallOption) (rsp *SelfResponse, err error)
@@ -140,19 +114,6 @@ type SecurityHandlerHTTPClientImpl struct {
 
 func NewSecurityHandlerHTTPClient(client *http.Client) SecurityHandlerHTTPClient {
 	return &SecurityHandlerHTTPClientImpl{client}
-}
-
-func (c *SecurityHandlerHTTPClientImpl) GetSecurityRouterTree(ctx context.Context, in *GetSecurityRouterTreeRequest, opts ...http.CallOption) (*GetSecurityRouterTreeResponse, error) {
-	var out GetSecurityRouterTreeResponse
-	pattern := "/security/router_tree"
-	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationSecurityHandlerGetSecurityRouterTree))
-	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return &out, nil
 }
 
 func (c *SecurityHandlerHTTPClientImpl) Login(ctx context.Context, in *LoginRequest, opts ...http.CallOption) (*LoginResponse, error) {

@@ -3,7 +3,6 @@ syntax = "proto3";
 package server.api;
 
 import "google/api/annotations.proto";
-import "router.proto";
 import "user.proto";
 
 option go_package = "server/api;api";
@@ -26,13 +25,6 @@ service SecurityHandler {
   rpc Self(SelfRequest) returns (SelfResponse) {
     option (google.api.http) = {
       post: "/security/self",
-      body: "*",
-    };
-  };
-
-  rpc GetSecurityRouterTree(GetSecurityRouterTreeRequest) returns (GetSecurityRouterTreeResponse) {
-    option (google.api.http) = {
-      post: "/security/router_tree",
       body: "*",
     };
   };
@@ -70,18 +62,4 @@ message SelfResponse {
   int32 code = 1;
   string message = 2;
   optional User data = 3;
-}
-
-
-message GetSecurityRouterTreeRequest {
-}
-
-message GetSecurityRouterTreeResponseData {
-  repeated Router routers = 1;
-}
-
-message GetSecurityRouterTreeResponse {
-  int32 code = 1;
-  string message = 2;
-  optional GetSecurityRouterTreeResponseData data = 3;
 }

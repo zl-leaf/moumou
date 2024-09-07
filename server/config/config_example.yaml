@@ -1,0 +1,12 @@
+server:
+  host: "${APP_SERVER_HOST}"
+  port: "${APP_SERVER_PORT}"
+
+security:
+  jwt_key: "${APP_SECURITY_JWTKEY}"
+
+database:
+  user: "${APP_DATABASE_USER}"
+  password: "${APP_DATABASE_PASSWORD}"
+  db_name: "${APP_DATABASE_DBNAME}"
+  addr: "${APP_DATABASE_ADDR}"

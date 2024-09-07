@@ -3,6 +3,8 @@ package user
 import (
 	"context"
 
+	"github.com/moumou/server/biz/conf"
+
 	"github.com/moumou/server/biz/model"
 	"github.com/moumou/server/biz/service/user/data"
 	"github.com/moumou/server/biz/service/user/internal"
@@ -14,9 +16,9 @@ type Service struct {
 	db       *dao.Dao
 }
 
-func NewUserService(db *dao.Dao) *Service {
+func NewUserService(cnf *conf.Data, db *dao.Dao) *Service {
 	return &Service{
-		loginSvc: internal.NewLoginService(db),
+		loginSvc: internal.NewLoginService(cnf, db),
 		db:       db,
 	}
 }
@@ -43,7 +45,7 @@ func (svc *Service) Self(ctx context.Context) (*model.User, error) {
 }
 
 func (svc *Service) GetUserList(ctx context.Context, filter *data.ListUserFilter, currentPage, pageSize int) ([]*model.User, int64, error) {
-	query := svc.db.UserDao.WithContext(ctx)
+	query := svc.db.UserDao(ctx)
 	if filter.UsernameLike != nil {
 		query = query.WhereUsernameLike(*filter.UsernameLike)
 	}

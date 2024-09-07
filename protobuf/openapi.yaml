@@ -168,96 +168,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/server.api.UpdateRoleResponse'
-    /router/create:
-        post:
-            tags:
-                - RouterHandler
-            operationId: RouterHandler_CreateRouter
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/server.api.CreateRouterRequest'
-                required: true
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/server.api.CreateRouterResponse'
-    /router/delete:
-        post:
-            tags:
-                - RouterHandler
-            operationId: RouterHandler_DeleteRouter
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/server.api.DeleteRouterRequest'
-                required: true
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/server.api.DeleteRouterResponse'
-    /router/info:
-        post:
-            tags:
-                - RouterHandler
-            operationId: RouterHandler_GetRouterInfo
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/server.api.GetRouterInfoRequest'
-                required: true
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/server.api.GetRouterInfoResponse'
-    /router/list:
-        post:
-            tags:
-                - RouterHandler
-            operationId: RouterHandler_GetRouterList
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/server.api.GetRouterListRequest'
-                required: true
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/server.api.GetRouterListResponse'
-    /router/update:
-        post:
-            tags:
-                - RouterHandler
-            operationId: RouterHandler_UpdateRouter
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/server.api.UpdateRouterRequest'
-                required: true
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/server.api.UpdateRouterResponse'
     /security/login:
         post:
             tags:
@@ -294,24 +204,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/server.api.LogoutResponse'
-    /security/router_tree:
-        post:
-            tags:
-                - SecurityHandler
-            operationId: SecurityHandler_GetSecurityRouterTree
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/server.api.GetSecurityRouterTreeRequest'
-                required: true
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/server.api.GetSecurityRouterTreeResponse'
     /security/self:
         post:
             tags:
@@ -393,44 +285,6 @@ components:
             properties:
                 id:
                     type: string
-        server.api.CreateRouterRequest:
-            type: object
-            properties:
-                router:
-                    $ref: '#/components/schemas/server.api.CreateRouterRequestData'
-        server.api.CreateRouterRequestData:
-            type: object
-            properties:
-                name:
-                    type: string
-                path:
-                    type: string
-                title:
-                    type: string
-                is_menu:
-                    type: boolean
-                pid:
-                    type: string
-                sort:
-                    type: integer
-                    format: int32
-                component:
-                    type: string
-        server.api.CreateRouterResponse:
-            type: object
-            properties:
-                code:
-                    type: integer
-                    format: int32
-                message:
-                    type: string
-                data:
-                    $ref: '#/components/schemas/server.api.CreateRouterResponseData'
-        server.api.CreateRouterResponseData:
-            type: object
-            properties:
-                id:
-                    type: string
         server.api.DeleteRoleRequest:
             type: object
             properties:
@@ -439,21 +293,6 @@ components:
                     items:
                         type: string
         server.api.DeleteRoleResponse:
-            type: object
-            properties:
-                code:
-                    type: integer
-                    format: int32
-                message:
-                    type: string
-        server.api.DeleteRouterRequest:
-            type: object
-            properties:
-                ids:
-                    type: array
-                    items:
-                        type: string
-        server.api.DeleteRouterResponse:
             type: object
             properties:
                 code:
@@ -535,61 +374,6 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/server.api.Role'
-        server.api.GetRouterInfoRequest:
-            type: object
-            properties:
-                id:
-                    type: string
-        server.api.GetRouterInfoResponse:
-            type: object
-            properties:
-                code:
-                    type: integer
-                    format: int32
-                message:
-                    type: string
-                data:
-                    $ref: '#/components/schemas/server.api.Router'
-        server.api.GetRouterListRequest:
-            type: object
-            properties: {}
-        server.api.GetRouterListResponse:
-            type: object
-            properties:
-                code:
-                    type: integer
-                    format: int32
-                message:
-                    type: string
-                data:
-                    $ref: '#/components/schemas/server.api.GetRouterListResponseData'
-        server.api.GetRouterListResponseData:
-            type: object
-            properties:
-                list:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/server.api.Router'
-        server.api.GetSecurityRouterTreeRequest:
-            type: object
-            properties: {}
-        server.api.GetSecurityRouterTreeResponse:
-            type: object
-            properties:
-                code:
-                    type: integer
-                    format: int32
-                message:
-                    type: string
-                data:
-                    $ref: '#/components/schemas/server.api.GetSecurityRouterTreeResponseData'
-        server.api.GetSecurityRouterTreeResponseData:
-            type: object
-            properties:
-                routers:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/server.api.Router'
         server.api.GetUserInfoRequest:
             type: object
             properties:
@@ -731,32 +515,6 @@ components:
                     type: boolean
                 bind_user:
                     type: boolean
-        server.api.Router:
-            type: object
-            properties:
-                id:
-                    type: string
-                name:
-                    type: string
-                path:
-                    type: string
-                title:
-                    type: string
-                is_menu:
-                    type: boolean
-                pid:
-                    type: string
-                sort:
-                    type: integer
-                    format: int32
-                component:
-                    type: string
-                children:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/server.api.Router'
-                is_system:
-                    type: boolean
         server.api.SelfRequest:
             type: object
             properties: {}
@@ -824,39 +582,6 @@ components:
                     format: int32
                 message:
                     type: string
-        server.api.UpdateRouterRequest:
-            type: object
-            properties:
-                router:
-                    $ref: '#/components/schemas/server.api.UpdateRouterRequestData'
-        server.api.UpdateRouterRequestData:
-            type: object
-            properties:
-                id:
-                    type: string
-                name:
-                    type: string
-                path:
-                    type: string
-                title:
-                    type: string
-                is_menu:
-                    type: boolean
-                pid:
-                    type: string
-                sort:
-                    type: integer
-                    format: int32
-                component:
-                    type: string
-        server.api.UpdateRouterResponse:
-            type: object
-            properties:
-                code:
-                    type: integer
-                    format: int32
-                message:
-                    type: string
         server.api.User:
             type: object
             properties:
@@ -867,6 +592,5 @@ components:
 tags:
     - name: PermissionHandler
     - name: RoleHandler
-    - name: RouterHandler
     - name: SecurityHandler
     - name: UserHandler
