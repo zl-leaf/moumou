@@ -64,7 +64,7 @@ func initPermission(ctx context.Context, db *gorm.DB) {
 		pipelines := make([]*InitTblPipeline, 0, 10)
 		pipelines = append(pipelines, NewPipeline(db).SetModel(&model.Permission{
 			Path: "/manage/user/list",
-			Pid:  m.ID,
+			Pid:  m.Id,
 		}).Before(func(modelObj interface{}) {
 			m := modelObj.(*model.Permission)
 			m.Name = "列表"

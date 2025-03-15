@@ -3,20 +3,23 @@ package handler
 import (
 	"context"
 
+	"github.com/moumou/server/biz/conv"
 	"github.com/moumou/server/biz/service"
 	api "github.com/moumou/server/gen/proto"
 )
 
 type UserHandler struct {
-	svc *service.Service
+	svc       *service.Service
+	converter conv.IConverter
 }
 
-func NewUserHandler(svc *service.Service) api.UserHandlerHTTPServer {
-	return &UserHandler{svc: svc}
+func NewUserHandler(svc *service.Service, converter conv.IConverter) api.UserHandlerHTTPServer {
+	return &UserHandler{svc: svc, converter: converter}
 }
 
 func (h *UserHandler) GetUserList(ctx context.Context, request *api.GetUserListRequest) (*api.GetUserListResponse, error) {
-	userList, total, err := h.svc.UserService.GetUserList(ctx, ConvVO2UserListFilter(request.GetFilter()), int(request.GetCurrentPage()), int(request.GetPageSize()))
+	filter := h.converter.ConvertGetUserListRequestFilter(request.GetFilter())
+	userList, total, err := h.svc.UserService.GetUserList(ctx, filter, int(request.GetCurrentPage()), int(request.GetPageSize()))
 
 	if err != nil {
 		return nil, err
@@ -24,7 +27,7 @@ func (h *UserHandler) GetUserList(ctx context.Context, request *api.GetUserListR
 	return &api.GetUserListResponse{
 		Data: &api.GetUserListResponseData{
 			Total: total,
-			List:  ConvUserList2VOList(userList),
+			List:  h.converter.ConvertUserListToVO(userList),
 		},
 	}, nil
 }
@@ -35,6 +38,6 @@ func (h *UserHandler) GetUserInfo(ctx context.Context, request *api.GetUserInfoR
 		return nil, err
 	}
 	return &api.GetUserInfoResponse{
-		Data: ConvUser2VO(userInfo),
+		Data: h.converter.ConvertUserToVO(userInfo),
 	}, nil
 }

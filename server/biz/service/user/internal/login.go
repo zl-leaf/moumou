@@ -63,12 +63,12 @@ func (svc *LoginService) FindUserByToken(ctx context.Context) (*model.User, erro
 
 func (svc *LoginService) CreateToken(userInfo *model.User) (string, error) {
 	claims := &data.CustomClaims{
-		UserID: userInfo.ID,
+		UserID: userInfo.Id,
 		RegisteredClaims: golangjwt.RegisteredClaims{
 			ExpiresAt: golangjwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
 			IssuedAt:  golangjwt.NewNumericDate(time.Now()),
 			NotBefore: golangjwt.NewNumericDate(time.Now()),
-			ID:        strconv.FormatInt(userInfo.ID, 10),
+			ID:        strconv.FormatInt(userInfo.Id, 10),
 		},
 	}
 

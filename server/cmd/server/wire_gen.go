@@ -10,6 +10,7 @@ import (
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/moumou/server/biz/conf"
+	"github.com/moumou/server/biz/conv/factory"
 	"github.com/moumou/server/biz/handler"
 	"github.com/moumou/server/biz/service"
 	"github.com/moumou/server/biz/service/role"
@@ -29,10 +30,11 @@ func wireApp(logger log.Logger, data *conf.Data, dbConfig *database.DbConfig) (*
 	userService := user.NewUserService(data, daoDao)
 	roleService := role.NewService(daoDao)
 	serviceService := service.NewService(userService, roleService, daoDao)
-	userHandlerHTTPServer := handler.NewUserHandler(serviceService)
-	roleHandlerHTTPServer := handler.NewRoleHandler(serviceService)
-	securityHandlerHTTPServer := handler.NewSecurityHandler(serviceService)
-	permissionHandlerHTTPServer := handler.NewPermissionHandler(serviceService)
+	iConverter := factory.NewConverter()
+	userHandlerHTTPServer := handler.NewUserHandler(serviceService, iConverter)
+	roleHandlerHTTPServer := handler.NewRoleHandler(serviceService, iConverter)
+	securityHandlerHTTPServer := handler.NewSecurityHandler(serviceService, iConverter)
+	permissionHandlerHTTPServer := handler.NewPermissionHandler(serviceService, iConverter)
 	server := NewHTTPServer(logger, data, userHandlerHTTPServer, roleHandlerHTTPServer, securityHandlerHTTPServer, permissionHandlerHTTPServer)
 	app := newApp(logger, server)
 	return app, nil

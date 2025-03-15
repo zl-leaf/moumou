@@ -27,6 +27,10 @@ api:
 dao:
 	go run cmd/init_dao/main.go
 
+.PHONY: conv
+conv:
+	goverter gen ./biz/conv/...
+
 .PHONY: table
 table:
 	go run cmd/init_table/*

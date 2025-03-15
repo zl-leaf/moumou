@@ -3,16 +3,19 @@ package handler
 import (
 	"context"
 
+	"github.com/moumou/server/biz/conv"
+
 	"github.com/moumou/server/biz/service"
 	api "github.com/moumou/server/gen/proto"
 )
 
 type SecurityHandler struct {
-	svc *service.Service
+	svc       *service.Service
+	converter conv.IConverter
 }
 
-func NewSecurityHandler(svc *service.Service) api.SecurityHandlerHTTPServer {
-	return &SecurityHandler{svc}
+func NewSecurityHandler(svc *service.Service, converter conv.IConverter) api.SecurityHandlerHTTPServer {
+	return &SecurityHandler{svc: svc, converter: converter}
 }
 
 func (h *SecurityHandler) Login(ctx context.Context, request *api.LoginRequest) (*api.LoginResponse, error) {
@@ -23,7 +26,7 @@ func (h *SecurityHandler) Login(ctx context.Context, request *api.LoginRequest) 
 	return &api.LoginResponse{
 		Data: &api.LoginResponseData{
 			Token: token,
-			User:  ConvUser2VO(user),
+			User:  h.converter.ConvertUserToVO(user),
 		},
 	}, nil
 }
@@ -42,6 +45,6 @@ func (h *SecurityHandler) Self(ctx context.Context, request *api.SelfRequest) (*
 		return nil, err
 	}
 	return &api.SelfResponse{
-		Data: ConvUser2VO(user),
+		Data: h.converter.ConvertUserToVO(user),
 	}, nil
 }

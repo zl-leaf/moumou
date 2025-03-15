@@ -3,16 +3,19 @@ package handler
 import (
 	"context"
 
+	"github.com/moumou/server/biz/conv"
+
 	"github.com/moumou/server/biz/service"
 	api "github.com/moumou/server/gen/proto"
 )
 
 type PermissionHandler struct {
-	svc *service.Service
+	svc       *service.Service
+	converter conv.IConverter
 }
 
-func NewPermissionHandler(svc *service.Service) api.PermissionHandlerHTTPServer {
-	return &PermissionHandler{svc: svc}
+func NewPermissionHandler(svc *service.Service, converter conv.IConverter) api.PermissionHandlerHTTPServer {
+	return &PermissionHandler{svc: svc, converter: converter}
 }
 
 func (p PermissionHandler) GetPermissionList(ctx context.Context, request *api.GetPermissionListRequest) (*api.GetPermissionListResponse, error) {
@@ -23,7 +26,7 @@ func (p PermissionHandler) GetPermissionList(ctx context.Context, request *api.G
 	return &api.GetPermissionListResponse{
 		Data: &api.GetPermissionListResponseData{
 			Total: total,
-			List:  ConvPermissionList2VO(permissionList),
+			List:  p.converter.ConvertPermissionListToVO(permissionList),
 		},
 	}, nil
 }
@@ -33,7 +36,7 @@ func (p PermissionHandler) GetUserPermissionPath(ctx context.Context, request *a
 	if err != nil {
 		return nil, err
 	}
-	userRoleList, _, err := p.svc.Dao.UserRelRoleDao(ctx).WhereUserIDEq(user.ID).Find()
+	userRoleList, _, err := p.svc.Dao.UserRelRoleDao(ctx).WhereUserIDEq(user.Id).Find()
 	roleIDs := make([]int64, len(userRoleList))
 	for i, userRole := range userRoleList {
 		roleIDs[i] = userRole.RoleID

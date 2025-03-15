@@ -3,29 +3,31 @@ package handler
 import (
 	"context"
 
+	"github.com/moumou/server/biz/conv"
 	"github.com/moumou/server/biz/model"
-
 	"github.com/moumou/server/biz/service"
 	api "github.com/moumou/server/gen/proto"
 )
 
 type RoleHandler struct {
-	svc *service.Service
+	svc       *service.Service
+	converter conv.IConverter
 }
 
-func NewRoleHandler(svc *service.Service) api.RoleHandlerHTTPServer {
-	return &RoleHandler{svc: svc}
+func NewRoleHandler(svc *service.Service, converter conv.IConverter) api.RoleHandlerHTTPServer {
+	return &RoleHandler{svc: svc, converter: converter}
 }
 
 func (r RoleHandler) CreateRole(ctx context.Context, request *api.CreateRoleRequest) (*api.CreateRoleResponse, error) {
-	role := ConvCreateRequestData2Role(request.Role)
+	role := new(model.Role)
+	r.converter.ConvertCreateRoleRequestDataToBO(request.GetRole(), role)
 	err := r.svc.Dao.RoleDao(ctx).Create(role)
 	if err != nil {
 		return nil, err
 	}
 	return &api.CreateRoleResponse{
 		Data: &api.CreateRoleResponseData{
-			Id: role.ID,
+			Id: role.Id,
 		},
 	}, nil
 }
@@ -59,7 +61,7 @@ func (r RoleHandler) GetRoleList(ctx context.Context, request *api.GetRoleListRe
 
 	return &api.GetRoleListResponse{
 		Data: &api.GetRoleListResponseData{
-			List:  ConvRoleList2VO(roleList),
+			List:  r.converter.ConvertRoleListToVO(roleList),
 			Total: total,
 		},
 	}, nil
@@ -101,8 +103,12 @@ func (r RoleHandler) GetRoleInfo(ctx context.Context, request *api.GetRoleInfoRe
 		}
 	}
 
+	roleVO := r.converter.ConvertRoleToVO(role)
+	roleVO.Permissions = r.converter.ConvertPermissionListToVO(permissionList)
+	roleVO.Users = r.converter.ConvertUserListToVO(userList)
+
 	return &api.GetRoleInfoResponse{
-		Data: ConvRole2VO(role, permissionList, userList),
+		Data: roleVO,
 	}, nil
 }
 
