@@ -43,6 +43,14 @@ const router = createRouter({
                   component: () => import('@/views/manage/user/List.vue'),
                 },
                 {
+                  path: 'add',
+                  name: 'ruser_add',
+                  component: () => import('@/views/manage/user/Add.vue'),
+                  meta: {
+                    title: '添加',
+                  },
+                },
+                {
                   path: 'info',
                   name: 'user_info',
                   component: () => import('@/views/manage/user/Info.vue'),
@@ -95,6 +103,37 @@ const router = createRouter({
                   component: () => import('@/views/manage/role/BindUser.vue'),
                   meta: {
                     title: '绑定用户',
+                  },
+                }
+              ]
+            },
+            {
+              path: '/manage/permission',
+              meta: {
+                title: '权限管理',
+                isMenu: true,
+                page: "permission_list"
+              },
+              children: [
+                {
+                  path: 'list',
+                  name: 'permission_list',
+                  component: () => import('@/views/manage/permission/List.vue'),
+                },
+                {
+                  path: 'add',
+                  name: 'permission_add',
+                  component: () => import('@/views/manage/permission/Add.vue'),
+                  meta: {
+                    title: '添加',
+                  },
+                },
+                {
+                  path: 'info',
+                  name: 'permission_info',
+                  component: () => import('@/views/manage/permission/Info.vue'),
+                  meta: {
+                    title: '详情',
                   },
                 }
               ]

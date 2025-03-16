@@ -35,7 +35,6 @@ export const useRouterStore = defineStore('router', () => {
     }
 
     return {
-        updatePermissions,
         updateRouter,
         hasUpdated,
         updateRouterFlag,

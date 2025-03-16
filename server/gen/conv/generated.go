@@ -12,9 +12,23 @@ import (
 
 type IConverterImpl struct{}
 
+func (c *IConverterImpl) ConvertCreatePermissionRequestDataToBO(source *proto.CreatePermissionRequestData, target *model.Permission) {
+	if source != nil {
+		target.Name = source.Name
+		target.Code = source.Code
+		target.Pid = source.Pid
+		target.Sort = conv.Int32ToInt(source.Sort)
+	}
+}
 func (c *IConverterImpl) ConvertCreateRoleRequestDataToBO(source *proto.CreateRoleRequestData, target *model.Role) {
 	if source != nil {
 		target.Name = source.Name
+	}
+}
+func (c *IConverterImpl) ConvertCreateUserRequestDataToBO(source *proto.CreateUserRequestData, target *model.User) {
+	if source != nil {
+		target.Username = source.Username
+		target.Password = source.Password
 	}
 }
 func (c *IConverterImpl) ConvertGetUserListRequestFilter(source *proto.GetUserListRequestFilter) *data.ListUserFilter {
@@ -45,12 +59,35 @@ func (c *IConverterImpl) ConvertPermissionToVO(source *model.Permission) *proto.
 		var apiPermission proto.Permission
 		apiPermission.Id = (*source).BaseModel.Id
 		apiPermission.Name = (*source).Name
-		apiPermission.Path = (*source).Path
+		apiPermission.Code = (*source).Code
 		apiPermission.Pid = (*source).Pid
 		apiPermission.Sort = conv.IntToInt32((*source).Sort)
 		pApiPermission = &apiPermission
 	}
 	return pApiPermission
+}
+func (c *IConverterImpl) ConvertPermissionTreeNodeListToVO(source []*model.Permission) []*proto.PermissionTreeNode {
+	var pApiPermissionTreeNodeList []*proto.PermissionTreeNode
+	if source != nil {
+		pApiPermissionTreeNodeList = make([]*proto.PermissionTreeNode, len(source))
+		for i := 0; i < len(source); i++ {
+			pApiPermissionTreeNodeList[i] = c.ConvertPermissionTreeNodeToVO(source[i])
+		}
+	}
+	return pApiPermissionTreeNodeList
+}
+func (c *IConverterImpl) ConvertPermissionTreeNodeToVO(source *model.Permission) *proto.PermissionTreeNode {
+	var pApiPermissionTreeNode *proto.PermissionTreeNode
+	if source != nil {
+		var apiPermissionTreeNode proto.PermissionTreeNode
+		apiPermissionTreeNode.Id = (*source).BaseModel.Id
+		apiPermissionTreeNode.Name = (*source).Name
+		apiPermissionTreeNode.Code = (*source).Code
+		apiPermissionTreeNode.Pid = (*source).Pid
+		apiPermissionTreeNode.Sort = conv.IntToInt32((*source).Sort)
+		pApiPermissionTreeNode = &apiPermissionTreeNode
+	}
+	return pApiPermissionTreeNode
 }
 func (c *IConverterImpl) ConvertRoleListToVO(source []*model.Role) []*proto.Role {
 	var pApiRoleList []*proto.Role
@@ -71,6 +108,24 @@ func (c *IConverterImpl) ConvertRoleToVO(source *model.Role) *proto.Role {
 		pApiRole = &apiRole
 	}
 	return pApiRole
+}
+func (c *IConverterImpl) ConvertUpdatePermissionRequestDataToBO(source *proto.UpdatePermissionRequestData, target *model.Permission) {
+	if source != nil {
+		target.Name = source.Name
+		target.Code = source.Code
+		target.Pid = source.Pid
+		target.Sort = conv.Int32ToInt(source.Sort)
+	}
+}
+func (c *IConverterImpl) ConvertUpdateRoleRequestDataToBO(source *proto.UpdateRoleRequestData, target *model.Role) {
+	if source != nil {
+		target.Name = source.Name
+	}
+}
+func (c *IConverterImpl) ConvertUpdateUserRequestDataToBO(source *proto.UpdateUserRequestData, target *model.User) {
+	if source != nil {
+		target.Username = source.Username
+	}
 }
 func (c *IConverterImpl) ConvertUserListToVO(source []*model.User) []*proto.User {
 	var pApiUserList []*proto.User

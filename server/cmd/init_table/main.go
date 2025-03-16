@@ -56,14 +56,14 @@ func main() {
 }
 
 func initPermission(ctx context.Context, db *gorm.DB) {
-	_ = NewPipeline(db).SetModel(&model.Permission{Path: "/manage/user"}).Before(func(modelObj interface{}) {
+	_ = NewPipeline(db).SetModel(&model.Permission{Code: "ManageUser"}).Before(func(modelObj interface{}) {
 		m := modelObj.(*model.Permission)
 		m.Name = "账号管理"
 	}).Next(func(modelObj interface{}) []*InitTblPipeline {
 		m := modelObj.(*model.Permission)
 		pipelines := make([]*InitTblPipeline, 0, 10)
 		pipelines = append(pipelines, NewPipeline(db).SetModel(&model.Permission{
-			Path: "/manage/user/list",
+			Code: "ManageUserList",
 			Pid:  m.Id,
 		}).Before(func(modelObj interface{}) {
 			m := modelObj.(*model.Permission)

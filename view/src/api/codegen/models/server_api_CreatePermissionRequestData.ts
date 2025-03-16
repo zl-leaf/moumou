@@ -2,8 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type server_api_Permission = {
-    id?: string;
+export type server_api_CreatePermissionRequestData = {
     name?: string;
     code?: string;
     pid?: string;

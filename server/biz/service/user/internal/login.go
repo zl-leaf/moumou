@@ -2,9 +2,6 @@ package internal
 
 import (
 	"context"
-	"crypto/hmac"
-	"crypto/sha256"
-	"encoding/hex"
 	"errors"
 	"strconv"
 	"time"
@@ -34,13 +31,7 @@ func (svc *LoginService) FindUserByUserNameAndPassword(ctx context.Context, user
 	if err != nil {
 		return nil, err
 	}
-	createdAtStr := strconv.FormatInt(user.CreatedAt, 10)
-	h := hmac.New(sha256.New, []byte(createdAtStr))
-
-	h.Write([]byte(password))
-	encryptPwd := hex.EncodeToString(h.Sum(nil))
-
-	if user.Password != encryptPwd {
+	if EncryptPassword(password, user.CreatedAt) != user.Password {
 		return nil, errors.New("密码错误")
 	}
 

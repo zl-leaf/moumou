@@ -2,11 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type server_api_Permission = {
+export type server_api_UpdateUserRequestData = {
     id?: string;
-    name?: string;
-    code?: string;
-    pid?: string;
-    sort?: number;
+    username?: string;
 };
 

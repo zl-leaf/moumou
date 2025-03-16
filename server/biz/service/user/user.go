@@ -2,6 +2,7 @@ package user
 
 import (
 	"context"
+	"time"
 
 	"github.com/moumou/server/biz/conf"
 
@@ -50,4 +51,22 @@ func (svc *Service) GetUserList(ctx context.Context, filter *data.ListUserFilter
 		query = query.WhereUsernameLike(*filter.UsernameLike)
 	}
 	return query.Page(currentPage, pageSize).Find()
+}
+
+func (svc *Service) UpdateUser(ctx context.Context, userInfo *model.User) error {
+	err := svc.db.UserDao(ctx).Save(userInfo)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (svc *Service) CreateUser(ctx context.Context, userInfo *model.User) error {
+	userInfo.CreatedAt = time.Now().Unix()
+	userInfo.Password = internal.EncryptPassword(userInfo.Password, userInfo.CreatedAt)
+	err := svc.db.UserDao(ctx).Create(userInfo)
+	if err != nil {
+		return err
+	}
+	return nil
 }

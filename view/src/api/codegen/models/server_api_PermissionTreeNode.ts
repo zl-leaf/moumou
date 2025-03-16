@@ -2,11 +2,12 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type server_api_Permission = {
+export type server_api_PermissionTreeNode = {
     id?: string;
     name?: string;
     code?: string;
     pid?: string;
     sort?: number;
+    children?: Array<server_api_PermissionTreeNode>;
 };
 

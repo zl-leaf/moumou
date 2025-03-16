@@ -6,6 +6,60 @@ info:
     title: ""
     version: 0.0.1
 paths:
+    /permission/create:
+        post:
+            tags:
+                - PermissionHandler
+            operationId: PermissionHandler_CreatePermission
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/server.api.CreatePermissionRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/server.api.CreatePermissionResponse'
+    /permission/delete:
+        post:
+            tags:
+                - PermissionHandler
+            operationId: PermissionHandler_DeletePermission
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/server.api.DeletePermissionRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/server.api.DeletePermissionResponse'
+    /permission/info:
+        post:
+            tags:
+                - PermissionHandler
+            operationId: PermissionHandler_GetPermissionInfo
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/server.api.GetPermissionInfoRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/server.api.GetPermissionInfoResponse'
     /permission/list:
         post:
             tags:
@@ -24,6 +78,42 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/server.api.GetPermissionListResponse'
+    /permission/tree:
+        post:
+            tags:
+                - PermissionHandler
+            operationId: PermissionHandler_GetPermissionTree
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/server.api.GetPermissionTreeRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/server.api.GetPermissionTreeResponse'
+    /permission/update:
+        post:
+            tags:
+                - PermissionHandler
+            operationId: PermissionHandler_UpdatePermission
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/server.api.UpdatePermissionRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/server.api.UpdatePermissionResponse'
     /permission/user_permission:
         post:
             tags:
@@ -222,6 +312,24 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/server.api.SelfResponse'
+    /user/create:
+        post:
+            tags:
+                - UserHandler
+            operationId: UserHandler_CreateUser
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/server.api.CreateUserRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/server.api.CreateUserResponse'
     /user/info:
         post:
             tags:
@@ -258,8 +366,58 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/server.api.GetUserListResponse'
+    /user/update:
+        post:
+            tags:
+                - UserHandler
+            operationId: UserHandler_UpdateUser
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/server.api.UpdateUserRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/server.api.UpdateUserResponse'
 components:
     schemas:
+        server.api.CreatePermissionRequest:
+            type: object
+            properties:
+                permission:
+                    $ref: '#/components/schemas/server.api.CreatePermissionRequestData'
+        server.api.CreatePermissionRequestData:
+            type: object
+            properties:
+                name:
+                    type: string
+                code:
+                    type: string
+                pid:
+                    type: string
+                sort:
+                    type: integer
+                    format: int32
+        server.api.CreatePermissionResponse:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                message:
+                    type: string
+                data:
+                    $ref: '#/components/schemas/server.api.CreatePermissionResponseData'
+        server.api.CreatePermissionResponseData:
+            type: object
+            properties:
+                id:
+                    type: string
         server.api.CreateRoleRequest:
             type: object
             properties:
@@ -285,6 +443,48 @@ components:
             properties:
                 id:
                     type: string
+        server.api.CreateUserRequest:
+            type: object
+            properties:
+                user:
+                    $ref: '#/components/schemas/server.api.CreateUserRequestData'
+        server.api.CreateUserRequestData:
+            type: object
+            properties:
+                username:
+                    type: string
+                password:
+                    type: string
+        server.api.CreateUserResponse:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                message:
+                    type: string
+                data:
+                    $ref: '#/components/schemas/server.api.CreateUserResponseData'
+        server.api.CreateUserResponseData:
+            type: object
+            properties:
+                id:
+                    type: string
+        server.api.DeletePermissionRequest:
+            type: object
+            properties:
+                ids:
+                    type: array
+                    items:
+                        type: string
+        server.api.DeletePermissionResponse:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                message:
+                    type: string
         server.api.DeleteRoleRequest:
             type: object
             properties:
@@ -300,11 +500,29 @@ components:
                     format: int32
                 message:
                     type: string
+        server.api.GetPermissionInfoRequest:
+            type: object
+            properties:
+                id:
+                    type: string
+        server.api.GetPermissionInfoResponse:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                message:
+                    type: string
+                data:
+                    $ref: '#/components/schemas/server.api.Permission'
         server.api.GetPermissionListRequest:
             type: object
             properties:
                 filter:
-                    $ref: '#/components/schemas/server.api.GetPermissionListRequest'
+                    $ref: '#/components/schemas/server.api.GetPermissionListRequestFilter'
+        server.api.GetPermissionListRequestFilter:
+            type: object
+            properties: {}
         server.api.GetPermissionListResponse:
             type: object
             properties:
@@ -324,6 +542,26 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/server.api.Permission'
+        server.api.GetPermissionTreeRequest:
+            type: object
+            properties: {}
+        server.api.GetPermissionTreeResponse:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                message:
+                    type: string
+                data:
+                    $ref: '#/components/schemas/server.api.GetPermissionTreeResponseData'
+        server.api.GetPermissionTreeResponseData:
+            type: object
+            properties:
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/server.api.PermissionTreeNode'
         server.api.GetRoleInfoRequest:
             type: object
             properties:
@@ -486,13 +724,31 @@ components:
                     type: string
                 name:
                     type: string
-                path:
+                code:
                     type: string
                 pid:
                     type: string
                 sort:
                     type: integer
                     format: int32
+        server.api.PermissionTreeNode:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                code:
+                    type: string
+                pid:
+                    type: string
+                sort:
+                    type: integer
+                    format: int32
+                children:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/server.api.PermissionTreeNode'
         server.api.Role:
             type: object
             properties:
@@ -545,6 +801,33 @@ components:
                     format: int32
                 message:
                     type: string
+        server.api.UpdatePermissionRequest:
+            type: object
+            properties:
+                permission:
+                    $ref: '#/components/schemas/server.api.UpdatePermissionRequestData'
+        server.api.UpdatePermissionRequestData:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                code:
+                    type: string
+                pid:
+                    type: string
+                sort:
+                    type: integer
+                    format: int32
+        server.api.UpdatePermissionResponse:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                message:
+                    type: string
         server.api.UpdateRolePermissionRequest:
             type: object
             properties:
@@ -575,6 +858,26 @@ components:
                 name:
                     type: string
         server.api.UpdateRoleResponse:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                message:
+                    type: string
+        server.api.UpdateUserRequest:
+            type: object
+            properties:
+                user:
+                    $ref: '#/components/schemas/server.api.UpdateUserRequestData'
+        server.api.UpdateUserRequestData:
+            type: object
+            properties:
+                id:
+                    type: string
+                username:
+                    type: string
+        server.api.UpdateUserResponse:
             type: object
             properties:
                 code:

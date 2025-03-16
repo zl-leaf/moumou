@@ -19,6 +19,18 @@ service UserHandler {
       body: "*"
     };
   };
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {
+    option (google.api.http) = {
+      post: "/user/create",
+      body: "*"
+    };
+  };
+  rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse) {
+    option (google.api.http) = {
+      post: "/user/update",
+      body: "*"
+    };
+  }
 }
 
 message User {
@@ -55,4 +67,38 @@ message GetUserInfoResponse {
   int32 code = 1;
   string message = 2;
   optional User data = 3;
+}
+
+message CreateUserRequestData {
+  string username = 2;
+  string password = 3;
+}
+
+message CreateUserRequest {
+  CreateUserRequestData user = 1;
+}
+
+message CreateUserResponseData {
+  int64 id = 1;
+}
+
+message CreateUserResponse {
+  int32 code = 1;
+  string message = 2;
+  CreateUserResponseData data = 3;
+}
+
+
+message UpdateUserRequestData {
+  int64 id = 1;
+  string username = 2;
+}
+
+message UpdateUserRequest {
+  UpdateUserRequestData user = 1;
+}
+
+message UpdateUserResponse {
+  int32 code = 1;
+  string message = 2;
 }

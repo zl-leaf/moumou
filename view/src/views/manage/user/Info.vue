@@ -18,12 +18,14 @@ import * as api from '@/api'
 export default defineComponent({
     data() {
         return {
+            dataId: "",
             formState: ref<api.server_api_User>({}),
             loading: ref(false),
         }
     },
     created() {
-        this.initData(String(this.$route.query.id))
+        this.dataId = String(this.$route.query.id)
+        this.initData(this.dataId)
     },
     methods: {
         initData: async function(userId:string) {
@@ -39,7 +41,25 @@ export default defineComponent({
                 message.error('网络错误')
             }
         },
-        onSubmit: function() {
+        onSubmit: async function() {
+            this.loading = true
+            let reqData: api.server_api_UpdateUserRequestData = {
+                id: this.dataId,
+                username: this.formState.username,
+            }
+
+            try {
+                let response = await api.UserHandlerService.userHandlerUpdateUser({user: reqData})
+                if(response.code != 0) {
+                    throw new Error(response.message)
+                }
+                message.success('操作完成')
+            } catch(err) {
+                message.error('网络错误')
+            } finally {
+                this.loading = false
+            }
+            
         }
     }
 })

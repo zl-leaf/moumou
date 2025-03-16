@@ -45,7 +45,7 @@ func (r RoleHandler) UpdateRole(ctx context.Context, request *api.UpdateRoleRequ
 	if err != nil {
 		return nil, err
 	}
-	role.Name = request.Role.Name
+	r.converter.ConvertUpdateRoleRequestDataToBO(request.GetRole(), role)
 	err = r.svc.Dao.RoleDao(ctx).Save(role)
 	if err != nil {
 		return nil, err

@@ -2,11 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type server_api_Permission = {
-    id?: string;
-    name?: string;
-    code?: string;
-    pid?: string;
-    sort?: number;
+export type server_api_DeletePermissionRequest = {
+    ids?: Array<string>;
 };
 

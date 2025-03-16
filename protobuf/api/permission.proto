@@ -7,6 +7,13 @@ import "google/api/annotations.proto";
 option go_package = "server/api;api";
 
 service PermissionHandler {
+  rpc GetPermissionTree(GetPermissionTreeRequest) returns (GetPermissionTreeResponse) {
+    option(google.api.http) = {
+      post: "/permission/tree",
+      body: "*"
+    };
+  };
+
   rpc GetPermissionList(GetPermissionListRequest) returns (GetPermissionListResponse) {
     option(google.api.http) = {
       post: "/permission/list",
@@ -20,11 +27,57 @@ service PermissionHandler {
       body: "*"
     };
   };
+
+  rpc CreatePermission(CreatePermissionRequest) returns (CreatePermissionResponse){
+    option (google.api.http) = {
+      post: "/permission/create",
+      body: "*"
+    };
+  };
+
+  rpc UpdatePermission(UpdatePermissionRequest) returns (UpdatePermissionResponse){
+    option (google.api.http) = {
+      post: "/permission/update",
+      body: "*"
+    };
+  };
+
+  rpc GetPermissionInfo(GetPermissionInfoRequest) returns (GetPermissionInfoResponse){
+    option (google.api.http) = {
+      post: "/permission/info",
+      body: "*"
+    };
+  };
+
+  rpc DeletePermission(DeletePermissionRequest) returns (DeletePermissionResponse){
+    option (google.api.http) = {
+      post: "/permission/delete",
+      body: "*"
+    };
+  };
+}
+
+
+message Permission {
+  int64 id = 1;
+  string name = 2;
+  string code = 3;
+  int64 pid = 4;
+  int32 sort = 5;
+}
+
+message PermissionTreeNode {
+  int64 id = 1;
+  string name = 2;
+  string code = 3;
+  int64 pid = 4;
+  int32 sort = 5;
+  repeated PermissionTreeNode children = 6;
 }
 
 message GetPermissionListRequestFilter {}
 message GetPermissionListRequest {
-  optional GetPermissionListRequest filter = 1;
+  optional GetPermissionListRequestFilter filter = 1;
 }
 
 message GetPermissionListResponseData {
@@ -38,12 +91,17 @@ message GetPermissionListResponse {
   optional GetPermissionListResponseData data = 3;
 }
 
-message Permission {
-  int64 id = 1;
-  string name = 2;
-  string path = 3;
-  int64 pid = 4;
-  int32 sort = 5;
+message GetPermissionTreeRequest {
+}
+
+message GetPermissionTreeResponseData {
+  repeated PermissionTreeNode list = 1;
+}
+
+message GetPermissionTreeResponse {
+  int32 code = 1;
+  string message = 2;
+  optional GetPermissionTreeResponseData data = 3;
 }
 
 message GetUserPermissionPathRequest {}
@@ -54,4 +112,63 @@ message GetUserPermissionPathResponse {
   int32 code = 1;
   string message = 2;
   optional GetUserPermissionPathResponseData data = 3;
+}
+
+
+message CreatePermissionRequestData {
+  string name = 2;
+  string code = 3;
+  int64 pid = 4;
+  int32 sort = 5;
+}
+
+message CreatePermissionRequest {
+  CreatePermissionRequestData permission = 1;
+}
+
+message CreatePermissionResponseData {
+  int64 id = 1;
+}
+
+message CreatePermissionResponse {
+  int32 code = 1;
+  string message = 2;
+  CreatePermissionResponseData data = 3;
+}
+
+
+message UpdatePermissionRequestData {
+  int64 id = 1;
+  string name = 2;
+  string code = 3;
+  int64 pid = 4;
+  int32 sort = 5;
+}
+
+message UpdatePermissionRequest {
+  UpdatePermissionRequestData permission = 1;
+}
+
+message UpdatePermissionResponse {
+  int32 code = 1;
+  string message = 2;
+}
+
+message GetPermissionInfoRequest {
+  int64 id = 1;
+}
+
+message GetPermissionInfoResponse {
+  int32 code = 1;
+  string message = 2;
+  Permission data = 3;
+}
+
+message DeletePermissionRequest {
+  repeated int64 ids = 1;
+}
+
+message DeletePermissionResponse {
+  int32 code = 1;
+  string message = 2;
 }
