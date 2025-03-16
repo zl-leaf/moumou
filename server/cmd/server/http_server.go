@@ -14,6 +14,7 @@ import (
 	jwtv5 "github.com/golang-jwt/jwt/v5"
 	"github.com/moumou/server/biz/conf"
 	"github.com/moumou/server/biz/handler/mw"
+	"github.com/moumou/server/biz/service"
 	userdata "github.com/moumou/server/biz/service/user/data"
 	api "github.com/moumou/server/gen/proto"
 	"go.opentelemetry.io/otel/sdk/trace"
@@ -26,6 +27,7 @@ func NewHTTPServer(
 	roleHandler api.RoleHandlerHTTPServer,
 	securityHandler api.SecurityHandlerHTTPServer,
 	permissionHandler api.PermissionHandlerHTTPServer,
+	svc *service.Service,
 ) *http.Server {
 	var opts = []http.ServerOption{
 		http.Filter(mw.CorsFilter),
@@ -47,6 +49,7 @@ func NewHTTPServer(
 				return true
 			}).Build(),
 			logging.Server(logger),
+			mw.APIPermission(svc),
 		),
 	}
 	if confData.ServerConfig.Host != "" || confData.ServerConfig.Port != "" {
@@ -54,10 +57,6 @@ func NewHTTPServer(
 	}
 	srv := http.NewServer(opts...)
 
-	//var svc, err = service.InitService(confData, &confData.DBConfig)
-	//if err != nil {
-	//	panic(err)
-	//}
 	api.RegisterUserHandlerHTTPServer(srv, userHandler)
 	api.RegisterRoleHandlerHTTPServer(srv, roleHandler)
 	api.RegisterSecurityHandlerHTTPServer(srv, securityHandler)

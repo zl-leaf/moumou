@@ -35,7 +35,7 @@ func wireApp(logger log.Logger, data *conf.Data, dbConfig *database.DbConfig) (*
 	roleHandlerHTTPServer := handler.NewRoleHandler(serviceService, iConverter)
 	securityHandlerHTTPServer := handler.NewSecurityHandler(serviceService, iConverter)
 	permissionHandlerHTTPServer := handler.NewPermissionHandler(serviceService, iConverter)
-	server := NewHTTPServer(logger, data, userHandlerHTTPServer, roleHandlerHTTPServer, securityHandlerHTTPServer, permissionHandlerHTTPServer)
+	server := NewHTTPServer(logger, data, userHandlerHTTPServer, roleHandlerHTTPServer, securityHandlerHTTPServer, permissionHandlerHTTPServer, serviceService)
 	app := newApp(logger, server)
 	return app, nil
 }
