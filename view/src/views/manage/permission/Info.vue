@@ -9,6 +9,9 @@
         <a-form-item label="父级">
             <a-select v-model:value="formState.pid" :options="parentOptions" allow-clear />
         </a-form-item>
+        <a-form-item label="排序">
+            <a-input v-model:value="formState.sort" />
+        </a-form-item>
         <a-form-item :wrapper-col="{ span: 8, offset: 6 }">
             <a-button type="primary" @click="onSubmit" :loading="loading">提交</a-button>
             <a-button style="margin-left: 10px" @click="$router.back()">返回</a-button>
@@ -26,7 +29,7 @@ export default defineComponent({
     data() {
         return {
             dataId: "",
-            formState: ref<api.server_api_Permission>({}),
+            formState: ref<api.server_api_UpdatePermissionRequestData>({}),
             loading: ref(false),
             parentOptions: ref<SelectProps['options']>([]),
         }
@@ -53,7 +56,14 @@ export default defineComponent({
                 if (infoResponse.code != 0) {
                     throw new Error(infoResponse.message)
                 }
-                this.formState = infoResponse.data ?? {}
+                let info = infoResponse.data ?? {}
+                this.formState = {
+                    id: info.id,
+                    name: info.name,
+                    code: info.code,
+                    pid: info.pid,
+                    sort: info.sort,
+                }
                 this.loading = false
             } catch (err) {
                 message.error('网络错误')
@@ -61,14 +71,8 @@ export default defineComponent({
         },
         onSubmit: async function () {
             this.loading = true
-            let reqData: api.server_api_UpdatePermissionRequestData = {
-                id: this.dataId,
-                name: this.formState.name,
-                code: this.formState.code,
-            }
-
             try {
-                let response = await api.PermissionHandlerService.permissionHandlerUpdatePermission({ permission: reqData })
+                let response = await api.PermissionHandlerService.permissionHandlerUpdatePermission({ permission: this.formState })
                 if (response.code != 0) {
                     throw new Error(response.message)
                 }

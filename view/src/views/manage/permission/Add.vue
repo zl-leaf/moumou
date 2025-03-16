@@ -9,6 +9,9 @@
         <a-form-item label="父级">
             <a-select v-model:value="formState.pid" :options="parentOptions" allow-clear />
         </a-form-item>
+        <a-form-item label="排序">
+            <a-input v-model:value="formState.sort" />
+        </a-form-item>
         <a-form-item :wrapper-col="{ span: 8, offset: 6 }">
             <a-button type="primary" @click="onSubmit" :loading="loading">提交</a-button>
             <a-button style="margin-left: 10px" @click="$router.back()">返回</a-button>
@@ -52,12 +55,8 @@ export default defineComponent({
             }
 
             this.loading = true;
-            let reqData: api.server_api_CreatePermissionRequestData = {
-                name: this.formState.name,
-                code: this.formState.code,
-            }
             try {
-                let response = await api.PermissionHandlerService.permissionHandlerCreatePermission({ permission: reqData })
+                let response = await api.PermissionHandlerService.permissionHandlerCreatePermission({ permission: this.formState })
                 if (response.code != 0) {
                     throw new Error(response.message)
                 }
