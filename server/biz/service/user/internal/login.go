@@ -38,18 +38,26 @@ func (svc *LoginService) FindUserByUserNameAndPassword(ctx context.Context, user
 	return user, nil
 }
 
-func (svc *LoginService) FindUserByToken(ctx context.Context) (*model.User, error) {
+func (svc *LoginService) VerifyToken(ctx context.Context) (int64, error) {
 	claims, ok := jwt.FromContext(ctx)
 	if !ok {
-		return nil, errors.New("user nof found")
+		return 0, errors.New("user nof found")
 	}
 	customClaims, ok := claims.(*data.CustomClaims)
 	if !ok {
-		return nil, errors.New("parse token fail")
+		return 0, errors.New("parse token fail")
 	}
 
 	var userID = customClaims.UserID
-	return svc.db.UserDao(ctx).GetByID(userID)
+	check, err := svc.db.UserDao(ctx).WhereIdEq(userID).Count()
+	if err != nil {
+		return 0, err
+	}
+	if check == 0 {
+		return 0, errors.New("user nof found")
+	}
+
+	return userID, nil
 }
 
 func (svc *LoginService) CreateToken(userInfo *model.User) (string, error) {

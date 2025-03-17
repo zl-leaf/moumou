@@ -5,17 +5,14 @@ import (
 	"fmt"
 
 	"github.com/go-kratos/kratos/v2/log"
-	"github.com/go-kratos/kratos/v2/middleware/auth/jwt"
 	"github.com/go-kratos/kratos/v2/middleware/logging"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/middleware/selector"
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/transport/http"
-	jwtv5 "github.com/golang-jwt/jwt/v5"
 	"github.com/moumou/server/biz/conf"
-	"github.com/moumou/server/biz/handler/mw"
 	"github.com/moumou/server/biz/service"
-	userdata "github.com/moumou/server/biz/service/user/data"
+	"github.com/moumou/server/cmd/server/mw"
 	api "github.com/moumou/server/gen/proto"
 	"go.opentelemetry.io/otel/sdk/trace"
 )
@@ -35,11 +32,9 @@ func NewHTTPServer(
 			recovery.Recovery(),
 			tracing.Server(tracing.WithTracerProvider(trace.NewTracerProvider())),
 			mw.HttpTrace(),
-			selector.Server(jwt.Server(func(token *jwtv5.Token) (interface{}, error) {
-				return []byte(confData.SecurityConfig.JWTKey), nil
-			}, jwt.WithClaims(func() jwtv5.Claims {
-				return &userdata.CustomClaims{}
-			}))).Match(func(ctx context.Context, operation string) bool {
+			selector.Server(
+				mw.JWTServer(confData),
+				mw.VerifyUser(svc.UserService)).Match(func(ctx context.Context, operation string) bool {
 				whiteList := []string{api.OperationSecurityHandlerLogin}
 				for _, white := range whiteList {
 					if operation == white {

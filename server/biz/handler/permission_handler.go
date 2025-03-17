@@ -122,7 +122,7 @@ func (p PermissionHandler) GetUserPermissionPath(ctx context.Context, request *a
 	for i, rolePermission := range rolePermissionList {
 		permissionIDList[i] = rolePermission.PermissionID
 	}
-	permissionList, _, err := p.svc.Dao.PermissionDao(ctx).WhereIDIn(permissionIDList).Find()
+	permissionList, _, err := p.svc.Dao.PermissionDao(ctx).WhereIdIn(permissionIDList).Find()
 
 	permissionPaths := make([]string, len(permissionList))
 	for i, permission := range permissionList {

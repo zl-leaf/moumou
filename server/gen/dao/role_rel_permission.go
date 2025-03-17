@@ -20,51 +20,51 @@ func (d *rolePermissionDao) WithContext(ctx context.Context) *rolePermissionDao 
 	return &rolePermissionDao{d.DB.WithContext(ctx)}
 }
 
-func (d *rolePermissionDao) WhereIDEq(ID int64) *rolePermissionDao {
-	d.DB = d.DB.Where(clause.Eq{Column: "id", Value: ID})
+func (d *rolePermissionDao) WhereIdEq(id int64) *rolePermissionDao {
+	d.DB = d.DB.Where(clause.Eq{Column: "id", Value: id})
 	return d
 }
-func (d *rolePermissionDao) WhereIDNeq(ID int64) *rolePermissionDao {
-	d.DB = d.DB.Where(clause.Neq{Column: "id", Value: ID})
+func (d *rolePermissionDao) WhereIdNeq(id int64) *rolePermissionDao {
+	d.DB = d.DB.Where(clause.Neq{Column: "id", Value: id})
 	return d
 }
-func (d *rolePermissionDao) WhereIDIn(ID []int64) *rolePermissionDao {
+func (d *rolePermissionDao) WhereIdIn(id []int64) *rolePermissionDao {
 	d.DB = d.DB.Where(clause.IN{Column: "id", Values: func(v []int64) []interface{} {
 		ret := make([]interface{}, len(v))
 		for i, item := range v {
 			ret[i] = item
 		}
 		return ret
-	}(ID)})
+	}(id)})
 	return d
 }
-func (d *rolePermissionDao) WhereIDNotIn(ID []int64) *rolePermissionDao {
+func (d *rolePermissionDao) WhereIdNotIn(id []int64) *rolePermissionDao {
 	d.DB = d.DB.Where(clause.Not((clause.IN{Column: "id", Values: func(v []int64) []interface{} {
 		ret := make([]interface{}, len(v))
 		for i, item := range v {
 			ret[i] = item
 		}
 		return ret
-	}(ID)})))
+	}(id)})))
 	return d
 }
-func (d *rolePermissionDao) WhereIDLt(ID int64) *rolePermissionDao {
-	d.DB = d.DB.Where(clause.Lt{Column: "id", Value: ID})
+func (d *rolePermissionDao) WhereIdLt(id int64) *rolePermissionDao {
+	d.DB = d.DB.Where(clause.Lt{Column: "id", Value: id})
 	return d
 }
-func (d *rolePermissionDao) WhereIDLte(ID int64) *rolePermissionDao {
-	d.DB = d.DB.Where(clause.Lte{Column: "id", Value: ID})
+func (d *rolePermissionDao) WhereIdLte(id int64) *rolePermissionDao {
+	d.DB = d.DB.Where(clause.Lte{Column: "id", Value: id})
 	return d
 }
-func (d *rolePermissionDao) WhereIDGt(ID int64) *rolePermissionDao {
-	d.DB = d.DB.Where(clause.Gt{Column: "id", Value: ID})
+func (d *rolePermissionDao) WhereIdGt(id int64) *rolePermissionDao {
+	d.DB = d.DB.Where(clause.Gt{Column: "id", Value: id})
 	return d
 }
-func (d *rolePermissionDao) WhereIDGte(ID int64) *rolePermissionDao {
-	d.DB = d.DB.Where(clause.Gte{Column: "id", Value: ID})
+func (d *rolePermissionDao) WhereIdGte(id int64) *rolePermissionDao {
+	d.DB = d.DB.Where(clause.Gte{Column: "id", Value: id})
 	return d
 }
-func (d *rolePermissionDao) WhereIDBetween(left int64, right int64) *rolePermissionDao {
+func (d *rolePermissionDao) WhereIdBetween(left int64, right int64) *rolePermissionDao {
 	d.DB = d.DB.Where(clause.Expr{SQL: "id Between ? AND ?", Vars: []interface{}{left, right}})
 	return d
 }
@@ -301,6 +301,17 @@ func (d *rolePermissionDao) Find() ([]*model.RolePermission, int64, error) {
 	}
 
 	return list, total, nil
+}
+
+func (d *rolePermissionDao) Count() (int64, error) {
+	var total int64
+	var query = d.Model(model.RolePermission{})
+
+	if err := query.Count(&total).Error; err != nil {
+		return 0, err
+	}
+
+	return total, nil
 }
 
 func (d *rolePermissionDao) First(conds ...interface{}) (*model.RolePermission, error) {

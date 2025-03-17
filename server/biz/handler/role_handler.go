@@ -84,7 +84,7 @@ func (r RoleHandler) GetRoleInfo(ctx context.Context, request *api.GetRoleInfoRe
 			permissionIDs[i] = rolePermission.PermissionID
 		}
 		if len(permissionIDs) > 0 {
-			permissionList, _, err = r.svc.Dao.PermissionDao(ctx).WhereIDIn(permissionIDs).Find()
+			permissionList, _, err = r.svc.Dao.PermissionDao(ctx).WhereIdIn(permissionIDs).Find()
 		}
 	}
 
@@ -99,7 +99,7 @@ func (r RoleHandler) GetRoleInfo(ctx context.Context, request *api.GetRoleInfoRe
 			userIDs[i] = userRelRole.UserID
 		}
 		if len(userIDs) > 0 {
-			userList, _, err = r.svc.Dao.UserDao(ctx).WhereIDIn(userIDs).Find()
+			userList, _, err = r.svc.Dao.UserDao(ctx).WhereIdIn(userIDs).Find()
 		}
 	}
 

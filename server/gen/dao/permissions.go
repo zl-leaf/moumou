@@ -20,51 +20,51 @@ func (d *permissionDao) WithContext(ctx context.Context) *permissionDao {
 	return &permissionDao{d.DB.WithContext(ctx)}
 }
 
-func (d *permissionDao) WhereIDEq(ID int64) *permissionDao {
-	d.DB = d.DB.Where(clause.Eq{Column: "id", Value: ID})
+func (d *permissionDao) WhereIdEq(id int64) *permissionDao {
+	d.DB = d.DB.Where(clause.Eq{Column: "id", Value: id})
 	return d
 }
-func (d *permissionDao) WhereIDNeq(ID int64) *permissionDao {
-	d.DB = d.DB.Where(clause.Neq{Column: "id", Value: ID})
+func (d *permissionDao) WhereIdNeq(id int64) *permissionDao {
+	d.DB = d.DB.Where(clause.Neq{Column: "id", Value: id})
 	return d
 }
-func (d *permissionDao) WhereIDIn(ID []int64) *permissionDao {
+func (d *permissionDao) WhereIdIn(id []int64) *permissionDao {
 	d.DB = d.DB.Where(clause.IN{Column: "id", Values: func(v []int64) []interface{} {
 		ret := make([]interface{}, len(v))
 		for i, item := range v {
 			ret[i] = item
 		}
 		return ret
-	}(ID)})
+	}(id)})
 	return d
 }
-func (d *permissionDao) WhereIDNotIn(ID []int64) *permissionDao {
+func (d *permissionDao) WhereIdNotIn(id []int64) *permissionDao {
 	d.DB = d.DB.Where(clause.Not((clause.IN{Column: "id", Values: func(v []int64) []interface{} {
 		ret := make([]interface{}, len(v))
 		for i, item := range v {
 			ret[i] = item
 		}
 		return ret
-	}(ID)})))
+	}(id)})))
 	return d
 }
-func (d *permissionDao) WhereIDLt(ID int64) *permissionDao {
-	d.DB = d.DB.Where(clause.Lt{Column: "id", Value: ID})
+func (d *permissionDao) WhereIdLt(id int64) *permissionDao {
+	d.DB = d.DB.Where(clause.Lt{Column: "id", Value: id})
 	return d
 }
-func (d *permissionDao) WhereIDLte(ID int64) *permissionDao {
-	d.DB = d.DB.Where(clause.Lte{Column: "id", Value: ID})
+func (d *permissionDao) WhereIdLte(id int64) *permissionDao {
+	d.DB = d.DB.Where(clause.Lte{Column: "id", Value: id})
 	return d
 }
-func (d *permissionDao) WhereIDGt(ID int64) *permissionDao {
-	d.DB = d.DB.Where(clause.Gt{Column: "id", Value: ID})
+func (d *permissionDao) WhereIdGt(id int64) *permissionDao {
+	d.DB = d.DB.Where(clause.Gt{Column: "id", Value: id})
 	return d
 }
-func (d *permissionDao) WhereIDGte(ID int64) *permissionDao {
-	d.DB = d.DB.Where(clause.Gte{Column: "id", Value: ID})
+func (d *permissionDao) WhereIdGte(id int64) *permissionDao {
+	d.DB = d.DB.Where(clause.Gte{Column: "id", Value: id})
 	return d
 }
-func (d *permissionDao) WhereIDBetween(left int64, right int64) *permissionDao {
+func (d *permissionDao) WhereIdBetween(left int64, right int64) *permissionDao {
 	d.DB = d.DB.Where(clause.Expr{SQL: "id Between ? AND ?", Vars: []interface{}{left, right}})
 	return d
 }
@@ -204,44 +204,44 @@ func (d *permissionDao) WhereNameNotIn(name []string) *permissionDao {
 	}(name)})))
 	return d
 }
-func (d *permissionDao) WherePathEq(path string) *permissionDao {
-	d.DB = d.DB.Where(clause.Eq{Column: "path", Value: path})
+func (d *permissionDao) WhereCodeEq(code string) *permissionDao {
+	d.DB = d.DB.Where(clause.Eq{Column: "code", Value: code})
 	return d
 }
-func (d *permissionDao) WherePathNeq(path string) *permissionDao {
-	d.DB = d.DB.Where(clause.Neq{Column: "path", Value: path})
+func (d *permissionDao) WhereCodeNeq(code string) *permissionDao {
+	d.DB = d.DB.Where(clause.Neq{Column: "code", Value: code})
 	return d
 }
-func (d *permissionDao) WherePathLike(path string) *permissionDao {
-	d.DB = d.DB.Where(clause.Like{Column: "path", Value: "%" + path + "%"})
+func (d *permissionDao) WhereCodeLike(code string) *permissionDao {
+	d.DB = d.DB.Where(clause.Like{Column: "code", Value: "%" + code + "%"})
 	return d
 }
-func (d *permissionDao) WherePathPrefixLike(path string) *permissionDao {
-	d.DB = d.DB.Where(clause.Like{Column: "path", Value: path + "%"})
+func (d *permissionDao) WhereCodePrefixLike(code string) *permissionDao {
+	d.DB = d.DB.Where(clause.Like{Column: "code", Value: code + "%"})
 	return d
 }
-func (d *permissionDao) WherePathNotLike(path string) *permissionDao {
-	d.DB = d.DB.Where(clause.Not(clause.Like{Column: "path", Value: "%" + path + "%"}))
+func (d *permissionDao) WhereCodeNotLike(code string) *permissionDao {
+	d.DB = d.DB.Where(clause.Not(clause.Like{Column: "code", Value: "%" + code + "%"}))
 	return d
 }
-func (d *permissionDao) WherePathIn(path []string) *permissionDao {
-	d.DB = d.DB.Where(clause.IN{Column: "path", Values: func(v []string) []interface{} {
+func (d *permissionDao) WhereCodeIn(code []string) *permissionDao {
+	d.DB = d.DB.Where(clause.IN{Column: "code", Values: func(v []string) []interface{} {
 		ret := make([]interface{}, len(v))
 		for i, item := range v {
 			ret[i] = item
 		}
 		return ret
-	}(path)})
+	}(code)})
 	return d
 }
-func (d *permissionDao) WherePathNotIn(path []string) *permissionDao {
-	d.DB = d.DB.Where(clause.Not((clause.IN{Column: "path", Values: func(v []string) []interface{} {
+func (d *permissionDao) WhereCodeNotIn(code []string) *permissionDao {
+	d.DB = d.DB.Where(clause.Not((clause.IN{Column: "code", Values: func(v []string) []interface{} {
 		ret := make([]interface{}, len(v))
 		for i, item := range v {
 			ret[i] = item
 		}
 		return ret
-	}(path)})))
+	}(code)})))
 	return d
 }
 func (d *permissionDao) WherePidEq(pid int64) *permissionDao {
@@ -386,6 +386,17 @@ func (d *permissionDao) Find() ([]*model.Permission, int64, error) {
 	}
 
 	return list, total, nil
+}
+
+func (d *permissionDao) Count() (int64, error) {
+	var total int64
+	var query = d.Model(model.Permission{})
+
+	if err := query.Count(&total).Error; err != nil {
+		return 0, err
+	}
+
+	return total, nil
 }
 
 func (d *permissionDao) First(conds ...interface{}) (*model.Permission, error) {

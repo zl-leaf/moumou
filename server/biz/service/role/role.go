@@ -40,7 +40,7 @@ func (s *Service) GetPermissionCodesByUid(ctx context.Context, userId int64) ([]
 	for i, rolePermission := range rolePermissionList {
 		permissionIDList[i] = rolePermission.PermissionID
 	}
-	permissionList, _, err := s.db.PermissionDao(ctx).WhereIDIn(permissionIDList).Find()
+	permissionList, _, err := s.db.PermissionDao(ctx).WhereIdIn(permissionIDList).Find()
 	if err != nil {
 		return nil, err
 	}

@@ -4,6 +4,8 @@ import (
 	"context"
 	"time"
 
+	"github.com/moumou/server/biz/util/ctxutil"
+
 	"github.com/moumou/server/biz/conf"
 
 	"github.com/moumou/server/biz/model"
@@ -41,8 +43,13 @@ func (svc *Service) Logout(ctx context.Context, token string) error {
 	return svc.loginSvc.DeleteToken(token)
 }
 
+func (svc *Service) VerifyToken(ctx context.Context) (int64, error) {
+	return svc.loginSvc.VerifyToken(ctx)
+}
+
 func (svc *Service) Self(ctx context.Context) (*model.User, error) {
-	return svc.loginSvc.FindUserByToken(ctx)
+	userId := ctxutil.GetCtxUserID(ctx)
+	return svc.db.UserDao(ctx).GetByID(userId)
 }
 
 func (svc *Service) GetUserList(ctx context.Context, filter *data.ListUserFilter, currentPage, pageSize int) ([]*model.User, int64, error) {
