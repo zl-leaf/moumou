@@ -187,8 +187,7 @@ func initRolePermission(ctx context.Context, roleService *role.Service, dao *dao
 		panic(err)
 	}
 	// 如果管理员角色没有授权过权限，授权所有，并且绑定root
-	var adminRolePermissionTotal int64
-	dao.RolePermissionDao(ctx).WhereRoleIDEq(adminRole.Id).Count(&adminRolePermissionTotal)
+	adminRolePermissionTotal, _ := dao.RolePermissionDao(ctx).WhereRoleIDEq(adminRole.Id).Count()
 	if adminRolePermissionTotal == 0 {
 		allPermissionIds := make([]int64, len(allPermissions))
 		for i, permission := range allPermissions {
@@ -207,8 +206,7 @@ func initRolePermission(ctx context.Context, roleService *role.Service, dao *dao
 		panic(err)
 	}
 	// 如果普通用户角色没有授权过权限，授权所有，并且绑定demo
-	var normalRolePermissionTotal int64
-	dao.RolePermissionDao(ctx).WhereRoleIDEq(normalRole.Id).Count(&normalRolePermissionTotal)
+	normalRolePermissionTotal, _ := dao.RolePermissionDao(ctx).WhereRoleIDEq(normalRole.Id).Count()
 	if normalRolePermissionTotal == 0 {
 		normalPermissionIds := make([]int64, 0, len(allPermissions))
 		for _, permission := range allPermissions {
