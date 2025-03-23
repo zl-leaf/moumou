@@ -1,7 +1,7 @@
 server:
   host: "${APP_SERVER_HOST}"
   port: "${APP_SERVER_PORT}"
-  timeout: "${APP_SERVER_TIMEOUT}"
+  timeout: ${APP_SERVER_TIMEOUT}
 
 security:
   jwt_key: "${APP_SECURITY_JWTKEY}"
