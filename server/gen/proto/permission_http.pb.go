@@ -24,7 +24,7 @@ const OperationPermissionHandlerDeletePermission = "/server.api.PermissionHandle
 const OperationPermissionHandlerGetPermissionInfo = "/server.api.PermissionHandler/GetPermissionInfo"
 const OperationPermissionHandlerGetPermissionList = "/server.api.PermissionHandler/GetPermissionList"
 const OperationPermissionHandlerGetPermissionTree = "/server.api.PermissionHandler/GetPermissionTree"
-const OperationPermissionHandlerGetUserPermissionPath = "/server.api.PermissionHandler/GetUserPermissionPath"
+const OperationPermissionHandlerGetUserPermission = "/server.api.PermissionHandler/GetUserPermission"
 const OperationPermissionHandlerUpdatePermission = "/server.api.PermissionHandler/UpdatePermission"
 
 type PermissionHandlerHTTPServer interface {
@@ -33,7 +33,7 @@ type PermissionHandlerHTTPServer interface {
 	GetPermissionInfo(context.Context, *GetPermissionInfoRequest) (*GetPermissionInfoResponse, error)
 	GetPermissionList(context.Context, *GetPermissionListRequest) (*GetPermissionListResponse, error)
 	GetPermissionTree(context.Context, *GetPermissionTreeRequest) (*GetPermissionTreeResponse, error)
-	GetUserPermissionPath(context.Context, *GetUserPermissionPathRequest) (*GetUserPermissionPathResponse, error)
+	GetUserPermission(context.Context, *GetUserPermissionRequest) (*GetUserPermissionResponse, error)
 	UpdatePermission(context.Context, *UpdatePermissionRequest) (*UpdatePermissionResponse, error)
 }
 
@@ -41,7 +41,7 @@ func RegisterPermissionHandlerHTTPServer(s *http.Server, srv PermissionHandlerHT
 	r := s.Route("/")
 	r.POST("/permission/tree", _PermissionHandler_GetPermissionTree0_HTTP_Handler(srv))
 	r.POST("/permission/list", _PermissionHandler_GetPermissionList0_HTTP_Handler(srv))
-	r.POST("/permission/user_permission", _PermissionHandler_GetUserPermissionPath0_HTTP_Handler(srv))
+	r.POST("/permission/user_permission", _PermissionHandler_GetUserPermission0_HTTP_Handler(srv))
 	r.POST("/permission/create", _PermissionHandler_CreatePermission0_HTTP_Handler(srv))
 	r.POST("/permission/update", _PermissionHandler_UpdatePermission0_HTTP_Handler(srv))
 	r.POST("/permission/info", _PermissionHandler_GetPermissionInfo0_HTTP_Handler(srv))
@@ -92,24 +92,24 @@ func _PermissionHandler_GetPermissionList0_HTTP_Handler(srv PermissionHandlerHTT
 	}
 }
 
-func _PermissionHandler_GetUserPermissionPath0_HTTP_Handler(srv PermissionHandlerHTTPServer) func(ctx http.Context) error {
+func _PermissionHandler_GetUserPermission0_HTTP_Handler(srv PermissionHandlerHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in GetUserPermissionPathRequest
+		var in GetUserPermissionRequest
 		if err := ctx.Bind(&in); err != nil {
 			return err
 		}
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationPermissionHandlerGetUserPermissionPath)
+		http.SetOperation(ctx, OperationPermissionHandlerGetUserPermission)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.GetUserPermissionPath(ctx, req.(*GetUserPermissionPathRequest))
+			return srv.GetUserPermission(ctx, req.(*GetUserPermissionRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
 			return err
 		}
-		reply := out.(*GetUserPermissionPathResponse)
+		reply := out.(*GetUserPermissionResponse)
 		return ctx.Result(200, reply)
 	}
 }
@@ -208,7 +208,7 @@ type PermissionHandlerHTTPClient interface {
 	GetPermissionInfo(ctx context.Context, req *GetPermissionInfoRequest, opts ...http.CallOption) (rsp *GetPermissionInfoResponse, err error)
 	GetPermissionList(ctx context.Context, req *GetPermissionListRequest, opts ...http.CallOption) (rsp *GetPermissionListResponse, err error)
 	GetPermissionTree(ctx context.Context, req *GetPermissionTreeRequest, opts ...http.CallOption) (rsp *GetPermissionTreeResponse, err error)
-	GetUserPermissionPath(ctx context.Context, req *GetUserPermissionPathRequest, opts ...http.CallOption) (rsp *GetUserPermissionPathResponse, err error)
+	GetUserPermission(ctx context.Context, req *GetUserPermissionRequest, opts ...http.CallOption) (rsp *GetUserPermissionResponse, err error)
 	UpdatePermission(ctx context.Context, req *UpdatePermissionRequest, opts ...http.CallOption) (rsp *UpdatePermissionResponse, err error)
 }
 
@@ -285,11 +285,11 @@ func (c *PermissionHandlerHTTPClientImpl) GetPermissionTree(ctx context.Context,
 	return &out, nil
 }
 
-func (c *PermissionHandlerHTTPClientImpl) GetUserPermissionPath(ctx context.Context, in *GetUserPermissionPathRequest, opts ...http.CallOption) (*GetUserPermissionPathResponse, error) {
-	var out GetUserPermissionPathResponse
+func (c *PermissionHandlerHTTPClientImpl) GetUserPermission(ctx context.Context, in *GetUserPermissionRequest, opts ...http.CallOption) (*GetUserPermissionResponse, error) {
+	var out GetUserPermissionResponse
 	pattern := "/permission/user_permission"
 	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationPermissionHandlerGetUserPermissionPath))
+	opts = append(opts, http.Operation(OperationPermissionHandlerGetUserPermission))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {

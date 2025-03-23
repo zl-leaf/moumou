@@ -3,7 +3,7 @@ package internal
 import (
 	"testing"
 
-	"github.com/go-playground/assert/v2"
+	"github.com/stretchr/testify/assert"
 )
 
 func Test_EncryptPassword(t *testing.T) {

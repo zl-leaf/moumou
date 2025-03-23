@@ -74,32 +74,17 @@ func (r RoleHandler) GetRoleInfo(ctx context.Context, request *api.GetRoleInfoRe
 	}
 	var permissionList []*model.Permission
 	if request.GetField() != nil && request.GetField().GetPermission() {
-		rolePermissionList, _, err := r.svc.Dao.RolePermissionDao(ctx).WhereRoleIDEq(request.GetId()).Find()
+		permissionList, err = r.svc.RoleService.GetPermissionsByRoleId(ctx, request.GetId())
 		if err != nil {
 			return nil, err
-		}
-
-		permissionIDs := make([]int64, len(rolePermissionList))
-		for i, rolePermission := range rolePermissionList {
-			permissionIDs[i] = rolePermission.PermissionID
-		}
-		if len(permissionIDs) > 0 {
-			permissionList, _, err = r.svc.Dao.PermissionDao(ctx).WhereIdIn(permissionIDs).Find()
 		}
 	}
 
 	var userList []*model.User
 	if request.GetField() != nil && request.GetField().GetBindUser() {
-		userRelRoleList, _, err := r.svc.Dao.UserRelRoleDao(ctx).WhereRoleIDEq(request.GetId()).Find()
+		userList, err = r.svc.RoleService.GetBindUserByRoleId(ctx, request.GetId())
 		if err != nil {
 			return nil, err
-		}
-		userIDs := make([]int64, len(userRelRoleList))
-		for i, userRelRole := range userRelRoleList {
-			userIDs[i] = userRelRole.UserID
-		}
-		if len(userIDs) > 0 {
-			userList, _, err = r.svc.Dao.UserDao(ctx).WhereIdIn(userIDs).Find()
 		}
 	}
 

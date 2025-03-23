@@ -10,8 +10,9 @@ type Data struct {
 
 // ServerConfig 服务配置
 type ServerConfig struct {
-	Host string `yaml:"host"`
-	Port string `yaml:"port"`
+	Host    string `yaml:"host"`
+	Port    string `yaml:"port"`
+	Timeout int    `yml:"timeout"`
 }
 
 // SecurityConfig 获取加解密的配置

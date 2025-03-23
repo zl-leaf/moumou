@@ -17,7 +17,7 @@
             </a-select>
         </a-form-item>
         <a-form-item :wrapper-col="{ span: 8, offset: 6 }">
-            <a-button type="primary" @click="onSubmit" :loading="loading">提交</a-button>
+            <a-button type="primary" @click="onSubmit" :loading="loading" v-permission="'ManageRoleBindUser'">提交</a-button>
             <a-button style="margin-left: 10px" @click="$router.back()">返回</a-button>
         </a-form-item>
     </a-form>

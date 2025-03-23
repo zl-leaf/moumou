@@ -1,7 +1,7 @@
 <template>
     <a-row>
         <a-col :span="12" style="margin-bottom: 10px;">
-            <a-button type="primary" href="add">添加</a-button>
+            <a-button type="primary" href="add" v-permission="'ManageUserWrite'">添加</a-button>
         </a-col>
     </a-row>
     <a-table :columns="columns" :data-source="data" :pagination="pagination" @change="handleTableChange">

@@ -6,6 +6,7 @@ import {store} from '@/pinia'
 import App from '@/App.vue'
 import router from '@/router'
 import '@/permission'
+import permission from '@/directive/permission'
 
 
 const app = createApp(App)
@@ -13,5 +14,6 @@ const app = createApp(App)
 app.use(router)
 app.use(Antd)
 app.use(store)
+app.use(permission)
 
 app.mount('#app')

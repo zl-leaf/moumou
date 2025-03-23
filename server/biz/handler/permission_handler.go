@@ -3,11 +3,10 @@ package handler
 import (
 	"context"
 
-	"github.com/moumou/server/biz/model"
-
 	"github.com/moumou/server/biz/conv"
-
+	"github.com/moumou/server/biz/model"
 	"github.com/moumou/server/biz/service"
+	"github.com/moumou/server/biz/util/ctxutil"
 	api "github.com/moumou/server/gen/proto"
 )
 
@@ -37,30 +36,14 @@ func (p PermissionHandler) GetPermissionInfo(ctx context.Context, request *api.G
 }
 
 func (p PermissionHandler) GetPermissionTree(ctx context.Context, request *api.GetPermissionTreeRequest) (*api.GetPermissionTreeResponse, error) {
-	permissionList, _, err := p.svc.Dao.PermissionDao(ctx).OrderBySort().Find()
+	topLevelPermissions, err := p.svc.RoleService.GetTopLevelPermissions(ctx)
 	if err != nil {
 		return nil, err
 	}
-	treeNodeList := p.converter.ConvertPermissionTreeNodeListToVO(permissionList)
-	// 创建mapByID
-	treeNodeMapByID := make(map[int64]*api.PermissionTreeNode, len(treeNodeList))
-	for _, treeNode := range treeNodeList {
-		treeNodeMapByID[treeNode.Id] = treeNode
-	}
-	root := make([]*api.PermissionTreeNode, 0, len(treeNodeList)/3)
-	for _, treeNode := range treeNodeList {
-		if treeNode.Pid == 0 {
-			// 根节点
-			root = append(root, treeNode)
-			continue
-		}
 
-		pid := treeNode.Pid
-		treeNodeMapByID[pid].Children = append(treeNodeMapByID[pid].Children, treeNode)
-	}
 	return &api.GetPermissionTreeResponse{
 		Data: &api.GetPermissionTreeResponseData{
-			List: root,
+			List: p.converter.ConvertPermissionTreeNodeListToVO(topLevelPermissions),
 		},
 	}, nil
 }
@@ -104,34 +87,21 @@ func (p PermissionHandler) GetPermissionList(ctx context.Context, request *api.G
 	}, nil
 }
 
-func (p PermissionHandler) GetUserPermissionPath(ctx context.Context, request *api.GetUserPermissionPathRequest) (*api.GetUserPermissionPathResponse, error) {
-	user, err := p.svc.UserService.Self(ctx)
+func (p PermissionHandler) GetUserPermission(ctx context.Context, request *api.GetUserPermissionRequest) (*api.GetUserPermissionResponse, error) {
+	selfUserId := ctxutil.GetCtxUserID(ctx)
+	permissions, err := p.svc.RoleService.GetPermissionCodesByUid(ctx, selfUserId)
 	if err != nil {
 		return nil, err
 	}
-	userRoleList, _, err := p.svc.Dao.UserRelRoleDao(ctx).WhereUserIDEq(user.Id).Find()
-	roleIDs := make([]int64, len(userRoleList))
-	for i, userRole := range userRoleList {
-		roleIDs[i] = userRole.RoleID
-	}
-	rolePermissionList, _, err := p.svc.Dao.RolePermissionDao(ctx).WhereRoleIDIn(roleIDs).Find()
-	if err != nil {
-		return nil, err
-	}
-	permissionIDList := make([]int64, len(rolePermissionList))
-	for i, rolePermission := range rolePermissionList {
-		permissionIDList[i] = rolePermission.PermissionID
-	}
-	permissionList, _, err := p.svc.Dao.PermissionDao(ctx).WhereIdIn(permissionIDList).Find()
 
-	permissionPaths := make([]string, len(permissionList))
-	for i, permission := range permissionList {
-		permissionPaths[i] = permission.Code
+	permissionCodes := make([]string, len(permissions))
+	for i, permission := range permissions {
+		permissionCodes[i] = permission.Code
 	}
 
-	return &api.GetUserPermissionPathResponse{
-		Data: &api.GetUserPermissionPathResponseData{
-			Permissions: permissionPaths,
+	return &api.GetUserPermissionResponse{
+		Data: &api.GetUserPermissionResponseData{
+			Permissions: permissionCodes,
 		},
 	}, nil
 }

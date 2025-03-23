@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/logging"
@@ -49,6 +50,9 @@ func NewHTTPServer(
 	}
 	if confData.ServerConfig.Host != "" || confData.ServerConfig.Port != "" {
 		opts = append(opts, http.Address(fmt.Sprintf("%s:%s", confData.ServerConfig.Host, confData.ServerConfig.Port)))
+	}
+	if confData.ServerConfig.Timeout > 0 {
+		opts = append(opts, http.Timeout(time.Second*time.Duration(confData.ServerConfig.Timeout)))
 	}
 	srv := http.NewServer(opts...)
 

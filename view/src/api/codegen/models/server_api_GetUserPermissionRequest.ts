@@ -2,6 +2,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type server_api_GetUserPermissionPathRequest = {
+export type server_api_GetUserPermissionRequest = {
 };
 

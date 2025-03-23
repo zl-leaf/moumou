@@ -6,8 +6,8 @@ import type { RouteRecordRaw } from 'vue-router';
 import { Components } from 'ant-design-vue/es/date-picker/generatePicker';
 const viewModules = import.meta.glob('@/views/**/*.vue')
 
+// TODO 这里需要增加一个权限的判断，用权限过滤菜单
 export const useRouterStore = defineStore('router', () => {
-    const permissions = ref<string[]>([]) // 记录用户的权限
     const updateRouterFlag = ref(0) // 记录更新菜单次数，出发监听
 
     const hasUpdated = ():boolean => {
@@ -18,20 +18,6 @@ export const useRouterStore = defineStore('router', () => {
     const updateRouter = async () => {
         updateRouterFlag.value = (updateRouterFlag.value + 1) % 10
         return
-    }
-
-    const updatePermissions = async () => {
-        permissions.value = []
-        try {
-            let response = await api.PermissionHandlerService.permissionHandlerGetUserPermissionPath({})
-            if (response.code != 0) {
-                throw new Error(response.message)
-            }
-            permissions.value = response.data?.permissions ?? []
-        } catch (err) {
-            return false
-        }
-        return true
     }
 
     return {

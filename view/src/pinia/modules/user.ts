@@ -44,7 +44,7 @@ export const useUserStore = defineStore('user', () => {
     const UpdatePermissions = async () => {
         permissions.value = []
         try {
-            let response = await api.PermissionHandlerService.permissionHandlerGetUserPermissionPath({})
+            let response = await api.PermissionHandlerService.permissionHandlerGetUserPermission({})
             if (response.code != 0) {
                 throw new Error(response.message)
             }
@@ -53,6 +53,10 @@ export const useUserStore = defineStore('user', () => {
             return false
         }
         return true
+    }
+
+    const HasPermission = (permission: string) => {
+        return permissions.value.includes(permission)
     }
 
     watch(() => token.value, () => {
@@ -64,5 +68,6 @@ export const useUserStore = defineStore('user', () => {
         SetToken,
         GetToken,
         UpdatePermissions,
+        HasPermission,
     }
 })

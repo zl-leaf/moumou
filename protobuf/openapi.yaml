@@ -118,12 +118,12 @@ paths:
         post:
             tags:
                 - PermissionHandler
-            operationId: PermissionHandler_GetUserPermissionPath
+            operationId: PermissionHandler_GetUserPermission
             requestBody:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/server.api.GetUserPermissionPathRequest'
+                            $ref: '#/components/schemas/server.api.GetUserPermissionRequest'
                 required: true
             responses:
                 "200":
@@ -131,7 +131,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/server.api.GetUserPermissionPathResponse'
+                                $ref: '#/components/schemas/server.api.GetUserPermissionResponse'
     /role/bind_user/update:
         post:
             tags:
@@ -662,10 +662,10 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/server.api.User'
-        server.api.GetUserPermissionPathRequest:
+        server.api.GetUserPermissionRequest:
             type: object
             properties: {}
-        server.api.GetUserPermissionPathResponse:
+        server.api.GetUserPermissionResponse:
             type: object
             properties:
                 code:
@@ -674,8 +674,8 @@ components:
                 message:
                     type: string
                 data:
-                    $ref: '#/components/schemas/server.api.GetUserPermissionPathResponseData'
-        server.api.GetUserPermissionPathResponseData:
+                    $ref: '#/components/schemas/server.api.GetUserPermissionResponseData'
+        server.api.GetUserPermissionResponseData:
             type: object
             properties:
                 permissions:

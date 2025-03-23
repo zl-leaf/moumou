@@ -35,6 +35,7 @@ const router = createRouter({
                 title: '账号管理',
                 isMenu: true,
                 page: 'user_list',
+                permission: 'ManageUserRead',
               },
               children: [
                 {
@@ -65,7 +66,8 @@ const router = createRouter({
               meta: {
                 title: '角色管理',
                 isMenu: true,
-                page: "role_list"
+                page: "role_list",
+                permission: 'ManageRoleRead',
               },
               children: [
                 {
@@ -112,7 +114,8 @@ const router = createRouter({
               meta: {
                 title: '权限管理',
                 isMenu: true,
-                page: "permission_list"
+                page: "permission_list",
+                permission: 'ManagePermissionRead',
               },
               children: [
                 {

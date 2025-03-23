@@ -12,6 +12,7 @@ import type { ItemType } from 'ant-design-vue';
 import router from '@/router';
 import type { RouteRecord, RouteRecordRaw } from 'vue-router';
 import { useRouterStore } from '@/pinia/modules/router';
+import { useUserStore } from '@/pinia/modules/user';
 
 const routerStore = useRouterStore()
 
@@ -58,6 +59,14 @@ export default defineComponent({
         updateSide() {
             const formatRouter2Menu = (item: RouteRecordRaw): ItemType[] => {
                 let menus: ItemType[] = []
+                if (item.meta?.permission) {
+                    const userStore = useUserStore()
+                    let needPermission = String(item.meta.permission)
+                    if (!userStore.HasPermission(needPermission)) {
+                        return []
+                    }
+                }
+
                 if (item.children?.length) {
                     item.children.forEach((childItem: RouteRecordRaw) => {
                         formatRouter2Menu(childItem).forEach((element: any) => {
