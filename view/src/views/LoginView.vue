@@ -13,19 +13,16 @@
 <script setup lang="ts">
 import LoginComponent from '@/components/LoginComponent.vue'
 import { useUserStore } from '@/pinia/modules/user'
-import { useRouterStore } from '@/pinia/modules/router';
 import router from '@/router/index'
 
 const userStore = useUserStore()
-const routerStore = useRouterStore()
 
-const redirectToDefaultPage = async () => {
-    try {
-        await routerStore.updateRouter()
-        router.replace({ path: '/' })
-    } catch (err) {
-        console.log('error', err)
+const redirectToDefaultPage = () => {
+    let redirect = router.currentRoute.value.query.redirect?.toString() ?? ''
+    if (redirect === '') {
+        redirect = '/'
     }
+    router.replace({ path: redirect })
 }
 
 const onLoginSuccess = function (ret: any) {

@@ -15,15 +15,25 @@ import (
 )
 
 type Service struct {
-	loginSvc *internal.LoginService
-	db       *dao.Dao
+	captchaSvc *internal.CaptchaService
+	loginSvc   *internal.LoginService
+	db         *dao.Dao
 }
 
 func NewUserService(cnf *conf.Data, db *dao.Dao) *Service {
 	return &Service{
-		loginSvc: internal.NewLoginService(cnf, db),
-		db:       db,
+		captchaSvc: internal.NewCaptchaService(),
+		loginSvc:   internal.NewLoginService(cnf, db),
+		db:         db,
 	}
+}
+
+func (svc *Service) RandomCaptcha() (string, []byte, error) {
+	return svc.captchaSvc.RandomImage()
+}
+
+func (svc *Service) VerifyCaptcha(ctx context.Context, captchaId, captcha string) error {
+	return svc.captchaSvc.Verify(captchaId, captcha)
 }
 
 func (svc *Service) Login(ctx context.Context, userName, password string) (token string, userInfo *model.User, err error) {

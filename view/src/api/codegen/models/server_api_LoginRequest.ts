@@ -5,5 +5,7 @@
 export type server_api_LoginRequest = {
     username?: string;
     password?: string;
+    captcha?: string;
+    captchaId?: string;
 };
 

@@ -36,7 +36,7 @@ func NewHTTPServer(
 			selector.Server(
 				mw.JWTServer(confData),
 				mw.VerifyUser(svc.UserService)).Match(func(ctx context.Context, operation string) bool {
-				whiteList := []string{api.OperationSecurityHandlerLogin}
+				whiteList := []string{api.OperationSecurityHandlerLogin, api.OperationSecurityHandlerCaptcha}
 				for _, white := range whiteList {
 					if operation == white {
 						return false

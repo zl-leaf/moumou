@@ -19,11 +19,13 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
+const OperationSecurityHandlerCaptcha = "/server.api.SecurityHandler/Captcha"
 const OperationSecurityHandlerLogin = "/server.api.SecurityHandler/Login"
 const OperationSecurityHandlerLogout = "/server.api.SecurityHandler/Logout"
 const OperationSecurityHandlerSelf = "/server.api.SecurityHandler/Self"
 
 type SecurityHandlerHTTPServer interface {
+	Captcha(context.Context, *CaptchaRequest) (*CaptchaResponse, error)
 	Login(context.Context, *LoginRequest) (*LoginResponse, error)
 	Logout(context.Context, *LogoutRequest) (*LogoutResponse, error)
 	Self(context.Context, *SelfRequest) (*SelfResponse, error)
@@ -31,9 +33,32 @@ type SecurityHandlerHTTPServer interface {
 
 func RegisterSecurityHandlerHTTPServer(s *http.Server, srv SecurityHandlerHTTPServer) {
 	r := s.Route("/")
+	r.POST("/security/captcha", _SecurityHandler_Captcha0_HTTP_Handler(srv))
 	r.POST("/security/login", _SecurityHandler_Login0_HTTP_Handler(srv))
 	r.POST("/security/logout", _SecurityHandler_Logout0_HTTP_Handler(srv))
 	r.POST("/security/self", _SecurityHandler_Self0_HTTP_Handler(srv))
+}
+
+func _SecurityHandler_Captcha0_HTTP_Handler(srv SecurityHandlerHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in CaptchaRequest
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationSecurityHandlerCaptcha)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.Captcha(ctx, req.(*CaptchaRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*CaptchaResponse)
+		return ctx.Result(200, reply)
+	}
 }
 
 func _SecurityHandler_Login0_HTTP_Handler(srv SecurityHandlerHTTPServer) func(ctx http.Context) error {
@@ -103,6 +128,7 @@ func _SecurityHandler_Self0_HTTP_Handler(srv SecurityHandlerHTTPServer) func(ctx
 }
 
 type SecurityHandlerHTTPClient interface {
+	Captcha(ctx context.Context, req *CaptchaRequest, opts ...http.CallOption) (rsp *CaptchaResponse, err error)
 	Login(ctx context.Context, req *LoginRequest, opts ...http.CallOption) (rsp *LoginResponse, err error)
 	Logout(ctx context.Context, req *LogoutRequest, opts ...http.CallOption) (rsp *LogoutResponse, err error)
 	Self(ctx context.Context, req *SelfRequest, opts ...http.CallOption) (rsp *SelfResponse, err error)
@@ -114,6 +140,19 @@ type SecurityHandlerHTTPClientImpl struct {
 
 func NewSecurityHandlerHTTPClient(client *http.Client) SecurityHandlerHTTPClient {
 	return &SecurityHandlerHTTPClientImpl{client}
+}
+
+func (c *SecurityHandlerHTTPClientImpl) Captcha(ctx context.Context, in *CaptchaRequest, opts ...http.CallOption) (*CaptchaResponse, error) {
+	var out CaptchaResponse
+	pattern := "/security/captcha"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationSecurityHandlerCaptcha))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, nil
 }
 
 func (c *SecurityHandlerHTTPClientImpl) Login(ctx context.Context, in *LoginRequest, opts ...http.CallOption) (*LoginResponse, error) {

@@ -7,6 +7,9 @@ export { CancelablePromise, CancelError } from './core/CancelablePromise';
 export { OpenAPI } from './core/OpenAPI';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
+export type { server_api_CaptchaRequest } from './models/server_api_CaptchaRequest';
+export type { server_api_CaptchaResponse } from './models/server_api_CaptchaResponse';
+export type { server_api_CaptchaResponseData } from './models/server_api_CaptchaResponseData';
 export type { server_api_CreatePermissionRequest } from './models/server_api_CreatePermissionRequest';
 export type { server_api_CreatePermissionRequestData } from './models/server_api_CreatePermissionRequestData';
 export type { server_api_CreatePermissionResponse } from './models/server_api_CreatePermissionResponse';
@@ -23,6 +26,9 @@ export type { server_api_DeletePermissionRequest } from './models/server_api_Del
 export type { server_api_DeletePermissionResponse } from './models/server_api_DeletePermissionResponse';
 export type { server_api_DeleteRoleRequest } from './models/server_api_DeleteRoleRequest';
 export type { server_api_DeleteRoleResponse } from './models/server_api_DeleteRoleResponse';
+export type { server_api_GetBindUserRequest } from './models/server_api_GetBindUserRequest';
+export type { server_api_GetBindUserResponse } from './models/server_api_GetBindUserResponse';
+export type { server_api_GetBindUserResponseData } from './models/server_api_GetBindUserResponseData';
 export type { server_api_GetPermissionInfoRequest } from './models/server_api_GetPermissionInfoRequest';
 export type { server_api_GetPermissionInfoResponse } from './models/server_api_GetPermissionInfoResponse';
 export type { server_api_GetPermissionListRequest } from './models/server_api_GetPermissionListRequest';
@@ -38,6 +44,9 @@ export type { server_api_GetRoleListRequest } from './models/server_api_GetRoleL
 export type { server_api_GetRoleListRequestFilter } from './models/server_api_GetRoleListRequestFilter';
 export type { server_api_GetRoleListResponse } from './models/server_api_GetRoleListResponse';
 export type { server_api_GetRoleListResponseData } from './models/server_api_GetRoleListResponseData';
+export type { server_api_GetRolePermissionRequest } from './models/server_api_GetRolePermissionRequest';
+export type { server_api_GetRolePermissionResponse } from './models/server_api_GetRolePermissionResponse';
+export type { server_api_GetRolePermissionResponseData } from './models/server_api_GetRolePermissionResponseData';
 export type { server_api_GetUserInfoRequest } from './models/server_api_GetUserInfoRequest';
 export type { server_api_GetUserInfoResponse } from './models/server_api_GetUserInfoResponse';
 export type { server_api_GetUserListRequest } from './models/server_api_GetUserListRequest';
@@ -55,7 +64,6 @@ export type { server_api_LogoutResponse } from './models/server_api_LogoutRespon
 export type { server_api_Permission } from './models/server_api_Permission';
 export type { server_api_PermissionTreeNode } from './models/server_api_PermissionTreeNode';
 export type { server_api_Role } from './models/server_api_Role';
-export type { server_api_RoleRelateField } from './models/server_api_RoleRelateField';
 export type { server_api_SelfRequest } from './models/server_api_SelfRequest';
 export type { server_api_SelfResponse } from './models/server_api_SelfResponse';
 export type { server_api_UpdateBindUserRequest } from './models/server_api_UpdateBindUserRequest';

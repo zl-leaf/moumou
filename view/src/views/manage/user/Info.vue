@@ -1,14 +1,23 @@
 <template>
-    <a-form :model="formState" :label-col="{ span: 6 }" :wrapper-col="{ span: 8 }">
-        <a-form-item label="账号">
-            <a-input v-model:value="formState.username" />
-        </a-form-item>
-        <a-form-item :wrapper-col="{ span: 8, offset: 6 }">
-            <a-button type="primary" @click="onSubmit" :loading="loading" v-permission="'ManageUserWrite'">提交</a-button>
-            <a-button style="margin-left: 10px" @click="$router.back()">返回</a-button>
-        </a-form-item>
-    </a-form>
+    <ContentPage>
+        <template #content>
+            <a-form :model="formState" :label-col="{ span: 6 }" :wrapper-col="{ span: 8 }">
+            <a-form-item label="账号">
+                <a-input v-model:value="formState.username" />
+            </a-form-item>
+            <a-form-item :wrapper-col="{ span: 8, offset: 6 }">
+                <a-button type="primary" @click="onSubmit" :loading="loading" v-permission="'ManageUserWrite'">提交</a-button>
+                <a-button style="margin-left: 10px" @click="$router.back()">返回</a-button>
+            </a-form-item>
+        </a-form>
+        </template>
+    </ContentPage>
+    
 </template>
+
+<script setup lang="ts">
+import ContentPage from '@/components/ContentPage.vue';
+</script>
 
 <script lang="ts">
 import { defineComponent,ref } from 'vue';

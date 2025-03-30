@@ -59,7 +59,7 @@ func (s *Service) GetPermissionCodesByUid(ctx context.Context, userId int64) ([]
 	return permissionList, nil
 }
 
-func (s *Service) GetPermissionsByRoleId(ctx context.Context, roleId int64) ([]*model.Permission, error) {
+func (s *Service) GetPermissionsByRoleId(ctx context.Context, roleId int64, isFullPath bool) ([]*model.Permission, error) {
 	tree, err := internal.NewPermissionGetterService(s.db).GetPermissionTree(ctx)
 	if err != nil {
 		return nil, err
@@ -73,8 +73,18 @@ func (s *Service) GetPermissionsByRoleId(ctx context.Context, roleId int64) ([]*
 	for i, rolePermission := range rolePermissionList {
 		permissionIDs[i] = rolePermission.PermissionID
 	}
+	var permissionList []*model.Permission
+	if isFullPath {
+		permissionList, _ = tree.GetPermissionsFullPathByIds(permissionIDs)
+	} else {
+		permissionList = make([]*model.Permission, 0, len(permissionIDs))
+		for _, permissionID := range permissionIDs {
+			if permission := tree.GetPermissionById(permissionID); permission != nil {
+				permissionList = append(permissionList, permission)
+			}
+		}
+	}
 
-	permissionList, _ := tree.GetPermissionsFullPathByIds(permissionIDs)
 	return permissionList, err
 }
 

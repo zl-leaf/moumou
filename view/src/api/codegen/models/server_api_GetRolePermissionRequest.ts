@@ -2,8 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type server_api_UpdateBindUserRequest = {
+export type server_api_GetRolePermissionRequest = {
     roleId?: string;
-    userIds?: Array<string>;
+    isFullPath?: boolean;
 };
 

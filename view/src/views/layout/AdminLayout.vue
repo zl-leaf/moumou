@@ -1,17 +1,18 @@
 <template>
   <a-layout style="min-height: 100vh">
-    <SiderComponent @openMenu="openMenu" />
+    <SiderComponent v-model:renderRouters="renderRouters"/>
     <a-layout>
-      <a-layout-header style="background: #fff; padding: 0" >
+      <a-layout-header style="background: #fff; padding: 0 16px" >
         <a-row>
-          <a-col :span="23"></a-col>
+          <a-col :span="23">
+            <BreadcrumbComponent></BreadcrumbComponent>
+          </a-col>
           <a-col :span="1">
             <UserInfoComponent></UserInfoComponent>
           </a-col>
         </a-row>
       </a-layout-header>
-      <a-layout-content style="margin: 0 16px">
-        <BreadcrumbComponent></BreadcrumbComponent>
+      <a-layout-content style="background-color: #fff;margin: 10px 16px">
         <router-view></router-view>
       </a-layout-content>
       <a-layout-footer style="text-align: center">
@@ -25,18 +26,8 @@
 import SiderComponent from '@/components/SiderComponent.vue'
 import BreadcrumbComponent from '@/components/BreadcrumbComponent.vue'
 import UserInfoComponent from '@/components/UserInfoComponent.vue'
+import router from '@/router'
 
-import { defineComponent, ref } from 'vue';
-import { useUserStore } from "@/pinia/modules/user"
-import router from '@/router';
-
-const openMenu = (e: any) => {
-  console.log(e)
-  router.push({
-    name: e.key,
-    replace: true,
-  })
-}
-
-const userStore = useUserStore()
+let layoutRouter = router.getRoutes().find(item => item.name == 'admin_layout')
+const renderRouters = layoutRouter?.children || []
 </script>

@@ -3,6 +3,6 @@
 /* tslint:disable */
 /* eslint-disable */
 export type server_api_GetUserListRequestFilter = {
-    username_like?: string;
+    usernameLike?: string;
 };
 

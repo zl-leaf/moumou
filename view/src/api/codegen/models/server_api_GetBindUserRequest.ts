@@ -2,8 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type server_api_RoleRelateField = {
-    permission?: boolean;
-    bind_user?: boolean;
+export type server_api_GetBindUserRequest = {
+    roleId?: string;
 };
 

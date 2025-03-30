@@ -2,8 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type server_api_UpdateBindUserRequest = {
-    roleId?: string;
-    userIds?: Array<string>;
+export type server_api_CaptchaResponseData = {
+    randomId?: string;
+    image?: string;
 };
 

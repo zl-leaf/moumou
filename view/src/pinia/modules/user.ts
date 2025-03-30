@@ -3,7 +3,6 @@ import {ref, watch} from 'vue'
 import * as api from '@/api'
 import crypto from 'crypto-js';
 import cookie from 'js-cookie'
-import { useRouterStore } from './router';
 import router from '@/router';
 
 export const useUserStore = defineStore('user', () => {
@@ -33,8 +32,7 @@ export const useUserStore = defineStore('user', () => {
             cookie.remove('x-token')
 
             // 跳转
-            router.push({ name: 'login', replace: true })
-            window.location.reload()
+            router.replace('/login')
 
         } catch (err) {
             return Promise.reject("网络错误")

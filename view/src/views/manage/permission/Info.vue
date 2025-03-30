@@ -1,24 +1,30 @@
 <template>
-    <a-form :model="formState" :label-col="{ span: 6 }" :wrapper-col="{ span: 8 }">
-        <a-form-item label="名称">
-            <a-input v-model:value="formState.name" />
-        </a-form-item>
-        <a-form-item label="编码">
-            <a-input v-model:value="formState.code" />
-        </a-form-item>
-        <a-form-item label="父级">
-            <a-select v-model:value="formState.pid" :options="parentOptions" allow-clear />
-        </a-form-item>
-        <a-form-item label="排序">
-            <a-input v-model:value="formState.sort" />
-        </a-form-item>
-        <a-form-item :wrapper-col="{ span: 8, offset: 6 }">
-            <a-button type="primary" @click="onSubmit" :loading="loading" v-permission="'ManagePermissionWrite'">提交</a-button>
-            <a-button style="margin-left: 10px" @click="$router.back()">返回</a-button>
-        </a-form-item>
-    </a-form>
+    <ContentPage>
+        <template #content>
+            <a-form :model="formState" :label-col="{ span: 6 }" :wrapper-col="{ span: 8 }">
+                <a-form-item label="名称">
+                    <a-input v-model:value="formState.name" />
+                </a-form-item>
+                <a-form-item label="编码">
+                    <a-input v-model:value="formState.code" />
+                </a-form-item>
+                <a-form-item label="父级">
+                    <a-select v-model:value="formState.pid" :options="parentOptions" allow-clear />
+                </a-form-item>
+                <a-form-item label="排序">
+                    <a-input v-model:value="formState.sort" />
+                </a-form-item>
+                <a-form-item :wrapper-col="{ span: 8, offset: 6 }">
+                    <a-button type="primary" @click="onSubmit" :loading="loading" v-permission="'ManagePermissionWrite'">提交</a-button>
+                    <a-button style="margin-left: 10px" @click="$router.back()">返回</a-button>
+                </a-form-item>
+            </a-form>
+        </template>
+    </ContentPage>
 </template>
-
+<script setup lang="ts">
+import ContentPage from '@/components/ContentPage.vue';
+</script>
 <script lang="ts">
 import type { SelectProps } from 'ant-design-vue';
 import { defineComponent, ref } from 'vue';

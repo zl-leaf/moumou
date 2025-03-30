@@ -1,6 +1,5 @@
 import router from '@/router'
 import {useUserStore} from '@/pinia/modules/user'
-import { useRouterStore } from './pinia/modules/router'
 
 const whiteList = ['login']
 
@@ -20,7 +19,7 @@ router.beforeEach(async(to, from) => {
             return {
                 name: 'login',
                 query: {
-                    redirect: document.location.hash
+                    redirect: to.fullPath
                 }
             }
         }
@@ -44,7 +43,7 @@ router.beforeEach(async(to, from) => {
             return {
                 name: 'login',
                 query: {
-                    redirect: document.location.hash
+                    redirect: to.fullPath
                 }
             }
         }
