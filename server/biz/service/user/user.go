@@ -4,13 +4,11 @@ import (
 	"context"
 	"time"
 
-	"github.com/moumou/server/biz/util/ctxutil"
-
 	"github.com/moumou/server/biz/conf"
-
 	"github.com/moumou/server/biz/model"
 	"github.com/moumou/server/biz/service/user/data"
 	"github.com/moumou/server/biz/service/user/internal"
+	"github.com/moumou/server/biz/util/ctxutil"
 	"github.com/moumou/server/gen/dao"
 )
 

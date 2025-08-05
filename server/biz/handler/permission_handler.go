@@ -15,13 +15,19 @@ type PermissionHandler struct {
 	converter conv.IConverter
 }
 
-func NewPermissionHandler(svc *service.Service, converter conv.IConverter) api.PermissionHandlerHTTPServer {
+func NewPermissionHandler(
+	svc *service.Service,
+	converter conv.IConverter,
+) api.PermissionHandlerHTTPServer {
 	return &PermissionHandler{svc: svc, converter: converter}
 }
 
 func (p PermissionHandler) DeletePermission(ctx context.Context, request *api.DeletePermissionRequest) (*api.DeletePermissionResponse, error) {
-	//TODO implement me
-	panic("implement me")
+	err := p.svc.Dao.PermissionDao(ctx).Delete(request.Ids)
+	if err != nil {
+		return nil, err
+	}
+	return &api.DeletePermissionResponse{}, nil
 }
 
 func (p PermissionHandler) GetPermissionInfo(ctx context.Context, request *api.GetPermissionInfoRequest) (*api.GetPermissionInfoResponse, error) {

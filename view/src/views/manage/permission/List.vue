@@ -5,7 +5,7 @@
         </template>
 
         <template #content>
-            <a-table :columns="columns" :data-source="data" :pagination="false" @change="handleTableChange">
+            <a-table :columns="columns" :data-source="data" row-key="id" :pagination="false" @change="handleTableChange">
                 <template #headerCell="{ column }"></template>
 
                 <template #bodyCell="{ column, record }">
