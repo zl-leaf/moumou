@@ -39,12 +39,12 @@ message User {
 }
 
 message GetUserListRequestFilter {
-  optional string username_like = 1[json_name="username_like"];
+  optional string usernameLike = 1;
 }
 
 message GetUserListRequest {
-  int32 current_page = 1;
-  int32 page_size = 2;
+  int32 currentPage = 1;
+  int32 pageSize = 2;
   optional GetUserListRequestFilter filter = 3;
 }
 

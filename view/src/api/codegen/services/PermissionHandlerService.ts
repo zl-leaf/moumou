@@ -12,8 +12,8 @@ import type { server_api_GetPermissionListRequest } from '../models/server_api_G
 import type { server_api_GetPermissionListResponse } from '../models/server_api_GetPermissionListResponse';
 import type { server_api_GetPermissionTreeRequest } from '../models/server_api_GetPermissionTreeRequest';
 import type { server_api_GetPermissionTreeResponse } from '../models/server_api_GetPermissionTreeResponse';
-import type { server_api_GetUserPermissionPathRequest } from '../models/server_api_GetUserPermissionPathRequest';
-import type { server_api_GetUserPermissionPathResponse } from '../models/server_api_GetUserPermissionPathResponse';
+import type { server_api_GetUserPermissionRequest } from '../models/server_api_GetUserPermissionRequest';
+import type { server_api_GetUserPermissionResponse } from '../models/server_api_GetUserPermissionResponse';
 import type { server_api_UpdatePermissionRequest } from '../models/server_api_UpdatePermissionRequest';
 import type { server_api_UpdatePermissionResponse } from '../models/server_api_UpdatePermissionResponse';
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -112,12 +112,12 @@ export class PermissionHandlerService {
     }
     /**
      * @param requestBody
-     * @returns server_api_GetUserPermissionPathResponse OK
+     * @returns server_api_GetUserPermissionResponse OK
      * @throws ApiError
      */
-    public static permissionHandlerGetUserPermissionPath(
-        requestBody: server_api_GetUserPermissionPathRequest,
-    ): CancelablePromise<server_api_GetUserPermissionPathResponse> {
+    public static permissionHandlerGetUserPermission(
+        requestBody: server_api_GetUserPermissionRequest,
+    ): CancelablePromise<server_api_GetUserPermissionResponse> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/permission/user_permission',

@@ -1,26 +1,32 @@
 <template>
-    <a-row>
-        <a-col :span="12" style="margin-bottom: 10px;">
-            <a-button type="primary" href="add">添加</a-button>
-        </a-col>
-    </a-row>
-    <a-table :columns="columns" :data-source="data" :pagination="pagination" @change="handleTableChange">
-        <template #headerCell="{ column }"></template>
-
-        <template #bodyCell="{ column, record }">
-            <template v-if="column.key === 'action'">
-                <span>
-                    <a-button size="small" :href="`info?id=${record.id}`" style="margin-right:5px;">详情</a-button>
-                    <a-button size="small" :href="`permission?id=${record.id}`" style="margin-right:5px;">权限</a-button>
-                    <a-button size="small" :href="`bind_user?id=${record.id}`" style="margin-right:5px;">授权</a-button>
-                    <a-popconfirm title="确认删除？" ok-text="确认" ok-type="danger" cancel-text="取消" @confirm="onDelete(record.id)">
-                        <a-button danger size="small">删除</a-button>
-                    </a-popconfirm>
-                </span>
-            </template>
+    <ContentPage>
+        <template #extra>
+            <a-button type="primary" href="role/add" v-permission="'ManageRoleWrite'">添加</a-button>
         </template>
-    </a-table>
+
+        <template #content>
+            <a-table :columns="columns" :data-source="data" :pagination="pagination" @change="handleTableChange">
+                <template #headerCell="{ column }"></template>
+
+                <template #bodyCell="{ column, record }">
+                    <template v-if="column.key === 'action'">
+                        <span>
+                            <a-button size="small" :href="`role/info?id=${record.id}`" style="margin-right:5px;">详情</a-button>
+                            <a-button size="small" :href="`role/permission?id=${record.id}`" style="margin-right:5px;" v-permission="'ManageRoleWrite'">权限</a-button>
+                            <a-button size="small" :href="`role/bind_user?id=${record.id}`" style="margin-right:5px;" v-permission="'ManageRoleWrite'">授权</a-button>
+                            <a-popconfirm title="确认删除？" ok-text="确认" ok-type="danger" cancel-text="取消" @confirm="onDelete(record.id)">
+                                <a-button danger size="small" v-permission="'ManageRoleWrite'">删除</a-button>
+                            </a-popconfirm>
+                        </span>
+                    </template>
+                </template>
+            </a-table>
+        </template>
+    </ContentPage>
 </template>
+<script setup lang="ts">
+import ContentPage from '@/components/ContentPage.vue';
+</script>
 <script lang="ts">
 import { defineComponent, computed, ref } from 'vue';
 import { message, type TableColumnType } from 'ant-design-vue';

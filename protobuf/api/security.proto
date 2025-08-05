@@ -8,6 +8,13 @@ import "user.proto";
 option go_package = "server/api;api";
 
 service SecurityHandler {
+  rpc Captcha(CaptchaRequest) returns (CaptchaResponse) {
+    option (google.api.http) = {
+      post: "/security/captcha",
+      body: "*",
+    };
+  };
+
   rpc Login(LoginRequest) returns (LoginResponse) {
     option (google.api.http) = {
       post: "/security/login",
@@ -33,6 +40,8 @@ service SecurityHandler {
 message LoginRequest {
   string username = 1;
   string password = 2;
+  string captcha = 3;
+  string captchaId = 4;
 }
 
 message LoginResponseData {
@@ -62,4 +71,17 @@ message SelfResponse {
   int32 code = 1;
   string message = 2;
   optional User data = 3;
+}
+
+message CaptchaRequest {}
+
+message CaptchaResponseData {
+  string randomId = 1;
+  bytes image = 2;
+}
+
+message CaptchaResponse {
+  int32 code = 1;
+  string message = 2;
+  CaptchaResponseData data = 3;
 }

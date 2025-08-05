@@ -1,36 +1,43 @@
 <template>
-    <a-form :model="formState" :label-col="{ span: 6 }" :wrapper-col="{ span: 8 }">
-        <a-checkbox-group v-model:value="formState.values" name="checkboxgroup" :options="permissionOptions" />
-        <a-form-item :wrapper-col="{ span: 8, offset: 6 }">
-            <a-button type="primary" @click="onSubmit" :loading="loading">提交</a-button>
-            <a-button style="margin-left: 10px" @click="$router.back()">返回</a-button>
-        </a-form-item>
-    </a-form>
+    <ContentPage>
+        <template #content>
+            <a-form :model="formState" :label-col="{ span: 6 }" :wrapper-col="{ span: 8 }">
+                <a-tree
+                    checkable
+                    showLine
+                    :tree-data="permissionTree"
+                    v-model:checkedKeys="formState.values"
+                ></a-tree>
+
+                <a-form-item :wrapper-col="{ span: 8, offset: 6 }">
+                    <a-button type="primary" @click="onSubmit" :loading="loading">提交</a-button>
+                    <a-button style="margin-left: 10px" @click="$router.back()">返回</a-button>
+                </a-form-item>
+            </a-form>
+        </template>
+    </ContentPage>
 </template>
 
+<script setup lang="ts">
+import ContentPage from '@/components/ContentPage.vue';
+</script>
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import * as api from '@/api'
-import router from '@/router';
 import { message } from 'ant-design-vue';
-import { useRouterStore } from '@/pinia/modules/router';
 import { useUserStore } from '@/pinia/modules/user';
+import type { TreeDataItem } from 'ant-design-vue/es/tree/Tree';
+
 
 type FormState = {
     values: string[]
 }
 
-type PermissionOption = {
-    label: string
-    value: string
-}
-
-const routerStore = useRouterStore()
 export default defineComponent({
     data() {
         return {
             dataId: "",
-            permissionOptions: ref<PermissionOption[]>([]),
+            permissionTree: ref<TreeDataItem[]>([]),
             formState: ref<FormState>({
                 values: []
             }),
@@ -43,31 +50,24 @@ export default defineComponent({
     },
     methods: {
         initData: async function(dataId: string) {
-            let _this = this
+            let that = this
             this.loading = true
             try {
-                let permissionResponse = await api.PermissionHandlerService.permissionHandlerGetPermissionList({})
-                if (permissionResponse.code != 0) {
-                    throw new Error(permissionResponse.message)
-                }
-                let that = this
-                permissionResponse.data?.list?.forEach(function(permission) {
-                    that.permissionOptions.push({
-                        label: permission.name ?? "",
-                        value: permission.id ?? "",
-                    })
-                })
-
                 // 加载详情数据
-                let infoResponse = await api.RoleHandlerService.roleHandlerGetRoleInfo({
-                    id: this.dataId,
-                    field: {permission: true}
-                })
-                if (infoResponse.code != 0) {
-                    throw new Error(infoResponse.message)
+                let permissionTreeResponse = await api.PermissionHandlerService.permissionHandlerGetPermissionTree({})
+                if (permissionTreeResponse.code != 0) {
+                    throw new Error(permissionTreeResponse.message)
                 }
-                infoResponse.data?.permissions?.forEach(function(permission) {
-                    _this.formState.values.push(permission.id ?? "")
+                this.permissionTree = this.formatPermissionToTreeDataItem(permissionTreeResponse.data?.list ?? [])
+
+                let getRolePermissionResponse = await api.RoleHandlerService.roleHandlerGetRolePermission({
+                    roleId: this.dataId,
+                })
+                if (getRolePermissionResponse.code !== 0) {
+                    throw new Error(getRolePermissionResponse.message)
+                }
+                getRolePermissionResponse.data?.list?.forEach(permission => {
+                    that.formState.values.push(String(permission.id))
                 })
 
                 this.loading = false
@@ -81,7 +81,7 @@ export default defineComponent({
             try {
                 let response = await api.RoleHandlerService.roleHandlerUpdateRolePermission({
                     id: this.dataId,
-                    permission_ids: this.formState.values
+                    permissionIds: this.formState.values
                 })
                 if(response.code != 0) {
                     throw new Error(response.message)
@@ -94,6 +94,19 @@ export default defineComponent({
             } catch(err) {
                 message.error("网络异常")
             }
+        },
+        formatPermissionToTreeDataItem(permissionTreeNodes: api.server_api_PermissionTreeNode[]): Array<TreeDataItem> {
+            const that = this
+            return permissionTreeNodes.map(permissionTreeNode => {
+                let treeDataItem: TreeDataItem = {
+                    title: permissionTreeNode.name,
+                    key: permissionTreeNode.id ?? '',
+                }
+                if (permissionTreeNode.children?.length) {
+                    treeDataItem.children = that.formatPermissionToTreeDataItem(permissionTreeNode.children)
+                }
+                return treeDataItem
+            })
         }
     }
 })

@@ -2,7 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type server_api_GetUserPermissionPathResponseData = {
-    permissions?: Array<string>;
+export type server_api_GetBindUserRequest = {
+    roleId?: string;
 };
 

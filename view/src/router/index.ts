@@ -10,7 +10,7 @@ const router = createRouter({
     },
     {
       path: '/layout',
-      name: 'layout',
+      name: 'admin_layout',
       component: () => import('@/views/layout/AdminLayout.vue'),
       children: [
         {
@@ -23,7 +23,7 @@ const router = createRouter({
           }
         },
         {
-          path: '',
+          path: '/manage',
           meta: {
             title: '系统管理',
             isMenu: true,
@@ -35,16 +35,17 @@ const router = createRouter({
                 title: '账号管理',
                 isMenu: true,
                 page: 'user_list',
+                permission: 'ManageUserRead',
               },
               children: [
                 {
-                  path: 'list',
+                  path: '',
                   name: 'user_list',
                   component: () => import('@/views/manage/user/List.vue'),
                 },
                 {
                   path: 'add',
-                  name: 'ruser_add',
+                  name: 'user_add',
                   component: () => import('@/views/manage/user/Add.vue'),
                   meta: {
                     title: '添加',
@@ -65,11 +66,12 @@ const router = createRouter({
               meta: {
                 title: '角色管理',
                 isMenu: true,
-                page: "role_list"
+                page: "role_list",
+                permission: 'ManageRoleRead',
               },
               children: [
                 {
-                  path: 'list',
+                  path: '',
                   name: 'role_list',
                   component: () => import('@/views/manage/role/List.vue'),
                 },
@@ -112,11 +114,12 @@ const router = createRouter({
               meta: {
                 title: '权限管理',
                 isMenu: true,
-                page: "permission_list"
+                page: "permission_list",
+                permission: 'ManagePermissionRead',
               },
               children: [
                 {
-                  path: 'list',
+                  path: '',
                   name: 'permission_list',
                   component: () => import('@/views/manage/permission/List.vue'),
                 },

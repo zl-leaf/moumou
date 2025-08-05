@@ -3,9 +3,8 @@ package handler
 import (
 	"context"
 
-	"github.com/moumou/server/biz/model"
-
 	"github.com/moumou/server/biz/conv"
+	"github.com/moumou/server/biz/model"
 	"github.com/moumou/server/biz/service"
 	api "github.com/moumou/server/gen/proto"
 )

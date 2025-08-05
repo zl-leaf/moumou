@@ -1,6 +1,5 @@
 import router from '@/router'
 import {useUserStore} from '@/pinia/modules/user'
-import { useRouterStore } from './pinia/modules/router'
 
 const whiteList = ['login']
 
@@ -20,7 +19,7 @@ router.beforeEach(async(to, from) => {
             return {
                 name: 'login',
                 query: {
-                    redirect: document.location.hash
+                    redirect: to.fullPath
                 }
             }
         }
@@ -33,7 +32,7 @@ router.beforeEach(async(to, from) => {
 
             if (whiteList.indexOf(String(to.name)) > -1) {
                 // 登录过后不允许再打开登录页面
-                return { name: 'home', replace: true }
+                return { name: 'dashboard', replace: true }
             } else {
                 // 正常访问
                 return true
@@ -44,7 +43,7 @@ router.beforeEach(async(to, from) => {
             return {
                 name: 'login',
                 query: {
-                    redirect: document.location.hash
+                    redirect: to.fullPath
                 }
             }
         }

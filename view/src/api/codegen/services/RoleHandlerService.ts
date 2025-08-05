@@ -6,10 +6,14 @@ import type { server_api_CreateRoleRequest } from '../models/server_api_CreateRo
 import type { server_api_CreateRoleResponse } from '../models/server_api_CreateRoleResponse';
 import type { server_api_DeleteRoleRequest } from '../models/server_api_DeleteRoleRequest';
 import type { server_api_DeleteRoleResponse } from '../models/server_api_DeleteRoleResponse';
+import type { server_api_GetBindUserRequest } from '../models/server_api_GetBindUserRequest';
+import type { server_api_GetBindUserResponse } from '../models/server_api_GetBindUserResponse';
 import type { server_api_GetRoleInfoRequest } from '../models/server_api_GetRoleInfoRequest';
 import type { server_api_GetRoleInfoResponse } from '../models/server_api_GetRoleInfoResponse';
 import type { server_api_GetRoleListRequest } from '../models/server_api_GetRoleListRequest';
 import type { server_api_GetRoleListResponse } from '../models/server_api_GetRoleListResponse';
+import type { server_api_GetRolePermissionRequest } from '../models/server_api_GetRolePermissionRequest';
+import type { server_api_GetRolePermissionResponse } from '../models/server_api_GetRolePermissionResponse';
 import type { server_api_UpdateBindUserRequest } from '../models/server_api_UpdateBindUserRequest';
 import type { server_api_UpdateBindUserResponse } from '../models/server_api_UpdateBindUserResponse';
 import type { server_api_UpdateRolePermissionRequest } from '../models/server_api_UpdateRolePermissionRequest';
@@ -20,6 +24,21 @@ import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 export class RoleHandlerService {
+    /**
+     * @param requestBody
+     * @returns server_api_GetBindUserResponse OK
+     * @throws ApiError
+     */
+    public static roleHandlerGetBindUser(
+        requestBody: server_api_GetBindUserRequest,
+    ): CancelablePromise<server_api_GetBindUserResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/role/bind_user/list',
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
     /**
      * @param requestBody
      * @returns server_api_UpdateBindUserResponse OK
@@ -91,6 +110,21 @@ export class RoleHandlerService {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/role/list',
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+    /**
+     * @param requestBody
+     * @returns server_api_GetRolePermissionResponse OK
+     * @throws ApiError
+     */
+    public static roleHandlerGetRolePermission(
+        requestBody: server_api_GetRolePermissionRequest,
+    ): CancelablePromise<server_api_GetRolePermissionResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/role/permission/list',
             body: requestBody,
             mediaType: 'application/json',
         });

@@ -2,6 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { server_api_CaptchaRequest } from '../models/server_api_CaptchaRequest';
+import type { server_api_CaptchaResponse } from '../models/server_api_CaptchaResponse';
 import type { server_api_LoginRequest } from '../models/server_api_LoginRequest';
 import type { server_api_LoginResponse } from '../models/server_api_LoginResponse';
 import type { server_api_LogoutRequest } from '../models/server_api_LogoutRequest';
@@ -12,6 +14,21 @@ import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 export class SecurityHandlerService {
+    /**
+     * @param requestBody
+     * @returns server_api_CaptchaResponse OK
+     * @throws ApiError
+     */
+    public static securityHandlerCaptcha(
+        requestBody: server_api_CaptchaRequest,
+    ): CancelablePromise<server_api_CaptchaResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/security/captcha',
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
     /**
      * @param requestBody
      * @returns server_api_LoginResponse OK

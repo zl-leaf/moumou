@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/moumou/server/biz/conv"
-
 	"github.com/moumou/server/biz/service"
 	api "github.com/moumou/server/gen/proto"
 )
@@ -18,7 +17,26 @@ func NewSecurityHandler(svc *service.Service, converter conv.IConverter) api.Sec
 	return &SecurityHandler{svc: svc, converter: converter}
 }
 
+func (h *SecurityHandler) Captcha(ctx context.Context, request *api.CaptchaRequest) (*api.CaptchaResponse, error) {
+	randomId, image, err := h.svc.UserService.RandomCaptcha()
+	if err != nil {
+		return nil, err
+	}
+
+	return &api.CaptchaResponse{
+		Data: &api.CaptchaResponseData{
+			RandomId: randomId,
+			Image:    image,
+		},
+	}, nil
+}
+
 func (h *SecurityHandler) Login(ctx context.Context, request *api.LoginRequest) (*api.LoginResponse, error) {
+	err := h.svc.UserService.VerifyCaptcha(ctx, request.GetCaptchaId(), request.GetCaptcha())
+	if err != nil {
+		return nil, err
+	}
+
 	token, user, err := h.svc.UserService.Login(ctx, request.GetUsername(), request.GetPassword())
 	if err != nil {
 		return nil, err

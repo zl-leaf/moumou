@@ -118,12 +118,12 @@ paths:
         post:
             tags:
                 - PermissionHandler
-            operationId: PermissionHandler_GetUserPermissionPath
+            operationId: PermissionHandler_GetUserPermission
             requestBody:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/server.api.GetUserPermissionPathRequest'
+                            $ref: '#/components/schemas/server.api.GetUserPermissionRequest'
                 required: true
             responses:
                 "200":
@@ -131,7 +131,25 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/server.api.GetUserPermissionPathResponse'
+                                $ref: '#/components/schemas/server.api.GetUserPermissionResponse'
+    /role/bind_user/list:
+        post:
+            tags:
+                - RoleHandler
+            operationId: RoleHandler_GetBindUser
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/server.api.GetBindUserRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/server.api.GetBindUserResponse'
     /role/bind_user/update:
         post:
             tags:
@@ -222,6 +240,24 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/server.api.GetRoleListResponse'
+    /role/permission/list:
+        post:
+            tags:
+                - RoleHandler
+            operationId: RoleHandler_GetRolePermission
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/server.api.GetRolePermissionRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/server.api.GetRolePermissionResponse'
     /role/permission/update:
         post:
             tags:
@@ -258,6 +294,24 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/server.api.UpdateRoleResponse'
+    /security/captcha:
+        post:
+            tags:
+                - SecurityHandler
+            operationId: SecurityHandler_Captcha
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/server.api.CaptchaRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/server.api.CaptchaResponse'
     /security/login:
         post:
             tags:
@@ -386,6 +440,27 @@ paths:
                                 $ref: '#/components/schemas/server.api.UpdateUserResponse'
 components:
     schemas:
+        server.api.CaptchaRequest:
+            type: object
+            properties: {}
+        server.api.CaptchaResponse:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                message:
+                    type: string
+                data:
+                    $ref: '#/components/schemas/server.api.CaptchaResponseData'
+        server.api.CaptchaResponseData:
+            type: object
+            properties:
+                randomId:
+                    type: string
+                image:
+                    type: string
+                    format: bytes
         server.api.CreatePermissionRequest:
             type: object
             properties:
@@ -500,6 +575,28 @@ components:
                     format: int32
                 message:
                     type: string
+        server.api.GetBindUserRequest:
+            type: object
+            properties:
+                roleId:
+                    type: string
+        server.api.GetBindUserResponse:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                message:
+                    type: string
+                data:
+                    $ref: '#/components/schemas/server.api.GetBindUserResponseData'
+        server.api.GetBindUserResponseData:
+            type: object
+            properties:
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/server.api.User'
         server.api.GetPermissionInfoRequest:
             type: object
             properties:
@@ -567,8 +664,6 @@ components:
             properties:
                 id:
                     type: string
-                field:
-                    $ref: '#/components/schemas/server.api.RoleRelateField'
         server.api.GetRoleInfoResponse:
             type: object
             properties:
@@ -612,6 +707,30 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/server.api.Role'
+        server.api.GetRolePermissionRequest:
+            type: object
+            properties:
+                roleId:
+                    type: string
+                isFullPath:
+                    type: boolean
+        server.api.GetRolePermissionResponse:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                message:
+                    type: string
+                data:
+                    $ref: '#/components/schemas/server.api.GetRolePermissionResponseData'
+        server.api.GetRolePermissionResponseData:
+            type: object
+            properties:
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/server.api.Permission'
         server.api.GetUserInfoRequest:
             type: object
             properties:
@@ -641,7 +760,7 @@ components:
         server.api.GetUserListRequestFilter:
             type: object
             properties:
-                username_like:
+                usernameLike:
                     type: string
         server.api.GetUserListResponse:
             type: object
@@ -662,10 +781,10 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/server.api.User'
-        server.api.GetUserPermissionPathRequest:
+        server.api.GetUserPermissionRequest:
             type: object
             properties: {}
-        server.api.GetUserPermissionPathResponse:
+        server.api.GetUserPermissionResponse:
             type: object
             properties:
                 code:
@@ -674,8 +793,8 @@ components:
                 message:
                     type: string
                 data:
-                    $ref: '#/components/schemas/server.api.GetUserPermissionPathResponseData'
-        server.api.GetUserPermissionPathResponseData:
+                    $ref: '#/components/schemas/server.api.GetUserPermissionResponseData'
+        server.api.GetUserPermissionResponseData:
             type: object
             properties:
                 permissions:
@@ -688,6 +807,10 @@ components:
                 username:
                     type: string
                 password:
+                    type: string
+                captcha:
+                    type: string
+                captchaId:
                     type: string
         server.api.LoginResponse:
             type: object
@@ -756,21 +879,6 @@ components:
                     type: string
                 name:
                     type: string
-                permissions:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/server.api.Permission'
-                users:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/server.api.User'
-        server.api.RoleRelateField:
-            type: object
-            properties:
-                permission:
-                    type: boolean
-                bind_user:
-                    type: boolean
         server.api.SelfRequest:
             type: object
             properties: {}
@@ -787,9 +895,9 @@ components:
         server.api.UpdateBindUserRequest:
             type: object
             properties:
-                role_id:
+                roleId:
                     type: string
-                user_ids:
+                userIds:
                     type: array
                     items:
                         type: string
@@ -833,7 +941,7 @@ components:
             properties:
                 id:
                     type: string
-                permission_ids:
+                permissionIds:
                     type: array
                     items:
                         type: string

@@ -7,15 +7,22 @@
 </template>
 
 <script lang="ts">
-import { ref, defineComponent, reactive, h, watch } from 'vue';
+import { ref, defineComponent, reactive, watch } from 'vue';
 import type { ItemType } from 'ant-design-vue';
 import router from '@/router';
-import type { RouteRecord, RouteRecordRaw } from 'vue-router';
-import { useRouterStore } from '@/pinia/modules/router';
+import type { RouteRecordRaw } from 'vue-router';
+import { useUserStore } from '@/pinia/modules/user';
+import format from '@/utils/format'
 
-const routerStore = useRouterStore()
+const userStore = useUserStore()
 
 export default defineComponent({
+    props: {
+        renderRouters: {
+            type: Array as () => RouteRecordRaw[],
+            required: true
+        }
+    },
     data() {
         return {
             state: reactive({
@@ -30,48 +37,54 @@ export default defineComponent({
     created() {
         this.updateSide()
         this.updateSeletedMenu()
-        watch(() => routerStore.updateRouterFlag, (to, from) => {
-            // 路由变更
-            this.updateSide()
-        }, {deep: true})
     },
     methods: {
         onClick(e: any) {
             if (!this.state.selectedKeys.includes(e.key)) {
-                this.$emit('openMenu', e)
+                router.push({
+                    path: e.key,
+                    replace: true,
+                })
             }
         },
         updateSeletedMenu() {
             let currentRoute = router.currentRoute
-            if (currentRoute.value.name) {
-                this.state.selectedKeys = [String(currentRoute.value.name)]
-            } else {
-                this.state.selectedKeys = []
-            }
+            this.state.selectedKeys = [String(currentRoute.value.path)]
 
+            let openKeys:string[] = []
             currentRoute.value.matched.forEach(element => {
                 if (element.meta?.isMenu && element.children.length > 0) {
-                    this.state.openKeys = [String(element.name)]
+                    openKeys.push(element.path)
                 }
             })
+            this.state.openKeys = openKeys
         },
         updateSide() {
-            const formatRouter2Menu = (item: RouteRecordRaw): ItemType[] => {
+            const formatRouter2Menu = (parentPath: string, item: RouteRecordRaw): ItemType[] => {
                 let menus: ItemType[] = []
+                if (item.meta?.permission) {
+                    let needPermission = String(item.meta.permission)
+                    if (!userStore.HasPermission(needPermission)) {
+                        return menus
+                    }
+                }
+
                 if (item.children?.length) {
                     item.children.forEach((childItem: RouteRecordRaw) => {
-                        formatRouter2Menu(childItem).forEach((element: any) => {
-                            if (element) {
-                                menus.push(element)
-                            }
+                        formatRouter2Menu(item.path, childItem).forEach((element: ItemType) => {
+                            menus.push(element)
                         });
                     })
                 }
                 if (item.meta?.isMenu) {
-                    let name = item.meta.page ?? item.name
+                    let key = item.path
+                    if (key.charAt(0) !== '/') {
+                        key = parentPath + '/' + key
+                    }
+
                     // 菜单
                     let menuData: ItemType = {
-                        key: String(name),
+                        key: format.formatPath(parentPath, item.path),
                         title: String(item.meta?.title),
                         label: String(item.meta?.title),
                         children: menus.length > 0 ? menus : undefined,
@@ -82,12 +95,8 @@ export default defineComponent({
             }
 
             let items:ItemType[] = []
-            router.getRoutes().forEach((item: RouteRecordRaw) => {
-                if (item.name != 'layout') {
-                    // 只需要处理动态获取的menu
-                    return
-                }
-                formatRouter2Menu(item).forEach((item: ItemType) => {
+            this.renderRouters.forEach((item: RouteRecordRaw) => {
+                formatRouter2Menu('/', item).forEach((item: ItemType) => {
                     items.push(item)
                 })
             })
@@ -100,8 +109,5 @@ export default defineComponent({
             this.updateSeletedMenu()
         },
     },
-    emits: {
-        openMenu: (e: any) => { }
-    }
 })
 </script>

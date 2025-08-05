@@ -6,4 +6,7 @@ type Permission struct {
 	Code string `gorm:"type:varchar(100);not null;comment:权限code;"`
 	Pid  int64  `gorm:"type:bigint unsigned;not null;default:0;comment:父节点id;index:idx_pid"`
 	Sort int    `gorm:"type:int;not null;default:0;comment:排序"`
+
+	Parent   *Permission   `gorm:"-"`
+	Children []*Permission `gorm:"-"`
 }

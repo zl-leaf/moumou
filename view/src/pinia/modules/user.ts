@@ -3,7 +3,6 @@ import {ref, watch} from 'vue'
 import * as api from '@/api'
 import crypto from 'crypto-js';
 import cookie from 'js-cookie'
-import { useRouterStore } from './router';
 import router from '@/router';
 
 export const useUserStore = defineStore('user', () => {
@@ -33,8 +32,7 @@ export const useUserStore = defineStore('user', () => {
             cookie.remove('x-token')
 
             // 跳转
-            router.push({ name: 'login', replace: true })
-            window.location.reload()
+            router.replace('/login')
 
         } catch (err) {
             return Promise.reject("网络错误")
@@ -44,7 +42,7 @@ export const useUserStore = defineStore('user', () => {
     const UpdatePermissions = async () => {
         permissions.value = []
         try {
-            let response = await api.PermissionHandlerService.permissionHandlerGetUserPermissionPath({})
+            let response = await api.PermissionHandlerService.permissionHandlerGetUserPermission({})
             if (response.code != 0) {
                 throw new Error(response.message)
             }
@@ -53,6 +51,10 @@ export const useUserStore = defineStore('user', () => {
             return false
         }
         return true
+    }
+
+    const HasPermission = (permission: string) => {
+        return permissions.value.includes(permission)
     }
 
     watch(() => token.value, () => {
@@ -64,5 +66,6 @@ export const useUserStore = defineStore('user', () => {
         SetToken,
         GetToken,
         UpdatePermissions,
+        HasPermission,
     }
 })

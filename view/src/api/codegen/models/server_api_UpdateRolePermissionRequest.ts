@@ -4,6 +4,6 @@
 /* eslint-disable */
 export type server_api_UpdateRolePermissionRequest = {
     id?: string;
-    permission_ids?: Array<string>;
+    permissionIds?: Array<string>;
 };
 

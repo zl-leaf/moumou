@@ -51,9 +51,23 @@ service RoleHandler {
     };
   };
 
+  rpc GetRolePermission(GetRolePermissionRequest) returns (GetRolePermissionResponse){
+    option (google.api.http) = {
+      post: "/role/permission/list",
+      body: "*"
+    };
+  };
+
   rpc UpdateBindUser(UpdateBindUserRequest) returns (UpdateBindUserResponse) {
     option (google.api.http) = {
       post: "/role/bind_user/update",
+      body: "*"
+    };
+  };
+
+  rpc GetBindUser(GetBindUserRequest) returns (GetBindUserResponse) {
+    option (google.api.http) = {
+      post: "/role/bind_user/list",
       body: "*"
     };
   };
@@ -62,16 +76,14 @@ service RoleHandler {
 message Role {
   int64 id = 1;
   string name = 2;
-  repeated Permission permissions = 3;
-  repeated User users = 4;
 }
 
 message GetRoleListRequestFilter {
 }
 
 message GetRoleListRequest {
-  int32 current_page = 1;
-  int32 page_size = 2;
+  int32 currentPage = 1;
+  int32 pageSize = 2;
   optional GetRoleListRequestFilter filter = 3;
 }
 
@@ -127,14 +139,8 @@ message DeleteRoleResponse {
   string message = 2;
 }
 
-message RoleRelateField {
-  bool permission = 1;
-  bool bind_user = 2[json_name="bind_user"];
-}
-
 message GetRoleInfoRequest {
   int64 id = 1;
-  optional RoleRelateField field = 2;
 }
 
 message GetRoleInfoResponse {
@@ -145,7 +151,7 @@ message GetRoleInfoResponse {
 
 message UpdateRolePermissionRequest {
   int64 id = 1;
-  repeated int64 permission_ids = 2 [json_name="permission_ids"];
+  repeated int64 permissionIds = 2;
 }
 
 message UpdateRolePermissionResponse {
@@ -154,11 +160,39 @@ message UpdateRolePermissionResponse {
 }
 
 message UpdateBindUserRequest {
-  int64 role_id = 1 [json_name="role_id"];
-  repeated int64 user_ids = 2[json_name="user_ids"];
+  int64 roleId = 1;
+  repeated int64 userIds = 2;
 }
 
 message UpdateBindUserResponse {
   int32 code = 1;
   string message = 2;
+}
+
+
+message GetRolePermissionRequest {
+  int64 roleId = 1;
+  optional bool isFullPath = 2;
+}
+
+message GetRolePermissionResponseData {
+  repeated Permission list = 1;
+}
+message GetRolePermissionResponse {
+  int32 code = 1;
+  string message = 2;
+  GetRolePermissionResponseData data = 3;
+}
+
+message GetBindUserRequest {
+  int64 roleId = 1;
+}
+
+message GetBindUserResponseData {
+  repeated User list = 1;
+}
+message GetBindUserResponse {
+  int32 code = 1;
+  string message = 2;
+  GetBindUserResponseData data = 3;
 }

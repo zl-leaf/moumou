@@ -18,6 +18,30 @@ func NewRoleHandler(svc *service.Service, converter conv.IConverter) api.RoleHan
 	return &RoleHandler{svc: svc, converter: converter}
 }
 
+func (r RoleHandler) GetBindUser(ctx context.Context, request *api.GetBindUserRequest) (*api.GetBindUserResponse, error) {
+	userList, err := r.svc.RoleService.GetBindUserByRoleId(ctx, request.GetRoleId())
+	if err != nil {
+		return nil, err
+	}
+	return &api.GetBindUserResponse{
+		Data: &api.GetBindUserResponseData{
+			List: r.converter.ConvertUserListToVO(userList),
+		},
+	}, nil
+}
+
+func (r RoleHandler) GetRolePermission(ctx context.Context, request *api.GetRolePermissionRequest) (*api.GetRolePermissionResponse, error) {
+	permissionList, err := r.svc.RoleService.GetPermissionsByRoleId(ctx, request.GetRoleId(), request.GetIsFullPath())
+	if err != nil {
+		return nil, err
+	}
+	return &api.GetRolePermissionResponse{
+		Data: &api.GetRolePermissionResponseData{
+			List: r.converter.ConvertPermissionListToVO(permissionList),
+		},
+	}, nil
+}
+
 func (r RoleHandler) CreateRole(ctx context.Context, request *api.CreateRoleRequest) (*api.CreateRoleResponse, error) {
 	role := new(model.Role)
 	r.converter.ConvertCreateRoleRequestDataToBO(request.GetRole(), role)
@@ -72,41 +96,7 @@ func (r RoleHandler) GetRoleInfo(ctx context.Context, request *api.GetRoleInfoRe
 	if err != nil {
 		return nil, err
 	}
-	var permissionList []*model.Permission
-	if request.GetField() != nil && request.GetField().GetPermission() {
-		rolePermissionList, _, err := r.svc.Dao.RolePermissionDao(ctx).WhereRoleIDEq(request.GetId()).Find()
-		if err != nil {
-			return nil, err
-		}
-
-		permissionIDs := make([]int64, len(rolePermissionList))
-		for i, rolePermission := range rolePermissionList {
-			permissionIDs[i] = rolePermission.PermissionID
-		}
-		if len(permissionIDs) > 0 {
-			permissionList, _, err = r.svc.Dao.PermissionDao(ctx).WhereIdIn(permissionIDs).Find()
-		}
-	}
-
-	var userList []*model.User
-	if request.GetField() != nil && request.GetField().GetBindUser() {
-		userRelRoleList, _, err := r.svc.Dao.UserRelRoleDao(ctx).WhereRoleIDEq(request.GetId()).Find()
-		if err != nil {
-			return nil, err
-		}
-		userIDs := make([]int64, len(userRelRoleList))
-		for i, userRelRole := range userRelRoleList {
-			userIDs[i] = userRelRole.UserID
-		}
-		if len(userIDs) > 0 {
-			userList, _, err = r.svc.Dao.UserDao(ctx).WhereIdIn(userIDs).Find()
-		}
-	}
-
 	roleVO := r.converter.ConvertRoleToVO(role)
-	roleVO.Permissions = r.converter.ConvertPermissionListToVO(permissionList)
-	roleVO.Users = r.converter.ConvertUserListToVO(userList)
-
 	return &api.GetRoleInfoResponse{
 		Data: roleVO,
 	}, nil

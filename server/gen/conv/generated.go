@@ -85,6 +85,7 @@ func (c *IConverterImpl) ConvertPermissionTreeNodeToVO(source *model.Permission)
 		apiPermissionTreeNode.Code = (*source).Code
 		apiPermissionTreeNode.Pid = (*source).Pid
 		apiPermissionTreeNode.Sort = conv.IntToInt32((*source).Sort)
+		apiPermissionTreeNode.Children = c.ConvertPermissionTreeNodeListToVO((*source).Children)
 		pApiPermissionTreeNode = &apiPermissionTreeNode
 	}
 	return pApiPermissionTreeNode

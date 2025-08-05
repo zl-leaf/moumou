@@ -37,13 +37,13 @@ func validAPIPermission(ctx context.Context, svc *service.Service) error {
 		return err
 	}
 
-	permissionCodes, err := svc.RoleService.GetPermissionCodesByUid(ctx, userInfo.Id)
+	permissions, err := svc.RoleService.GetPermissionCodesByUid(ctx, userInfo.Id)
 	if err != nil {
 		return err
 	}
-	permissionCodeMap := make(map[string]bool, len(permissionCodes))
-	for _, permissionCode := range permissionCodes {
-		permissionCodeMap[permissionCode] = true
+	permissionCodeMap := make(map[string]bool, len(permissions))
+	for _, permission := range permissions {
+		permissionCodeMap[permission.Code] = true
 	}
 
 	for _, needPermissionCode := range needPermissionCodes {
