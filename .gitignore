@@ -1,4 +1,5 @@
 .idea
+.DS_Store
 view/dist
 view/.env.production
 server/bootstrap
