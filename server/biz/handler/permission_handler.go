@@ -15,13 +15,19 @@ type PermissionHandler struct {
 	converter conv.IConverter
 }
 
-func NewPermissionHandler(svc *service.Service, converter conv.IConverter) api.PermissionHandlerHTTPServer {
+func NewPermissionHandler(
+	svc *service.Service,
+	converter conv.IConverter,
+) api.PermissionHandlerHTTPServer {
 	return &PermissionHandler{svc: svc, converter: converter}
 }
 
 func (p PermissionHandler) DeletePermission(ctx context.Context, request *api.DeletePermissionRequest) (*api.DeletePermissionResponse, error) {
-	//TODO implement me
-	panic("implement me")
+	err := p.svc.PermissionService.DeletePermission(ctx, request.GetIds())
+	if err != nil {
+		return nil, err
+	}
+	return &api.DeletePermissionResponse{}, nil
 }
 
 func (p PermissionHandler) GetPermissionInfo(ctx context.Context, request *api.GetPermissionInfoRequest) (*api.GetPermissionInfoResponse, error) {
@@ -36,7 +42,7 @@ func (p PermissionHandler) GetPermissionInfo(ctx context.Context, request *api.G
 }
 
 func (p PermissionHandler) GetPermissionTree(ctx context.Context, request *api.GetPermissionTreeRequest) (*api.GetPermissionTreeResponse, error) {
-	topLevelPermissions, err := p.svc.RoleService.GetTopLevelPermissions(ctx)
+	topLevelPermissions, err := p.svc.PermissionService.GetTopLevelPermissions(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -89,7 +95,7 @@ func (p PermissionHandler) GetPermissionList(ctx context.Context, request *api.G
 
 func (p PermissionHandler) GetUserPermission(ctx context.Context, request *api.GetUserPermissionRequest) (*api.GetUserPermissionResponse, error) {
 	selfUserId := ctxutil.GetCtxUserID(ctx)
-	permissions, err := p.svc.RoleService.GetPermissionCodesByUid(ctx, selfUserId)
+	permissions, err := p.svc.PermissionService.GetPermissionCodesByUid(ctx, selfUserId)
 	if err != nil {
 		return nil, err
 	}

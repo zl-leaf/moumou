@@ -13,7 +13,7 @@ import (
 	"github.com/moumou/server/biz/conv/factory"
 	"github.com/moumou/server/biz/handler"
 	"github.com/moumou/server/biz/service"
-	"github.com/moumou/server/biz/service/role"
+	"github.com/moumou/server/biz/service/permission"
 	"github.com/moumou/server/biz/service/user"
 	"github.com/moumou/server/gen/dao"
 	"github.com/moumou/server/pkgs/database"
@@ -28,8 +28,8 @@ func wireApp(logger log.Logger, data *conf.Data, dbConfig *database.DbConfig) (*
 	}
 	daoDao := dao.NewDao(db)
 	userService := user.NewUserService(data, daoDao)
-	roleService := role.NewService(daoDao)
-	serviceService := service.NewService(userService, roleService, daoDao)
+	permissionService := permission.NewService(daoDao)
+	serviceService := service.NewService(userService, permissionService, daoDao)
 	iConverter := factory.NewConverter()
 	userHandlerHTTPServer := handler.NewUserHandler(serviceService, iConverter)
 	roleHandlerHTTPServer := handler.NewRoleHandler(serviceService, iConverter)

@@ -1,6 +1,9 @@
 package data
 
-import "github.com/moumou/server/biz/model"
+import (
+	"github.com/bytedance/gg/gslice"
+	"github.com/moumou/server/biz/model"
+)
 
 // PermissionTree 权限树的内存结构，支持通过id查询子节点
 type PermissionTree struct {
@@ -40,7 +43,7 @@ func (p *PermissionTree) GetPermissionById(permissionId int64) *model.Permission
 	return p.permissionMapById[permissionId]
 }
 
-// GetPermissionsFullPathByIds 根据permissionIds获取对应的节点以及其父亲到top层级的所有节点
+// GetPermissionsFullPathByIds 根据permissionIds获取对应的节点的完整路径权限id列表
 func (p *PermissionTree) GetPermissionsFullPathByIds(permissionIds []int64) ([]*model.Permission, bool) {
 	parentPathPermissionMap := make(map[int64]bool, len(permissionIds)*2)
 	var isOk = true
@@ -63,6 +66,28 @@ func (p *PermissionTree) GetPermissionsFullPathByIds(permissionIds []int64) ([]*
 	return result, isOk
 }
 
+// GetChildPermissionFullPathByIds 获取指定节点以及其下所有子节点
+func (p *PermissionTree) GetChildPermissionFullPathByIds(permissionIDs []int64) []*model.Permission {
+	var (
+		result = make([]*model.Permission, 0, len(permissionIDs)*2)
+	)
+	permissionIDMap := gslice.ToMap(permissionIDs, func(permissionID int64) (int64, bool) {
+		return permissionID, true
+	})
+	childrenPathPermissionMap := make(map[int64]bool, len(permissionIDs))
+	for _, permissionId := range permissionIDs {
+		p.markFullChildrenPathByPermissionId(childrenPathPermissionMap, permissionId)
+	}
+	for _, permission := range p.permissions {
+		if childrenPathPermissionMap[permission.Id] || permissionIDMap[permission.Id] {
+			result = append(result, permission)
+		}
+	}
+
+	return result
+}
+
+// markFullParentPathByPermissionId 标记出从当前节点到top节点的所有节点
 func (p *PermissionTree) markFullParentPathByPermissionId(fullPathPermissionMap map[int64]bool, permissionId int64) bool {
 	if fullPathPermissionMap[permissionId] {
 		return true
@@ -78,6 +103,7 @@ func (p *PermissionTree) markFullParentPathByPermissionId(fullPathPermissionMap 
 	return true
 }
 
+// markFullChildrenPathByPermissionId 标记出当前节点（不包括当前节点）往下的所有子节点
 func (p *PermissionTree) markFullChildrenPathByPermissionId(childrenPathPermissionMap map[int64]bool, permissionId int64) {
 	if childrenPathPermissionMap[permissionId] {
 		return

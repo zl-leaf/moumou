@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts" setup>
-import { defineModel, ref } from 'vue';
+import { ref } from 'vue';
 import * as api from '@/api'
 const captchaId = defineModel('captchaId')
 const captchaData = ref('')

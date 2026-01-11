@@ -3,7 +3,7 @@ package internal
 import (
 	"context"
 
-	"github.com/moumou/server/biz/service/role/data"
+	"github.com/moumou/server/biz/service/permission/data"
 	"github.com/moumou/server/gen/dao"
 )
 
