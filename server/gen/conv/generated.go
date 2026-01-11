@@ -6,7 +6,6 @@ package conv
 import (
 	conv "github.com/moumou/server/biz/conv"
 	model "github.com/moumou/server/biz/model"
-	data "github.com/moumou/server/biz/service/user/data"
 	proto "github.com/moumou/server/gen/proto"
 )
 
@@ -30,18 +29,6 @@ func (c *IConverterImpl) ConvertCreateUserRequestDataToBO(source *proto.CreateUs
 		target.Username = source.Username
 		target.Password = source.Password
 	}
-}
-func (c *IConverterImpl) ConvertGetUserListRequestFilter(source *proto.GetUserListRequestFilter) *data.ListUserFilter {
-	var pDataListUserFilter *data.ListUserFilter
-	if source != nil {
-		var dataListUserFilter data.ListUserFilter
-		if (*source).UsernameLike != nil {
-			xstring := *(*source).UsernameLike
-			dataListUserFilter.UsernameLike = &xstring
-		}
-		pDataListUserFilter = &dataListUserFilter
-	}
-	return pDataListUserFilter
 }
 func (c *IConverterImpl) ConvertPermissionListToVO(source []*model.Permission) []*proto.Permission {
 	var pApiPermissionList []*proto.Permission

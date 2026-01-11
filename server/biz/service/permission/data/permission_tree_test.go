@@ -38,6 +38,13 @@ func TestBuildPermissionTree(t *testing.T) {
 	assert.Equal(t, int64(3), permissions1[2].Id)
 	assert.Equal(t, int64(5), permissions1[3].Id)
 
+	// GetChildPermissionFullPathByIds
+	permissions2 := tree.GetChildPermissionFullPathByIds([]int64{1})
+	assert.Len(t, permissions2, 3)
+	assert.Equal(t, int64(1), permissions2[0].Id)
+	assert.Equal(t, int64(3), permissions2[1].Id)
+	assert.Equal(t, int64(4), permissions2[2].Id)
+
 	permissions2, isOk2 := tree.GetPermissionsFullPathByIds([]int64{3, 5, 6})
 	assert.Len(t, permissions2, 4)
 	assert.False(t, isOk2)

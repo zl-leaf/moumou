@@ -2,7 +2,6 @@ package conv
 
 import (
 	"github.com/moumou/server/biz/model"
-	userdata "github.com/moumou/server/biz/service/user/data"
 	api "github.com/moumou/server/gen/proto"
 )
 
@@ -35,7 +34,6 @@ type IConverter interface {
 	ConvertUserListToVO(source []*model.User) []*api.User
 	// goverter:autoMap BaseModel
 	ConvertUserToVO(source *model.User) *api.User
-	ConvertGetUserListRequestFilter(source *api.GetUserListRequestFilter) *userdata.ListUserFilter
 	// goverter:update target
 	ConvertCreateUserRequestDataToBO(source *api.CreateUserRequestData, target *model.User)
 	// goverter:update target

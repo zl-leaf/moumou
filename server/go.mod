@@ -19,6 +19,7 @@ require (
 
 require (
 	filippo.io/edwards25519 v1.1.0 // indirect
+	github.com/bytedance/gg v1.1.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dchest/captcha v1.1.0 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect

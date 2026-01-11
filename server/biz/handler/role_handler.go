@@ -19,7 +19,7 @@ func NewRoleHandler(svc *service.Service, converter conv.IConverter) api.RoleHan
 }
 
 func (r RoleHandler) GetBindUser(ctx context.Context, request *api.GetBindUserRequest) (*api.GetBindUserResponse, error) {
-	userList, err := r.svc.RoleService.GetBindUserByRoleId(ctx, request.GetRoleId())
+	userList, err := r.svc.PermissionService.GetBindUserByRoleId(ctx, request.GetRoleId())
 	if err != nil {
 		return nil, err
 	}
@@ -31,7 +31,7 @@ func (r RoleHandler) GetBindUser(ctx context.Context, request *api.GetBindUserRe
 }
 
 func (r RoleHandler) GetRolePermission(ctx context.Context, request *api.GetRolePermissionRequest) (*api.GetRolePermissionResponse, error) {
-	permissionList, err := r.svc.RoleService.GetPermissionsByRoleId(ctx, request.GetRoleId(), request.GetIsFullPath())
+	permissionList, err := r.svc.PermissionService.GetPermissionsByRoleId(ctx, request.GetRoleId(), request.GetIsFullPath())
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +57,7 @@ func (r RoleHandler) CreateRole(ctx context.Context, request *api.CreateRoleRequ
 }
 
 func (r RoleHandler) DeleteRole(ctx context.Context, request *api.DeleteRoleRequest) (*api.DeleteRoleResponse, error) {
-	err := r.svc.Dao.RoleDao(ctx).Delete(request.Ids)
+	err := r.svc.PermissionService.DeleteRole(ctx, request.Ids)
 	if err != nil {
 		return nil, err
 	}
@@ -103,7 +103,7 @@ func (r RoleHandler) GetRoleInfo(ctx context.Context, request *api.GetRoleInfoRe
 }
 
 func (r RoleHandler) UpdateRolePermission(ctx context.Context, request *api.UpdateRolePermissionRequest) (*api.UpdateRolePermissionResponse, error) {
-	err := r.svc.RoleService.UpdateRolePermission(ctx, request.GetId(), request.GetPermissionIds())
+	err := r.svc.PermissionService.UpdateRolePermission(ctx, request.GetId(), request.GetPermissionIds())
 	if err != nil {
 		return nil, err
 	}
@@ -111,7 +111,7 @@ func (r RoleHandler) UpdateRolePermission(ctx context.Context, request *api.Upda
 }
 
 func (r RoleHandler) UpdateBindUser(ctx context.Context, request *api.UpdateBindUserRequest) (*api.UpdateBindUserResponse, error) {
-	err := r.svc.RoleService.BindUsers(ctx, request.GetRoleId(), request.GetUserIds())
+	err := r.svc.PermissionService.BindUsers(ctx, request.GetRoleId(), request.GetUserIds())
 	if err != nil {
 		return nil, err
 	}
