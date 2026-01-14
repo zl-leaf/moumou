@@ -50,6 +50,7 @@ func main() {
 	}
 	err = db.AutoMigrate(
 		&model.User{}, &model.Role{}, &model.Permission{}, &model.UserRelRole{}, &model.RolePermission{},
+		&model.Article{}, &model.ArticleContent{},
 	)
 	if err != nil {
 		panic(err)

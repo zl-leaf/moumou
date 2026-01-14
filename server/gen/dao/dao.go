@@ -32,6 +32,12 @@ func (d *Dao) RolePermissionDao(ctx context.Context) *rolePermissionDao {
 func (d *Dao) UserRelRoleDao(ctx context.Context) *userRelRoleDao {
 	return newUserRelRoleDao(d.db).WithContext(ctx)
 }
+func (d *Dao) ArticleDao(ctx context.Context) *articleDao {
+	return newArticleDao(d.db).WithContext(ctx)
+}
+func (d *Dao) ArticleContentDao(ctx context.Context) *articleContentDao {
+	return newArticleContentDao(d.db).WithContext(ctx)
+}
 
 func (d *Dao) Transaction(ctx context.Context, fc func(tx *Dao) error, opts ...*sql.TxOptions) (err error) {
 	return d.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {

@@ -38,6 +38,10 @@ type IConverter interface {
 	ConvertCreateUserRequestDataToBO(source *api.CreateUserRequestData, target *model.User)
 	// goverter:update target
 	ConvertUpdateUserRequestDataToBO(source *api.UpdateUserRequestData, target *model.User)
+
+	ConvertArticleListToVO(source []*model.Article) []*api.Article
+	// goverter:autoMap BaseModel
+	ConvertArticleToVO(source *model.Article) *api.Article
 }
 
 func IntToInt32(value int) int32 {
