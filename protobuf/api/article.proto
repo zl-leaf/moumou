@@ -1,0 +1,128 @@
+syntax = "proto3";
+
+package server.api;
+
+import "google/api/annotations.proto";
+
+option go_package = "server/api;api";
+
+service ArticleHandler {
+  rpc GetArticleList(GetArticleListRequest) returns (GetArticleListResponse){
+    option (google.api.http) = {
+      post: "/article/list",
+      body: "*"
+    };
+  };
+
+  rpc GetArticleInfo(GetArticleInfoRequest) returns (GetArticleInfoResponse){
+    option (google.api.http) = {
+      post: "/article/info",
+      body: "*"
+    };
+  };
+
+  rpc CreateArticle(CreateArticleRequest) returns (CreateArticleResponse){
+    option (google.api.http) = {
+      post: "/article/create",
+      body: "*"
+    };
+  };
+
+  rpc UpdateArticle(UpdateArticleRequest) returns (UpdateArticleResponse){
+    option (google.api.http) = {
+      post: "/article/update",
+      body: "*"
+    };
+  };
+
+  rpc DeleteArticle(DeleteArticleRequest) returns (DeleteArticleResponse){
+    option (google.api.http) = {
+      post: "/article/delete",
+      body: "*"
+    };
+  };
+}
+
+message Article {
+  int64 id = 1;
+  string title = 2;
+  string content = 3;
+}
+
+message GetArticleListRequestFilter {
+}
+
+message GetArticleListRequest {
+  int32 currentPage = 1;
+  int32 pageSize = 2;
+  optional GetArticleListRequestFilter filter = 3;
+}
+
+message GetArticleListResponseData {
+  int64 total = 1;
+  repeated Article list = 2;
+}
+
+message GetArticleListResponse {
+  int32 code = 1;
+  string message = 2;
+  optional GetArticleListResponseData data = 3;
+}
+
+message GetArticleInfoRequest {
+  int64 id = 1;
+}
+
+message GetArticleInfoResponse {
+  int32 code = 1;
+  string message = 2;
+  Article data = 3;
+}
+
+message CreateArticleRequestData {
+  string title = 2;
+  string content = 3;
+}
+
+message CreateArticleRequest {
+  CreateArticleRequestData article = 1;
+}
+
+message CreateArticleResponseData {
+  int64 id = 1;
+}
+
+message CreateArticleResponse {
+  int32 code = 1;
+  string message = 2;
+  CreateArticleResponseData data = 3;
+}
+
+message UpdateArticleRequestData {
+  int32 code = 1;
+  string title = 2;
+  string content = 3;
+}
+
+message UpdateArticleRequest {
+  UpdateArticleRequestData article = 1;
+}
+
+message UpdateArticleResponseData {
+  int64 id = 1;
+}
+
+message UpdateArticleResponse {
+  int32 code = 1;
+  string message = 2;
+  UpdateArticleResponseData data = 3;
+}
+
+message DeleteArticleRequest {
+  repeated int64 ids = 1;
+}
+
+message DeleteArticleResponse {
+  int32 code = 1;
+  string message = 2;
+}

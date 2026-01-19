@@ -6,6 +6,96 @@ info:
     title: ""
     version: 0.0.1
 paths:
+    /article/create:
+        post:
+            tags:
+                - ArticleHandler
+            operationId: ArticleHandler_CreateArticle
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/server.api.CreateArticleRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/server.api.CreateArticleResponse'
+    /article/delete:
+        post:
+            tags:
+                - ArticleHandler
+            operationId: ArticleHandler_DeleteArticle
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/server.api.DeleteArticleRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/server.api.DeleteArticleResponse'
+    /article/info:
+        post:
+            tags:
+                - ArticleHandler
+            operationId: ArticleHandler_GetArticleInfo
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/server.api.GetArticleInfoRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/server.api.GetArticleInfoResponse'
+    /article/list:
+        post:
+            tags:
+                - ArticleHandler
+            operationId: ArticleHandler_GetArticleList
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/server.api.GetArticleListRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/server.api.GetArticleListResponse'
+    /article/update:
+        post:
+            tags:
+                - ArticleHandler
+            operationId: ArticleHandler_UpdateArticle
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/server.api.UpdateArticleRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/server.api.UpdateArticleResponse'
     /permission/create:
         post:
             tags:
@@ -440,6 +530,15 @@ paths:
                                 $ref: '#/components/schemas/server.api.UpdateUserResponse'
 components:
     schemas:
+        server.api.Article:
+            type: object
+            properties:
+                id:
+                    type: string
+                title:
+                    type: string
+                content:
+                    type: string
         server.api.CaptchaRequest:
             type: object
             properties: {}
@@ -461,6 +560,33 @@ components:
                 image:
                     type: string
                     format: bytes
+        server.api.CreateArticleRequest:
+            type: object
+            properties:
+                article:
+                    $ref: '#/components/schemas/server.api.CreateArticleRequestData'
+        server.api.CreateArticleRequestData:
+            type: object
+            properties:
+                title:
+                    type: string
+                content:
+                    type: string
+        server.api.CreateArticleResponse:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                message:
+                    type: string
+                data:
+                    $ref: '#/components/schemas/server.api.CreateArticleResponseData'
+        server.api.CreateArticleResponseData:
+            type: object
+            properties:
+                id:
+                    type: string
         server.api.CreatePermissionRequest:
             type: object
             properties:
@@ -545,6 +671,21 @@ components:
             properties:
                 id:
                     type: string
+        server.api.DeleteArticleRequest:
+            type: object
+            properties:
+                ids:
+                    type: array
+                    items:
+                        type: string
+        server.api.DeleteArticleResponse:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                message:
+                    type: string
         server.api.DeletePermissionRequest:
             type: object
             properties:
@@ -575,6 +716,54 @@ components:
                     format: int32
                 message:
                     type: string
+        server.api.GetArticleInfoRequest:
+            type: object
+            properties:
+                id:
+                    type: string
+        server.api.GetArticleInfoResponse:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                message:
+                    type: string
+                data:
+                    $ref: '#/components/schemas/server.api.Article'
+        server.api.GetArticleListRequest:
+            type: object
+            properties:
+                currentPage:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+                filter:
+                    $ref: '#/components/schemas/server.api.GetArticleListRequestFilter'
+        server.api.GetArticleListRequestFilter:
+            type: object
+            properties: {}
+        server.api.GetArticleListResponse:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                message:
+                    type: string
+                data:
+                    $ref: '#/components/schemas/server.api.GetArticleListResponseData'
+        server.api.GetArticleListResponseData:
+            type: object
+            properties:
+                total:
+                    type: string
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/server.api.Article'
         server.api.GetBindUserRequest:
             type: object
             properties:
@@ -892,6 +1081,36 @@ components:
                     type: string
                 data:
                     $ref: '#/components/schemas/server.api.User'
+        server.api.UpdateArticleRequest:
+            type: object
+            properties:
+                article:
+                    $ref: '#/components/schemas/server.api.UpdateArticleRequestData'
+        server.api.UpdateArticleRequestData:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                title:
+                    type: string
+                content:
+                    type: string
+        server.api.UpdateArticleResponse:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                message:
+                    type: string
+                data:
+                    $ref: '#/components/schemas/server.api.UpdateArticleResponseData'
+        server.api.UpdateArticleResponseData:
+            type: object
+            properties:
+                id:
+                    type: string
         server.api.UpdateBindUserRequest:
             type: object
             properties:
@@ -1001,6 +1220,7 @@ components:
                 username:
                     type: string
 tags:
+    - name: ArticleHandler
     - name: PermissionHandler
     - name: RoleHandler
     - name: SecurityHandler
