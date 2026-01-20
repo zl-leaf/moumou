@@ -41,7 +41,11 @@ type IConverter interface {
 
 	ConvertArticleListToVO(source []*model.Article) []*api.Article
 	// goverter:autoMap BaseModel
+	// goverter:map ArticleContent.Content Content
 	ConvertArticleToVO(source *model.Article) *api.Article
+	// goverter:update target
+	// goverter:map . ArticleContent
+	ConvertCreateArticleRequestDataToBO(source *api.CreateArticleRequestData, target *model.Article)
 }
 
 func IntToInt32(value int) int32 {

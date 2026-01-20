@@ -278,3 +278,8 @@ func (d *articleDao) Save(record *model.Article) error {
 func (d *articleDao) Delete(conds ...interface{}) error {
 	return d.DB.Delete(&model.Article{}, conds...).Error
 }
+
+func (d *articleDao) Preload(query string, args ...interface{}) *articleDao {
+	d.DB = d.DB.Preload(query, args)
+	return d
+}

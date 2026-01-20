@@ -3,6 +3,8 @@ package handler
 import (
 	"context"
 
+	"github.com/moumou/server/biz/model"
+
 	"github.com/moumou/server/biz/conv"
 	"github.com/moumou/server/biz/service"
 	pb "github.com/moumou/server/gen/proto"
@@ -30,10 +32,27 @@ func (s *ArticleHandlerService) GetArticleList(ctx context.Context, req *pb.GetA
 	}, nil
 }
 func (s *ArticleHandlerService) GetArticleInfo(ctx context.Context, req *pb.GetArticleInfoRequest) (*pb.GetArticleInfoResponse, error) {
-	return &pb.GetArticleInfoResponse{}, nil
+	article, err := s.svc.Dao.ArticleDao(ctx).Preload("ArticleContent").GetByID(req.GetId())
+	if err != nil {
+		return nil, err
+	}
+
+	return &pb.GetArticleInfoResponse{
+		Data: s.converter.ConvertArticleToVO(article),
+	}, nil
 }
 func (s *ArticleHandlerService) CreateArticle(ctx context.Context, req *pb.CreateArticleRequest) (*pb.CreateArticleResponse, error) {
-	return &pb.CreateArticleResponse{}, nil
+	article := &model.Article{}
+	s.converter.ConvertCreateArticleRequestDataToBO(req.GetArticle(), article)
+	err := s.svc.Dao.ArticleDao(ctx).Create(article)
+	if err != nil {
+		return nil, err
+	}
+	return &pb.CreateArticleResponse{
+		Data: &pb.CreateArticleResponseData{
+			Id: article.Id,
+		},
+	}, nil
 }
 func (s *ArticleHandlerService) UpdateArticle(ctx context.Context, req *pb.UpdateArticleRequest) (*pb.UpdateArticleResponse, error) {
 	return &pb.UpdateArticleResponse{}, nil

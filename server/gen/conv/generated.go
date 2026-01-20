@@ -27,9 +27,16 @@ func (c *IConverterImpl) ConvertArticleToVO(source *model.Article) *proto.Articl
 		var apiArticle proto.Article
 		apiArticle.Id = (*source).BaseModel.Id
 		apiArticle.Title = (*source).Title
+		apiArticle.Content = (*source).ArticleContent.Content
 		pApiArticle = &apiArticle
 	}
 	return pApiArticle
+}
+func (c *IConverterImpl) ConvertCreateArticleRequestDataToBO(source *proto.CreateArticleRequestData, target *model.Article) {
+	if source != nil {
+		target.Title = source.Title
+		target.ArticleContent.Content = source.Content
+	}
 }
 func (c *IConverterImpl) ConvertCreatePermissionRequestDataToBO(source *proto.CreatePermissionRequestData, target *model.Permission) {
 	if source != nil {
