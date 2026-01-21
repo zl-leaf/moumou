@@ -32,7 +32,7 @@ func (s *ArticleHandlerService) GetArticleList(ctx context.Context, req *pb.GetA
 	}, nil
 }
 func (s *ArticleHandlerService) GetArticleInfo(ctx context.Context, req *pb.GetArticleInfoRequest) (*pb.GetArticleInfoResponse, error) {
-	article, err := s.svc.Dao.ArticleDao(ctx).Preload("ArticleContent").GetByID(req.GetId())
+	article, err := s.svc.Dao.ArticleDao(ctx).PreloadArticleContent().GetByID(req.GetId())
 	if err != nil {
 		return nil, err
 	}
