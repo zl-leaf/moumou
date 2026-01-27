@@ -1,7 +1,7 @@
 <template>
     <ContentPage>
         <template #content>
-            <a-form :model="formState" :label-col="{ span: 4 }" :wrapper-col="{ span: 12 }">
+            <a-form :model="formState" :label-col="{ span: 6 }" :wrapper-col="{ span: 8 }">
                 <a-form-item label="ID">
                     <a-input v-model:value="formState.id" disabled />
                 </a-form-item>
@@ -10,14 +10,7 @@
                     <a-input v-model:value="formState.title" />
                 </a-form-item>
 
-                <a-form-item label="内容">
-                    <MarkdownEditor
-                        v-model:value="formState.content"
-                        :rows="10"
-                    />
-                </a-form-item>
-
-                <a-form-item :wrapper-col="{ span: 12, offset: 4 }">
+                <a-form-item :wrapper-col="{ span: 8, offset: 6 }">
                     <a-button
                         type="primary"
                         @click="onSubmit"
@@ -29,6 +22,13 @@
                     <a-button style="margin-left: 10px" @click="$router.back()">
                         返回
                     </a-button>
+                </a-form-item>
+
+                <a-form-item :wrapper-col="{ span: 20, offset: 2 }">
+                    <MarkdownEditor
+                        v-model:value="formState.content"
+                        :rows="20"
+                    />
                 </a-form-item>
             </a-form>
         </template>
