@@ -2,6 +2,7 @@ package mw
 
 import (
 	"context"
+	"time"
 
 	"github.com/go-kratos/kratos/v2/errors"
 	"github.com/go-kratos/kratos/v2/middleware"
@@ -18,7 +19,11 @@ func JWTServer(confData *conf.Data) middleware.Middleware {
 	return jwt.Server(func(token *jwtv5.Token) (interface{}, error) {
 		return []byte(confData.SecurityConfig.JWTKey), nil
 	}, jwt.WithClaims(func() jwtv5.Claims {
-		return &userdata.CustomClaims{}
+		claims := &userdata.CustomClaims{}
+		if confData.SecurityConfig.Exp > 0 {
+			claims.ExpiresAt = jwtv5.NewNumericDate(time.Now().Add(time.Duration(confData.SecurityConfig.Exp) * time.Second))
+		}
+		return claims
 	}))
 }
 

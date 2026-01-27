@@ -6,7 +6,6 @@ import (
 
 	"github.com/moumou/server/biz/conf"
 	"github.com/moumou/server/biz/model"
-	"github.com/moumou/server/biz/service/user/data"
 	"github.com/moumou/server/biz/service/user/internal"
 	"github.com/moumou/server/biz/util/ctxutil"
 	"github.com/moumou/server/gen/dao"
@@ -58,14 +57,6 @@ func (svc *Service) VerifyToken(ctx context.Context) (int64, error) {
 func (svc *Service) Self(ctx context.Context) (*model.User, error) {
 	userId := ctxutil.GetCtxUserID(ctx)
 	return svc.db.UserDao(ctx).GetByID(userId)
-}
-
-func (svc *Service) GetUserList(ctx context.Context, filter *data.ListUserFilter, currentPage, pageSize int) ([]*model.User, int64, error) {
-	query := svc.db.UserDao(ctx)
-	if filter.UsernameLike != nil {
-		query = query.WhereUsernameLike(*filter.UsernameLike)
-	}
-	return query.Page(currentPage, pageSize).Find()
 }
 
 func (svc *Service) UpdateUser(ctx context.Context, userInfo *model.User) error {

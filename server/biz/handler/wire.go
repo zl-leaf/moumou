@@ -10,6 +10,7 @@ var ProviderSet = wire.NewSet(
 	NewRoleHandler,
 	NewSecurityHandler,
 	NewPermissionHandler,
+	NewArticleHandlerService,
 
 	factory.NewConverter,
 )

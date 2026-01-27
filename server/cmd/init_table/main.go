@@ -10,7 +10,7 @@ import (
 	"github.com/go-kratos/kratos/v2/config/file"
 	"github.com/moumou/server/biz/conf"
 	"github.com/moumou/server/biz/model"
-	"github.com/moumou/server/biz/service/role"
+	"github.com/moumou/server/biz/service/permission"
 	"github.com/moumou/server/biz/service/user"
 	"github.com/moumou/server/gen/dao"
 	"github.com/moumou/server/pkgs/database"
@@ -50,6 +50,7 @@ func main() {
 	}
 	err = db.AutoMigrate(
 		&model.User{}, &model.Role{}, &model.Permission{}, &model.UserRelRole{}, &model.RolePermission{},
+		&model.Article{}, &model.ArticleContent{},
 	)
 	if err != nil {
 		panic(err)
@@ -58,9 +59,9 @@ func main() {
 	ctx := context.Background()
 	dbDao := dao.NewDao(db)
 	initUser(ctx, user.NewUserService(&cnf, dbDao), dbDao)
-	initRole(ctx, role.NewService(dbDao), dbDao)
+	initRole(ctx, permission.NewService(dbDao), dbDao)
 	initPermission(ctx, db)
-	initRolePermission(ctx, role.NewService(dbDao), dbDao)
+	initRolePermission(ctx, permission.NewService(dbDao), dbDao)
 }
 
 func initUser(ctx context.Context, userService *user.Service, dao *dao.Dao) {
@@ -162,7 +163,7 @@ func initPermission(ctx context.Context, db *gorm.DB) {
 	}).Execute(ctx)
 }
 
-func initRole(ctx context.Context, roleService *role.Service, dao *dao.Dao) {
+func initRole(ctx context.Context, roleService *permission.Service, dao *dao.Dao) {
 	// 创建管理员和普通用户角色
 	_, err := dao.RoleDao(ctx).WhereNameEq("管理员").First()
 	if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -175,7 +176,7 @@ func initRole(ctx context.Context, roleService *role.Service, dao *dao.Dao) {
 	}
 }
 
-func initRolePermission(ctx context.Context, roleService *role.Service, dao *dao.Dao) {
+func initRolePermission(ctx context.Context, roleService *permission.Service, dao *dao.Dao) {
 	allPermissions, _, _ := dao.PermissionDao(ctx).Find()
 
 	rootUser, err := dao.UserDao(ctx).WhereUsernameEq("root").First()

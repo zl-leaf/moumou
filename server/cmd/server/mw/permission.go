@@ -37,7 +37,7 @@ func validAPIPermission(ctx context.Context, svc *service.Service) error {
 		return err
 	}
 
-	permissions, err := svc.RoleService.GetPermissionCodesByUid(ctx, userInfo.Id)
+	permissions, err := svc.PermissionService.GetPermissionCodesByUid(ctx, userInfo.Id)
 	if err != nil {
 		return err
 	}

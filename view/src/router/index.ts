@@ -140,6 +140,38 @@ const router = createRouter({
                   },
                 }
               ]
+            },
+            {
+              path: '/manage/article',
+              meta: {
+                title: '文章管理',
+                isMenu: true,
+                page: 'article_list',
+                permission: 'ManageArticleRead',
+              },
+              children: [
+                {
+                  path: '',
+                  name: 'article_list',
+                  component: () => import('@/views/manage/article/List.vue'),
+                },
+                {
+                  path: 'add',
+                  name: 'article_add',
+                  component: () => import('@/views/manage/article/Add.vue'),
+                  meta: {
+                    title: '添加文章',
+                  },
+                },
+                {
+                  path: 'info',
+                  name: 'article_info',
+                  component: () => import('@/views/manage/article/Info.vue'),
+                  meta: {
+                    title: '文章详情',
+                  },
+                }
+              ]
             }
           ]
         },

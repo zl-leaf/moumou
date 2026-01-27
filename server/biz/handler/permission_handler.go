@@ -23,7 +23,7 @@ func NewPermissionHandler(
 }
 
 func (p PermissionHandler) DeletePermission(ctx context.Context, request *api.DeletePermissionRequest) (*api.DeletePermissionResponse, error) {
-	err := p.svc.Dao.PermissionDao(ctx).Delete(request.Ids)
+	err := p.svc.PermissionService.DeletePermission(ctx, request.GetIds())
 	if err != nil {
 		return nil, err
 	}
@@ -42,7 +42,7 @@ func (p PermissionHandler) GetPermissionInfo(ctx context.Context, request *api.G
 }
 
 func (p PermissionHandler) GetPermissionTree(ctx context.Context, request *api.GetPermissionTreeRequest) (*api.GetPermissionTreeResponse, error) {
-	topLevelPermissions, err := p.svc.RoleService.GetTopLevelPermissions(ctx)
+	topLevelPermissions, err := p.svc.PermissionService.GetTopLevelPermissions(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -95,7 +95,7 @@ func (p PermissionHandler) GetPermissionList(ctx context.Context, request *api.G
 
 func (p PermissionHandler) GetUserPermission(ctx context.Context, request *api.GetUserPermissionRequest) (*api.GetUserPermissionResponse, error) {
 	selfUserId := ctxutil.GetCtxUserID(ctx)
-	permissions, err := p.svc.RoleService.GetPermissionCodesByUid(ctx, selfUserId)
+	permissions, err := p.svc.PermissionService.GetPermissionCodesByUid(ctx, selfUserId)
 	if err != nil {
 		return nil, err
 	}
