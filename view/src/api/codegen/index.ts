@@ -7,9 +7,14 @@ export { CancelablePromise, CancelError } from './core/CancelablePromise';
 export { OpenAPI } from './core/OpenAPI';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
+export type { server_api_Article } from './models/server_api_Article';
 export type { server_api_CaptchaRequest } from './models/server_api_CaptchaRequest';
 export type { server_api_CaptchaResponse } from './models/server_api_CaptchaResponse';
 export type { server_api_CaptchaResponseData } from './models/server_api_CaptchaResponseData';
+export type { server_api_CreateArticleRequest } from './models/server_api_CreateArticleRequest';
+export type { server_api_CreateArticleRequestData } from './models/server_api_CreateArticleRequestData';
+export type { server_api_CreateArticleResponse } from './models/server_api_CreateArticleResponse';
+export type { server_api_CreateArticleResponseData } from './models/server_api_CreateArticleResponseData';
 export type { server_api_CreatePermissionRequest } from './models/server_api_CreatePermissionRequest';
 export type { server_api_CreatePermissionRequestData } from './models/server_api_CreatePermissionRequestData';
 export type { server_api_CreatePermissionResponse } from './models/server_api_CreatePermissionResponse';
@@ -22,10 +27,18 @@ export type { server_api_CreateUserRequest } from './models/server_api_CreateUse
 export type { server_api_CreateUserRequestData } from './models/server_api_CreateUserRequestData';
 export type { server_api_CreateUserResponse } from './models/server_api_CreateUserResponse';
 export type { server_api_CreateUserResponseData } from './models/server_api_CreateUserResponseData';
+export type { server_api_DeleteArticleRequest } from './models/server_api_DeleteArticleRequest';
+export type { server_api_DeleteArticleResponse } from './models/server_api_DeleteArticleResponse';
 export type { server_api_DeletePermissionRequest } from './models/server_api_DeletePermissionRequest';
 export type { server_api_DeletePermissionResponse } from './models/server_api_DeletePermissionResponse';
 export type { server_api_DeleteRoleRequest } from './models/server_api_DeleteRoleRequest';
 export type { server_api_DeleteRoleResponse } from './models/server_api_DeleteRoleResponse';
+export type { server_api_GetArticleInfoRequest } from './models/server_api_GetArticleInfoRequest';
+export type { server_api_GetArticleInfoResponse } from './models/server_api_GetArticleInfoResponse';
+export type { server_api_GetArticleListRequest } from './models/server_api_GetArticleListRequest';
+export type { server_api_GetArticleListRequestFilter } from './models/server_api_GetArticleListRequestFilter';
+export type { server_api_GetArticleListResponse } from './models/server_api_GetArticleListResponse';
+export type { server_api_GetArticleListResponseData } from './models/server_api_GetArticleListResponseData';
 export type { server_api_GetBindUserRequest } from './models/server_api_GetBindUserRequest';
 export type { server_api_GetBindUserResponse } from './models/server_api_GetBindUserResponse';
 export type { server_api_GetBindUserResponseData } from './models/server_api_GetBindUserResponseData';
@@ -66,6 +79,9 @@ export type { server_api_PermissionTreeNode } from './models/server_api_Permissi
 export type { server_api_Role } from './models/server_api_Role';
 export type { server_api_SelfRequest } from './models/server_api_SelfRequest';
 export type { server_api_SelfResponse } from './models/server_api_SelfResponse';
+export type { server_api_UpdateArticleRequest } from './models/server_api_UpdateArticleRequest';
+export type { server_api_UpdateArticleRequestData } from './models/server_api_UpdateArticleRequestData';
+export type { server_api_UpdateArticleResponse } from './models/server_api_UpdateArticleResponse';
 export type { server_api_UpdateBindUserRequest } from './models/server_api_UpdateBindUserRequest';
 export type { server_api_UpdateBindUserResponse } from './models/server_api_UpdateBindUserResponse';
 export type { server_api_UpdatePermissionRequest } from './models/server_api_UpdatePermissionRequest';
@@ -81,6 +97,7 @@ export type { server_api_UpdateUserRequestData } from './models/server_api_Updat
 export type { server_api_UpdateUserResponse } from './models/server_api_UpdateUserResponse';
 export type { server_api_User } from './models/server_api_User';
 
+export { ArticleHandlerService } from './services/ArticleHandlerService';
 export { PermissionHandlerService } from './services/PermissionHandlerService';
 export { RoleHandlerService } from './services/RoleHandlerService';
 export { SecurityHandlerService } from './services/SecurityHandlerService';
