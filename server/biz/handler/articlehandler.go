@@ -55,8 +55,26 @@ func (s *ArticleHandlerService) CreateArticle(ctx context.Context, req *pb.Creat
 	}, nil
 }
 func (s *ArticleHandlerService) UpdateArticle(ctx context.Context, req *pb.UpdateArticleRequest) (*pb.UpdateArticleResponse, error) {
+	article, err := s.svc.Dao.ArticleDao(ctx).PreloadArticleContent().GetByID(req.GetArticle().GetId())
+	if err != nil {
+		return nil, err
+	}
+	s.converter.ConvertUpdateArticleRequestDataToBO(req.GetArticle(), article)
+	err = s.svc.Dao.ArticleDao(ctx).SaveFullAssociations(article)
+	if err != nil {
+		return nil, err
+	}
+
 	return &pb.UpdateArticleResponse{}, nil
 }
 func (s *ArticleHandlerService) DeleteArticle(ctx context.Context, req *pb.DeleteArticleRequest) (*pb.DeleteArticleResponse, error) {
+	err := s.svc.Dao.ArticleDao(ctx).WhereIdIn(req.GetIds()).Delete()
+	if err != nil {
+		return nil, err
+	}
+	err = s.svc.Dao.ArticleContentDao(ctx).WhereArticleIDIn(req.GetIds()).Delete()
+	if err != nil {
+		return nil, err
+	}
 	return &pb.DeleteArticleResponse{}, nil
 }

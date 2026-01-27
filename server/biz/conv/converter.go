@@ -46,6 +46,9 @@ type IConverter interface {
 	// goverter:update target
 	// goverter:map . ArticleContent
 	ConvertCreateArticleRequestDataToBO(source *api.CreateArticleRequestData, target *model.Article)
+	// goverter:update target
+	// goverter:map . ArticleContent
+	ConvertUpdateArticleRequestDataToBO(source *api.UpdateArticleRequestData, target *model.Article)
 }
 
 func IntToInt32(value int) int32 {

@@ -1089,9 +1089,8 @@ components:
         server.api.UpdateArticleRequestData:
             type: object
             properties:
-                code:
-                    type: integer
-                    format: int32
+                id:
+                    type: string
                 title:
                     type: string
                 content:
@@ -1103,13 +1102,6 @@ components:
                     type: integer
                     format: int32
                 message:
-                    type: string
-                data:
-                    $ref: '#/components/schemas/server.api.UpdateArticleResponseData'
-        server.api.UpdateArticleResponseData:
-            type: object
-            properties:
-                id:
                     type: string
         server.api.UpdateBindUserRequest:
             type: object

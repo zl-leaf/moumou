@@ -99,7 +99,7 @@ message CreateArticleResponse {
 }
 
 message UpdateArticleRequestData {
-  int32 code = 1;
+  int64 id = 1;
   string title = 2;
   string content = 3;
 }
@@ -108,14 +108,9 @@ message UpdateArticleRequest {
   UpdateArticleRequestData article = 1;
 }
 
-message UpdateArticleResponseData {
-  int64 id = 1;
-}
-
 message UpdateArticleResponse {
   int32 code = 1;
   string message = 2;
-  UpdateArticleResponseData data = 3;
 }
 
 message DeleteArticleRequest {

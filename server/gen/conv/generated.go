@@ -124,6 +124,12 @@ func (c *IConverterImpl) ConvertRoleToVO(source *model.Role) *proto.Role {
 	}
 	return pApiRole
 }
+func (c *IConverterImpl) ConvertUpdateArticleRequestDataToBO(source *proto.UpdateArticleRequestData, target *model.Article) {
+	if source != nil {
+		target.Title = source.Title
+		target.ArticleContent.Content = source.Content
+	}
+}
 func (c *IConverterImpl) ConvertUpdatePermissionRequestDataToBO(source *proto.UpdatePermissionRequestData, target *model.Permission) {
 	if source != nil {
 		target.Name = source.Name

@@ -280,6 +280,10 @@ func (d *articleDao) Save(record *model.Article) error {
 	return d.DB.Save(record).Error
 }
 
+func (d *articleDao) SaveFullAssociations(record *model.Article) error {
+	return d.DB.Session(&gorm.Session{FullSaveAssociations: true}).Save(record).Error
+}
+
 func (d *articleDao) Delete(conds ...interface{}) error {
 	return d.DB.Delete(&model.Article{}, conds...).Error
 }
