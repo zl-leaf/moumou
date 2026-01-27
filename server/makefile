@@ -10,7 +10,7 @@ init:
 	go install github.com/google/gnostic/cmd/protoc-gen-openapi@latest
 	go install github.com/google/wire/cmd/wire@latest
 
-.PHONY: config
+.PHONY: wire
 wire:
 	wire ./cmd/server
 

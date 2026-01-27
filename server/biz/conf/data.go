@@ -18,4 +18,5 @@ type ServerConfig struct {
 // SecurityConfig 获取加解密的配置
 type SecurityConfig struct {
 	JWTKey string `json:"jwt_key"`
+	Exp    int    `json:"exp"`
 }

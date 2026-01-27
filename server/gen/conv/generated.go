@@ -11,6 +11,33 @@ import (
 
 type IConverterImpl struct{}
 
+func (c *IConverterImpl) ConvertArticleListToVO(source []*model.Article) []*proto.Article {
+	var pApiArticleList []*proto.Article
+	if source != nil {
+		pApiArticleList = make([]*proto.Article, len(source))
+		for i := 0; i < len(source); i++ {
+			pApiArticleList[i] = c.ConvertArticleToVO(source[i])
+		}
+	}
+	return pApiArticleList
+}
+func (c *IConverterImpl) ConvertArticleToVO(source *model.Article) *proto.Article {
+	var pApiArticle *proto.Article
+	if source != nil {
+		var apiArticle proto.Article
+		apiArticle.Id = (*source).BaseModel.Id
+		apiArticle.Title = (*source).Title
+		apiArticle.Content = (*source).ArticleContent.Content
+		pApiArticle = &apiArticle
+	}
+	return pApiArticle
+}
+func (c *IConverterImpl) ConvertCreateArticleRequestDataToBO(source *proto.CreateArticleRequestData, target *model.Article) {
+	if source != nil {
+		target.Title = source.Title
+		target.ArticleContent.Content = source.Content
+	}
+}
 func (c *IConverterImpl) ConvertCreatePermissionRequestDataToBO(source *proto.CreatePermissionRequestData, target *model.Permission) {
 	if source != nil {
 		target.Name = source.Name
@@ -96,6 +123,12 @@ func (c *IConverterImpl) ConvertRoleToVO(source *model.Role) *proto.Role {
 		pApiRole = &apiRole
 	}
 	return pApiRole
+}
+func (c *IConverterImpl) ConvertUpdateArticleRequestDataToBO(source *proto.UpdateArticleRequestData, target *model.Article) {
+	if source != nil {
+		target.Title = source.Title
+		target.ArticleContent.Content = source.Content
+	}
 }
 func (c *IConverterImpl) ConvertUpdatePermissionRequestDataToBO(source *proto.UpdatePermissionRequestData, target *model.Permission) {
 	if source != nil {

@@ -25,6 +25,7 @@ func NewHTTPServer(
 	roleHandler api.RoleHandlerHTTPServer,
 	securityHandler api.SecurityHandlerHTTPServer,
 	permissionHandler api.PermissionHandlerHTTPServer,
+	articleHandler api.ArticleHandlerHTTPServer,
 	svc *service.Service,
 ) *http.Server {
 	var opts = []http.ServerOption{
@@ -60,6 +61,7 @@ func NewHTTPServer(
 	api.RegisterRoleHandlerHTTPServer(srv, roleHandler)
 	api.RegisterSecurityHandlerHTTPServer(srv, securityHandler)
 	api.RegisterPermissionHandlerHTTPServer(srv, permissionHandler)
+	api.RegisterArticleHandlerHTTPServer(srv, articleHandler)
 
 	return srv
 }
