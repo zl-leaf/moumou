@@ -16,7 +16,7 @@ const router = createRouter({
         {
           path: '/',
           name: 'dashboard',
-          component:() => import('@/views/AboutView.vue'),
+          component: () => import('@/views/Dashboard.vue'),
           meta: {
             title: '仪表盘',
             isMenu: true,
