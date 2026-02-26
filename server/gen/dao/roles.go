@@ -275,6 +275,10 @@ func (d *roleDao) Save(record *model.Role) error {
 	return d.DB.Save(record).Error
 }
 
+func (d *roleDao) SaveFullAssociations(record *model.Role) error {
+	return d.DB.Session(&gorm.Session{FullSaveAssociations: true}).Save(record).Error
+}
+
 func (d *roleDao) Delete(conds ...interface{}) error {
 	return d.DB.Delete(&model.Role{}, conds...).Error
 }

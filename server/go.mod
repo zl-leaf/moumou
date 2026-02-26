@@ -11,7 +11,7 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/google/wire v0.6.0
 	github.com/stretchr/testify v1.11.1
-	github.com/zl-leaf/gorm-dao v0.0.2
+	github.com/zl-leaf/gorm-dao v0.0.3
 	go.opentelemetry.io/otel/sdk v1.16.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20230629202037-9506855d4529
 	google.golang.org/protobuf v1.33.0

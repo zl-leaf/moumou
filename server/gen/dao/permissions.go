@@ -416,6 +416,10 @@ func (d *permissionDao) Save(record *model.Permission) error {
 	return d.DB.Save(record).Error
 }
 
+func (d *permissionDao) SaveFullAssociations(record *model.Permission) error {
+	return d.DB.Session(&gorm.Session{FullSaveAssociations: true}).Save(record).Error
+}
+
 func (d *permissionDao) Delete(conds ...interface{}) error {
 	return d.DB.Delete(&model.Permission{}, conds...).Error
 }

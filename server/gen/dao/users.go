@@ -315,6 +315,10 @@ func (d *userDao) Save(record *model.User) error {
 	return d.DB.Save(record).Error
 }
 
+func (d *userDao) SaveFullAssociations(record *model.User) error {
+	return d.DB.Session(&gorm.Session{FullSaveAssociations: true}).Save(record).Error
+}
+
 func (d *userDao) Delete(conds ...interface{}) error {
 	return d.DB.Delete(&model.User{}, conds...).Error
 }
