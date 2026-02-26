@@ -1,6 +1,7 @@
 <template>
     <ContentPage>
         <template #content>
+            <a-spin :spinning="loading">
             <a-form :model="formState" :label-col="{ span: 6 }" :wrapper-col="{ span: 8 }">
                 <a-form-item label="名称">
                     <a-input v-model:value="formState.name" />
@@ -10,9 +11,9 @@
                     <a-button style="margin-left: 10px" @click="$router.back()">返回</a-button>
                 </a-form-item>
             </a-form>
+            </a-spin>
         </template>
     </ContentPage>
-    
 </template>
 
 <script setup lang="ts">
@@ -39,8 +40,6 @@ export default defineComponent({
         initData: async function(dataId: string) {
             this.loading = true
             try {
-
-                // 加载详情数据
                 let infoResponse = await api.RoleHandlerService.roleHandlerGetRoleInfo({
                     id: this.dataId,
                 })
@@ -48,10 +47,10 @@ export default defineComponent({
                     throw new Error(infoResponse.message)
                 }
                 this.formState = infoResponse.data ?? {}
-                this.loading = false
-
             } catch (err) {
                 message.error('网络错误')
+            } finally {
+                this.loading = false
             }
         },
         onSubmit: async function() {

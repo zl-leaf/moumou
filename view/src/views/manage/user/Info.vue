@@ -1,6 +1,7 @@
 <template>
     <ContentPage>
         <template #content>
+            <a-spin :spinning="loading">
             <a-form :model="formState" :label-col="{ span: 6 }" :wrapper-col="{ span: 8 }">
             <a-form-item label="账号">
                 <a-input v-model:value="formState.username" />
@@ -10,6 +11,7 @@
                 <a-button style="margin-left: 10px" @click="$router.back()">返回</a-button>
             </a-form-item>
         </a-form>
+            </a-spin>
         </template>
     </ContentPage>
     
@@ -45,9 +47,10 @@ export default defineComponent({
                     throw new Error(infoResponse.message)
                 }
                 this.formState = infoResponse.data ?? {}
-                this.loading = false
             } catch(err) {
                 message.error('网络错误')
+            } finally {
+                this.loading = false
             }
         },
         onSubmit: async function() {

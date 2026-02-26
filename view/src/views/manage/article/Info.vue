@@ -1,6 +1,7 @@
 <template>
     <ContentPage>
         <template #content>
+            <a-spin :spinning="loading">
             <a-form :model="formState" :label-col="{ span: 6 }" :wrapper-col="{ span: 8 }">
                 <a-form-item label="ID">
                     <a-input v-model:value="formState.id" disabled />
@@ -31,6 +32,7 @@
                     />
                 </a-form-item>
             </a-form>
+            </a-spin>
         </template>
     </ContentPage>
 </template>

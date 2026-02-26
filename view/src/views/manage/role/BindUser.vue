@@ -109,9 +109,10 @@ export default defineComponent({
                     })
                 })
 
-                this.loading = false
             } catch (err) {
                 message.error("网络错误")
+            } finally {
+                this.loading = false
             }
         },
         onSubmit: async function() {
