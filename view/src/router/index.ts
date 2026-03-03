@@ -9,6 +9,14 @@ const router = createRouter({
       component: () => import('@/views/LoginView.vue')
     },
     {
+      path: '/init',
+      name: 'system_initialize',
+      component: () => import('@/views/SystemInitialize.vue'),
+      meta: {
+        title: '系统初始化',
+      }
+    },
+    {
       path: '/layout',
       name: 'admin_layout',
       component: () => import('@/views/layout/AdminLayout.vue'),

@@ -15,14 +15,13 @@
       <a-layout-content style="background-color: #fff;margin: 10px 16px">
         <router-view></router-view>
       </a-layout-content>
-      <a-layout-footer style="text-align: center">
-        © {{ new Date().getFullYear() }} Moumou Admin · 内部管理系统
-      </a-layout-footer>
+      <AppFooter />
     </a-layout>
   </a-layout>
 </template>
 
 <script setup lang="ts">
+import AppFooter from '@/components/AppFooter.vue'
 import SiderComponent from '@/components/SiderComponent.vue'
 import BreadcrumbComponent from '@/components/BreadcrumbComponent.vue'
 import UserInfoComponent from '@/components/UserInfoComponent.vue'

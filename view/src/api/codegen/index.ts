@@ -69,6 +69,8 @@ export type { server_api_GetUserListResponseData } from './models/server_api_Get
 export type { server_api_GetUserPermissionRequest } from './models/server_api_GetUserPermissionRequest';
 export type { server_api_GetUserPermissionResponse } from './models/server_api_GetUserPermissionResponse';
 export type { server_api_GetUserPermissionResponseData } from './models/server_api_GetUserPermissionResponseData';
+export type { server_api_InitializeRequest } from './models/server_api_InitializeRequest';
+export type { server_api_InitializeResponse } from './models/server_api_InitializeResponse';
 export type { server_api_LoginRequest } from './models/server_api_LoginRequest';
 export type { server_api_LoginResponse } from './models/server_api_LoginResponse';
 export type { server_api_LoginResponseData } from './models/server_api_LoginResponseData';
@@ -101,4 +103,5 @@ export { ArticleHandlerService } from './services/ArticleHandlerService';
 export { PermissionHandlerService } from './services/PermissionHandlerService';
 export { RoleHandlerService } from './services/RoleHandlerService';
 export { SecurityHandlerService } from './services/SecurityHandlerService';
+export { SystemHandlerService } from './services/SystemHandlerService';
 export { UserHandlerService } from './services/UserHandlerService';

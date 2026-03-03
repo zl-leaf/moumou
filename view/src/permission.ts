@@ -1,7 +1,7 @@
 import router from '@/router'
 import {useUserStore} from '@/pinia/modules/user'
 
-const whiteList = ['login']
+const whiteList = ['login', 'system_initialize']
 
 router.beforeEach(async(to, from) => {
     console.log('permission from', from)

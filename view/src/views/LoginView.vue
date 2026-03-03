@@ -24,13 +24,12 @@
                 </div>
             </div>
         </a-layout-content>
-        <a-layout-footer class="login-footer">
-            © {{ new Date().getFullYear() }} Moumou Admin · 内部管理系统
-        </a-layout-footer>
+        <AppFooter minimal />
     </a-layout>
 </template>
 
 <script setup lang="ts">
+import AppFooter from '@/components/AppFooter.vue'
 import LoginComponent from '@/components/LoginComponent.vue'
 import { useUserStore } from '@/pinia/modules/user'
 import router from '@/router/index'
@@ -140,14 +139,6 @@ const onLoginSuccess = function (ret: any) {
     margin-top: 6px;
     font-size: 13px;
     color: #8c8c8c;
-}
-
-.login-footer {
-    text-align: center;
-    color: #bfbfbf;
-    font-size: 12px;
-    padding: 16px 0 24px;
-    background: transparent;
 }
 
 @media (max-width: 960px) {
