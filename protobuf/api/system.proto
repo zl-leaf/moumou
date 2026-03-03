@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package server.api;
+
+import "google/api/annotations.proto";
+
+option go_package = "server/api;api";
+
+service SystemHandler {
+  rpc Initialize(InitializeRequest) returns (InitializeResponse) {
+    option (google.api.http) = {
+      post: "/system/initialize",
+      body: "*"
+    };
+  };
+}
+
+message InitializeRequest {
+  string username = 1;
+  string password = 2;
+  string adminUsername = 3;
+  string adminPassword = 4;
+}
+
+message InitializeResponse {
+  int32 code = 1;
+  string message = 2;
+}

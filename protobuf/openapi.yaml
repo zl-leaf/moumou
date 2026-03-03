@@ -456,6 +456,24 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/server.api.SelfResponse'
+    /system/initialize:
+        post:
+            tags:
+                - SystemHandler
+            operationId: SystemHandler_Initialize
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/server.api.InitializeRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/server.api.InitializeResponse'
     /user/create:
         post:
             tags:
@@ -990,6 +1008,25 @@ components:
                     type: array
                     items:
                         type: string
+        server.api.InitializeRequest:
+            type: object
+            properties:
+                username:
+                    type: string
+                password:
+                    type: string
+                adminUsername:
+                    type: string
+                adminPassword:
+                    type: string
+        server.api.InitializeResponse:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                message:
+                    type: string
         server.api.LoginRequest:
             type: object
             properties:
@@ -1216,4 +1253,5 @@ tags:
     - name: PermissionHandler
     - name: RoleHandler
     - name: SecurityHandler
+    - name: SystemHandler
     - name: UserHandler

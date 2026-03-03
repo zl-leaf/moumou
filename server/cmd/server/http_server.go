@@ -26,6 +26,7 @@ func NewHTTPServer(
 	securityHandler api.SecurityHandlerHTTPServer,
 	permissionHandler api.PermissionHandlerHTTPServer,
 	articleHandler api.ArticleHandlerHTTPServer,
+	systemHandler api.SystemHandlerHTTPServer,
 	svc *service.Service,
 ) *http.Server {
 	var opts = []http.ServerOption{
@@ -37,7 +38,11 @@ func NewHTTPServer(
 			selector.Server(
 				mw.JWTServer(confData),
 				mw.VerifyUser(svc.UserService)).Match(func(ctx context.Context, operation string) bool {
-				whiteList := []string{api.OperationSecurityHandlerLogin, api.OperationSecurityHandlerCaptcha}
+				whiteList := []string{
+				api.OperationSecurityHandlerLogin,
+				api.OperationSecurityHandlerCaptcha,
+				api.OperationSystemHandlerInitialize,
+			}
 				for _, white := range whiteList {
 					if operation == white {
 						return false
@@ -62,6 +67,7 @@ func NewHTTPServer(
 	api.RegisterSecurityHandlerHTTPServer(srv, securityHandler)
 	api.RegisterPermissionHandlerHTTPServer(srv, permissionHandler)
 	api.RegisterArticleHandlerHTTPServer(srv, articleHandler)
+	api.RegisterSystemHandlerHTTPServer(srv, systemHandler)
 
 	return srv
 }

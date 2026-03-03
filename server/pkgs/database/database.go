@@ -5,6 +5,7 @@ import (
 
 	mysqldriver "github.com/go-sql-driver/mysql"
 	"gorm.io/driver/mysql"
+	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
@@ -15,6 +16,12 @@ type DbConfig struct {
 	Addr     string `yaml:"addr" json:"addr"`
 }
 
+// NewMemoryGorm 使用 SQLite 内存库（glebarez/sqlite，纯 Go 无 CGO）
+func NewMemoryGorm() (*gorm.DB, error) {
+	return gorm.Open(sqlite.Open("file::memory:?cache=shared"), &gorm.Config{})
+}
+
+// NewMysqlGorm 使用 MySQL 数据库
 func NewMysqlGorm(cnf *DbConfig) (*gorm.DB, error) {
 	db, err := gorm.Open(mysql.New(mysql.Config{
 		DSNConfig:                 transformConfig(cnf),
