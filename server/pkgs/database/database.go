@@ -3,9 +3,9 @@ package database
 import (
 	"time"
 
+	"github.com/glebarez/sqlite"
 	mysqldriver "github.com/go-sql-driver/mysql"
 	"gorm.io/driver/mysql"
-	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
