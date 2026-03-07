@@ -14,6 +14,7 @@ import (
 	"github.com/moumou/server/biz/handler"
 	"github.com/moumou/server/biz/service"
 	"github.com/moumou/server/biz/service/permission"
+	"github.com/moumou/server/biz/service/system"
 	"github.com/moumou/server/biz/service/user"
 	"github.com/moumou/server/gen/dao"
 	"github.com/moumou/server/pkgs/database"
@@ -22,21 +23,23 @@ import (
 // Injectors from wire.go:
 
 func wireApp(logger log.Logger, data *conf.Data, dbConfig *database.DbConfig) (*kratos.App, error) {
-	db, err := database.NewMysqlGorm(dbConfig)
+	db, err := database.NewMemoryGorm()
 	if err != nil {
 		return nil, err
 	}
 	daoDao := dao.NewDao(db)
 	userService := user.NewUserService(data, daoDao)
 	permissionService := permission.NewService(daoDao)
-	serviceService := service.NewService(userService, permissionService, daoDao)
+	systemService := system.NewService(db, daoDao, userService, permissionService)
+	serviceService := service.NewService(userService, permissionService, systemService, daoDao)
 	iConverter := factory.NewConverter()
 	userHandlerHTTPServer := handler.NewUserHandler(serviceService, iConverter)
 	roleHandlerHTTPServer := handler.NewRoleHandler(serviceService, iConverter)
 	securityHandlerHTTPServer := handler.NewSecurityHandler(serviceService, iConverter)
 	permissionHandlerHTTPServer := handler.NewPermissionHandler(serviceService, iConverter)
 	articleHandlerHTTPServer := handler.NewArticleHandlerService(serviceService, iConverter)
-	server := NewHTTPServer(logger, data, userHandlerHTTPServer, roleHandlerHTTPServer, securityHandlerHTTPServer, permissionHandlerHTTPServer, articleHandlerHTTPServer, serviceService)
+	systemHandlerHTTPServer := handler.NewSystemHandler(data, serviceService)
+	server := NewHTTPServer(logger, data, userHandlerHTTPServer, roleHandlerHTTPServer, securityHandlerHTTPServer, permissionHandlerHTTPServer, articleHandlerHTTPServer, systemHandlerHTTPServer, serviceService)
 	app := newApp(logger, server)
 	return app, nil
 }

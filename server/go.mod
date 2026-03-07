@@ -11,11 +11,12 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/google/wire v0.6.0
 	github.com/stretchr/testify v1.11.1
-	github.com/zl-leaf/gorm-dao v0.0.2
+	github.com/zl-leaf/gorm-dao v0.0.3
 	go.opentelemetry.io/otel/sdk v1.16.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20230629202037-9506855d4529
 	google.golang.org/protobuf v1.33.0
 	gorm.io/driver/mysql v1.5.6
+	gorm.io/driver/sqlite v1.4.3
 	gorm.io/gorm v1.25.11
 	gorm.io/plugin/soft_delete v1.2.1
 )
@@ -35,6 +36,7 @@ require (
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/kr/text v0.1.0 // indirect
+	github.com/mattn/go-sqlite3 v1.14.16 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	go.opentelemetry.io/otel v1.16.0 // indirect
 	go.opentelemetry.io/otel/metric v1.16.0 // indirect
@@ -48,5 +50,4 @@ require (
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20230629202037-9506855d4529 // indirect
 	google.golang.org/grpc v1.56.3 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	gorm.io/driver/sqlite v1.4.3 // indirect
 )

@@ -9,6 +9,14 @@ const router = createRouter({
       component: () => import('@/views/LoginView.vue')
     },
     {
+      path: '/init',
+      name: 'system_initialize',
+      component: () => import('@/views/SystemInitialize.vue'),
+      meta: {
+        title: '系统初始化',
+      }
+    },
+    {
       path: '/layout',
       name: 'admin_layout',
       component: () => import('@/views/layout/AdminLayout.vue'),
@@ -16,7 +24,7 @@ const router = createRouter({
         {
           path: '/',
           name: 'dashboard',
-          component:() => import('@/views/AboutView.vue'),
+          component: () => import('@/views/Dashboard.vue'),
           meta: {
             title: '仪表盘',
             isMenu: true,

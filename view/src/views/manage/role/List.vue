@@ -5,7 +5,13 @@
         </template>
 
         <template #content>
-            <a-table :columns="columns" :data-source="data" :pagination="pagination" @change="handleTableChange">
+            <a-table
+                :columns="columns"
+                :data-source="data"
+                :pagination="pagination"
+                :loading="loading"
+                @change="handleTableChange"
+            >
                 <template #headerCell="{ column }"></template>
 
                 <template #bodyCell="{ column, record }">
@@ -51,6 +57,7 @@ export default defineComponent({
                 current: 1,
                 pageSize: 10,
             },
+            loading: false,
         }
     },
     created() {
@@ -60,8 +67,7 @@ export default defineComponent({
         handleTableChange: function (pag: any, filters: any, sorter: any) {
             this.pagination.current = pag.current
             this.pagination.pageSize = pag.pageSize
-            console.log('change', pag, filters, sorter)
-
+            this.loading = true
             api.RoleHandlerService.roleHandlerGetRoleList({
                 currentPage: pag.current,
                 pageSize: pag.pageSize,
@@ -76,6 +82,8 @@ export default defineComponent({
                 this.data = data?.list ?? []
             }).catch(err => {
                 console.log('err:', err)
+            }).finally(() => {
+                this.loading = false
             })
         },
         onDelete: async function(id: string) {

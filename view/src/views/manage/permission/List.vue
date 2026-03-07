@@ -5,7 +5,14 @@
         </template>
 
         <template #content>
-            <a-table :columns="columns" :data-source="data" row-key="id" :pagination="false" @change="handleTableChange">
+            <a-table
+                :columns="columns"
+                :data-source="data"
+                :loading="loading"
+                row-key="id"
+                :pagination="false"
+                @change="handleTableChange"
+            >
                 <template #headerCell="{ column }"></template>
 
                 <template #bodyCell="{ column, record }">
@@ -48,6 +55,7 @@ export default defineComponent({
                 }
             ],
             data: Array<api.server_api_Permission>(),
+            loading: false,
         }
     },
     created() {
@@ -55,7 +63,7 @@ export default defineComponent({
     },
     methods: {
         handleTableChange: function (filters: any, sorter: any) {
-
+            this.loading = true
             api.PermissionHandlerService.permissionHandlerGetPermissionTree({
                 filter: {},
             }).then((response) => {
@@ -67,6 +75,8 @@ export default defineComponent({
                 this.data = data?.list ?? []
             }).catch(err => {
                 console.log('err:', err)
+            }).finally(() => {
+                this.loading = false
             })
         },
         onDelete: async function(id: string) {

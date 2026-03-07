@@ -1,6 +1,7 @@
 <template>
     <ContentPage>
         <template #content>
+            <a-spin :spinning="loading">
             <a-form :model="formState" :label-col="{ span: 6 }" :wrapper-col="{ span: 8 }">
                 <a-tree
                     checkable
@@ -14,6 +15,7 @@
                     <a-button style="margin-left: 10px" @click="$router.back()">返回</a-button>
                 </a-form-item>
             </a-form>
+            </a-spin>
         </template>
     </ContentPage>
 </template>
@@ -53,7 +55,6 @@ export default defineComponent({
             let that = this
             this.loading = true
             try {
-                // 加载详情数据
                 let permissionTreeResponse = await api.PermissionHandlerService.permissionHandlerGetPermissionTree({})
                 if (permissionTreeResponse.code != 0) {
                     throw new Error(permissionTreeResponse.message)
@@ -69,12 +70,11 @@ export default defineComponent({
                 getRolePermissionResponse.data?.list?.forEach(permission => {
                     that.formState.values.push(String(permission.id))
                 })
-
-                this.loading = false
             } catch (err) {
                 message.error("网络错误")
+            } finally {
+                this.loading = false
             }
-
         },
         onSubmit: async function() {
             this.loading = true

@@ -11,3 +11,7 @@ database:
   password: "${APP_DATABASE_PASSWORD}"
   db_name: "${APP_DATABASE_DBNAME}"
   addr: "${APP_DATABASE_ADDR}"
+
+system:
+  username: "${APP_SYSTEM_USERNAME}"
+  password: "${APP_SYSTEM_PASSWORD}"

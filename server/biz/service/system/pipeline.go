@@ -1,4 +1,4 @@
-package main
+package system
 
 import (
 	"context"
@@ -9,10 +9,10 @@ import (
 
 type InitTblPipeline struct {
 	db           *gorm.DB
-	model        interface{}   // model，用于查询的条件
-	beforeCreate IBeforeCreate // 创建前执行
-	nextPipeline INext         // 后续需要执行的初始化工作
-	errorHandler IErrorHandler // 处理错误
+	model        interface{}
+	beforeCreate IBeforeCreate
+	nextPipeline INext
+	errorHandler IErrorHandler
 }
 
 type IBeforeCreate func(modelObj interface{})
@@ -46,10 +46,8 @@ func (p *InitTblPipeline) Execute(ctx context.Context) error {
 		err = p.handleError(err)
 	}()
 
-	// 根据Model检查
 	result := db.WithContext(ctx).Where(p.model).First(p.model)
 	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
-		// 需要添加
 		p.beforeCreate(p.model)
 		if result = db.Create(p.model); result.Error != nil {
 			err = result.Error
@@ -60,7 +58,6 @@ func (p *InitTblPipeline) Execute(ctx context.Context) error {
 		return err
 	}
 
-	// 后续执行
 	if p.nextPipeline != nil {
 		for _, next := range p.nextPipeline(p.model) {
 			if err = next.Execute(ctx); err != nil {
@@ -77,7 +74,6 @@ func (p *InitTblPipeline) handleError(err error) error {
 		return nil
 	}
 	if p.errorHandler == nil {
-		// 默认处理，直接panic
 		panic(err)
 	}
 	return p.errorHandler(err)

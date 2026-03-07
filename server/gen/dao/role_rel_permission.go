@@ -331,6 +331,10 @@ func (d *rolePermissionDao) Save(record *model.RolePermission) error {
 	return d.DB.Save(record).Error
 }
 
+func (d *rolePermissionDao) SaveFullAssociations(record *model.RolePermission) error {
+	return d.DB.Session(&gorm.Session{FullSaveAssociations: true}).Save(record).Error
+}
+
 func (d *rolePermissionDao) Delete(conds ...interface{}) error {
 	return d.DB.Delete(&model.RolePermission{}, conds...).Error
 }

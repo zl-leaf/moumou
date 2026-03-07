@@ -15,6 +15,7 @@
                 :columns="columns"
                 :data-source="data"
                 :pagination="pagination"
+                :loading="loading"
                 row-key="id"
                 @change="handleTableChange"
             >
